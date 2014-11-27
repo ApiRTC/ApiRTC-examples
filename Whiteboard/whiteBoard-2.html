@@ -1,0 +1,184 @@
+<html>
+    <head>
+        <script src="https://cloud.apizee.com/libs/jquery-1.9.0.min.js"></script>
+        <script src="http://cloud.apizee.com/apiRTC/v2.7/apiRTC-latest.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="assets/css/whiteBoard.css">
+    </head>
+    <body>
+        <div id="overlay" style="position:absolute; top:20px; left:30px; ">
+            <div style="border:solid 1px black; background-color:white; padding:10px;">
+                <input type="text" id="number" value="" placeholder="Enter Destination ID..."/>
+                <input id="call" type="button" disabled="true" value="Registration Ongoing..." />
+                <input id="hangup" type="button" disabled="true" value="Hangup" />
+                <input id="clearPaper" type="button" disabled="true" value="Registration Ongoing..." />
+                <span id="status"></span>
+
+                <div id="local" style="position: absolute;"><video id="myLocalVideo" style="width:640px; height:480px;" autoplay="autoplay" muted="true"></video></div>
+                <div id="remote" style="position: absolute;">
+                    <div id="myRemoteVideo" style="width:640px; height:480px;"></div>
+                    <div id="mini"><video width="30%" height="30%" id="myMiniVideo" autoplay="autoplay" muted="true"></video></div>
+                </div>
+            </div>
+        </div>
+
+        
+	<div id="cursors">
+    	<!-- The mouse pointers will be created here -->
+	</div>
+
+	<canvas id="paper" width="1900" height="1000">
+		Your browser needs to support canvas for this to work!
+	</canvas>
+
+        <script>
+                       
+        'use strict';
+            
+        var session = null,
+            whiteBoardClient = null,
+            dataClient = null,
+            webRTCClient = null;
+            
+        var dest = "7";
+
+        function recordedFileAvailableHandler(e) {
+            console.log('recordedFileAvailableHandler :' + e.detail.fileName);
+            
+            var data = {event: 'recordedFileUploaded', fileName: e.detail.fileName};
+            dataClient.sendData(dest, data);
+        }
+            
+        function snapShotPhotoUploadedHandler(e) {
+            console.log("snapShotPhotoUploadedHandler on whiteBoard HTML :" + e.detail.fileName);
+
+            var data = {event: 'snapShotPhotoUploaded', fileName: e.detail.fileName};
+            dataClient.sendData(dest, data);
+            
+            console.log("loadingPhoto in background");
+            whiteBoardClient.loadPhotoInBackground(e.detail.fileName);
+        }
+        
+        //Reception of order from contact 1
+        function receiveDataHandler(e) {
+            console.log("receiveDataHandler on whiteBoard HTML :" + e.detail.data);
+            
+            //data = JSON.parse(e.detail.data);
+            console.log("e.detail.data.command :" + e.detail.data.command);
+            
+            if (e.detail.data.command === 'takeSnapshot') {
+                console.log("remote takeSnapShot command received");
+                
+                var div = null;
+
+                webRTCClient.takeSnapshot('//beta.apizee.com/contactBox.php/main/uploadFile', div, 0, '287077');
+                
+            }
+            
+            if (e.detail.data.command === 'clearPaper') {
+                whiteBoardClient.clearPaper();
+            }
+ 
+            webRTCClient.setUploadServerAddressForRecord('//beta.apizee.com/contactBox.php/main/uploadFile');
+            
+            if (e.detail.data.command === 'audioRecord') {
+                alert('audioRecord request');
+                webRTCClient.recordStream('audio', e.detail.data.duration, '287077');
+            }
+            if (e.detail.data.command === 'videoRecord') {
+                alert('videoRecord request');
+                webRTCClient.recordStream('video', e.detail.data.duration, '287077');
+            }
+            if (e.detail.data.command === 'videoOnlyRecord') {
+                alert('videoOnlyRecord request');
+                webRTCClient.recordStream('videoOnly', e.detail.data.duration, '287077');
+            }
+            if (e.detail.data.command === 'stopRecord') {
+                alert('stopRecord request');
+                webRTCClient.stopRecordStream();
+            }
+        }  
+            
+        function roomInvitationHandler(e) {
+            console.log("roomInvitationHandler on whiteBoard HTML :" + e.detail.roomId);
+            
+            //Starting whiteboard process : mousemove detection ...
+            whiteBoardClient.start();
+            
+            whiteBoardClient.answerToRoomInvitation(e.detail.roomId, true);
+        }
+
+        function userMediaErrorHandler(e) {
+            $("#call").attr("disabled", false).val("Call");
+            $("#hangup").attr("disabled", true).val("Hangup");
+        }
+            
+        function remoteHangupHandler(e) {
+            if (e.detail.lastEstablishedCall === true) {
+                $("#call").attr("disabled", false).val("Call");
+                $("#hangup").attr("disabled", true).val("Hangup");
+            }
+        }
+            
+        function incomingCallHandler(e) {
+            apiRTC.addEventListener("remoteHangup", remoteHangupHandler);
+            $("#call").attr("disabled", true).val("Call ongoing");
+            $("#hangup").attr("disabled", false).val("Hangup");
+        }
+            
+        function sessionReadyHandler(e) {
+            
+            console.log('Session created with sessionId :' + apiRTC.session.apiCCId);
+            $("#call").attr("disabled", false).val("Call");
+            
+            apiRTC.addEventListener("snapShotPhotoUploaded", snapShotPhotoUploadedHandler);
+            apiRTC.addEventListener("receiveData", receiveDataHandler);
+
+            apiCC.addEventListener("recordedFileAvailable", recordedFileAvailableHandler);
+            
+            apiRTC.addEventListener("incomingCall", incomingCallHandler);
+            apiRTC.addEventListener("userMediaError", userMediaErrorHandler);
+            
+            $("#clearPaper").attr("disabled", false).val("clearPaper");
+            
+            webRTCClient = apiCC.session.createWebRTCClient({
+                localVideo : "myLocalVideo",
+                minilocalVideo : "myMiniVideo",
+                remoteVideo : "myRemoteVideo",
+                status : "status"
+            });
+            
+            dataClient = apiCC.session.createDataClient();
+            
+            $("#call").click(function () {
+                $("#call").attr("disabled", true).val("Call ongoing");
+                $("#hangup").attr("disabled", false).val("Hangup");
+                apiRTC.addEventListener("remoteHangup", remoteHangupHandler);
+                webRTCClient.call($("#number").val());
+            });
+            
+            $("#hangup").click(function () {
+                $("#call").attr("disabled", false).val("Call");
+                $("#hangup").attr("disabled", true).val("Hangup");
+                webRTCClient.hangUp();
+            });
+            
+            $("#clearPaper").click(function () {
+                console.log('clearPaper');
+                whiteBoardClient.clearPaper();
+            });
+            
+            console.log('sessionReadyHandler :' + apiCC.session.apiCCId);
+            apiRTC.addEventListener("roomInvitation", roomInvitationHandler);
+            whiteBoardClient = apiCC.session.createWhiteBoard('paper', 'cursors', 'instructions');
+        }
+          
+        apiRTC.init({
+            apiKey : "myDemoApiKey_whiteboard",
+            apiCCId : "8",
+            onReady : sessionReadyHandler,
+            recordActivated : true
+        });
+            
+        </script>
+    </body>
+</html>
