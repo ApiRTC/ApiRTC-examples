@@ -1,0 +1,107 @@
+<html>
+    <head>
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <script src="http://cloud.apizee.com/libs/jquery-1.9.0.min.js"></script>
+        <script src="http://cloud.apizee.com/apiRTC/v2.7/apiRTC-latest.min.js"></script>
+    </head>
+
+    <body>
+        <span id="status"></span>
+        <br/>
+        <input type="text" id="number" value="" placeholder="Enter Destination ID..." />
+        <input id="create" type="button" disabled="true" value="Registration Ongoing..." />
+
+        <!-- Here is your awesome chat box -->
+        <!-- It's hidden on page load -->
+        <div id="chatbox" data-id="" class="panel panel-default col-md-4" style="position:absolute; bottom:0px; right:10px;display:none">
+            <div class="panel-heading">
+                <h3 class="panel-title">My chat box</h3>
+            </div>
+            <div class="panel-body">
+                <div class="messages" style="height:250px;overflow:scroll">
+                </div>
+                <textarea id="my_message" placeholder="Your message"  class="form-control" rows="3"></textarea>
+            </div>
+        </div>
+
+        <script>
+
+            var session = null,
+                imClient = null;
+
+            function startIM(destId) {
+                $("#chatbox").data('id',destId)
+                $("#chatbox").show();
+                $("#create").attr("disabled", "true");
+                
+                //When you fill a message in my_message, we send send it
+                $('#my_message').on('keyup', function(e) {
+                    if (e.which == 13) {
+                        var destId=$('#chatbox').data('id');
+                        var message=$("#my_message").val();
+                        sendIMMessage(destId, message);
+                        //Just reset your message box
+                        $("#my_message").val('');
+                    }
+                });
+
+                console.log("startIM with destId :" + destId);
+            }
+
+            function sendIMMessage(destId, message) {
+                console.log('sendIMMessage to ' + destId);
+
+                //In this example nickname is the ID
+                imClient.sendMessage(destId, message);
+                $('.messages').append('<div class="well"><span class="label label-success">me : </span> '+message+'<br></div>');
+
+                //Optionnal: we scroll the messages
+                $(".messages").scrollTop($('.messages').height());
+            }
+
+            function receiveIMMessageHandler(e) {
+                //If chatbox not visible, we set it visible
+                if (!$('#chatbox').is(':visible')) {
+                    startIM(e.detail.senderId);
+                }
+                $('.messages').append('<div class="well"><span class="label label-danger">'+e.detail.senderNickname+' : </span> '+e.detail.message+'<br></div>');
+
+                //Optionnal, a little animation
+                $(".messages").scrollTop($('.messages').height());
+            }
+
+            function sessionReadyHandler(e) {
+                console.log('sessionReadyHandler :' + apiCC.session.apiCCId);
+
+                var htmlText = 'Your ApiRTC Id is :' + apiCC.session.apiCCId +
+                    '.You can be reached using this number.';
+
+                $("#status").html(htmlText);
+
+                $("#create").attr("disabled", false).val("Create Chat Box");
+
+                //Instant Messaging client creation
+                apiRTC.addEventListener("receiveIMMessage", receiveIMMessageHandler);
+
+                imClient = apiCC.session.createIMClient();
+
+                $("#create").click(function () {
+                    startIM($("#number").val());
+                });
+            }
+
+
+            function updatePresenceHandler(e) {
+                console.log('updatePresenceHandler :' + JSON.stringify(e.detail.connectedUsersList));
+            }
+            apiCC.addEventListener("updatePresence", updatePresenceHandler);
+
+            apiRTC.init({
+                apiKey : "myDemoApiKey",
+                onReady : sessionReadyHandler
+            });
+
+        </script>
+    </body>
+</html>

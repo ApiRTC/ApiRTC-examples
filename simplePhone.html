@@ -1,0 +1,48 @@
+<html>
+  
+    <!-- load apiRTC -->
+    <head>
+        <script src="http://cloud.apizee.com/libs/jquery-1.9.0.min.js"></script>
+        <script src="http://cloud.apizee.com/apiRTC/v2.7/apiRTC-latest.min.js"></script>
+    </head>
+
+    <body>
+
+        <!-- present a simple interface to the user-->
+        <div id="command"> </div>
+        <span id="status"></span>
+        
+        <div id="local" style="position: absolute;"><video id="myLocalVideo" autoplay="autoplay" muted="true"></video></div>
+        <div id="remote" style="position: absolute;">
+            <div id="myRemoteVideo" style="width:640px; height:480px;"></div>
+            <div id="mini"><video width="30%" height="30%" id="myMiniVideo" autoplay="autoplay" muted="true"></video></div>
+        </div>
+
+        <!-- make handler functions and initialise ApiRTC -->
+        <script>
+        'use strict';
+        var session = null;
+
+        // callback when ApiRTC is ready
+        function sessionReadyHandler(e) {
+            console.log('sessionReadyHandler :' + apiCC.session.apiCCId);
+
+            var webRTCClient = apiCC.session.createWebRTCClient({
+                localVideo : "myLocalVideo",
+                minilocalVideo : "myMiniVideo",
+                remoteVideo : "myRemoteVideo",
+                status : "status",
+                command : "command"
+            });
+        }
+        
+        
+        // initialise ApiRTC
+        apiRTC.init({
+            apiKey : "myDemoApiKey",
+            onReady : sessionReadyHandler
+        });
+
+        </script>
+    </body>
+</html>

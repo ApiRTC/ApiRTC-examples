@@ -1,0 +1,115 @@
+<html>
+  
+    <!-- load apiRTC -->
+    <head>
+        <script src="http://cloud.apizee.com/libs/jquery-1.9.0.min.js"></script>
+        <script src="http://cloud.apizee.com/apiRTC/v2.7/apiRTC-latest.min.js"></script>
+    </head>
+
+    <body>
+
+        <!-- present a simple interface to the user-->
+        <input type="text" id="number" value="" placeholder="Enter Destination ID..."/>
+        <input id="call" type="button" disabled="true" value="Registration Ongoing..."/>
+        <input id="hangup" type="button" disabled="true" value="Hangup"/>
+        <span id="status"></span>
+
+        <div id="local" style="position: absolute;"><video id="myLocalVideo" autoplay="autoplay" muted="true"></video></div>
+        <div id="remote" style="position: absolute;">
+            <div id="myRemoteVideo" style="width:640px; height:480px;"></div>
+            <div id="mini"><video width="30%" height="30%" id="myMiniVideo" autoplay="autoplay" muted="true"></video></div>
+        </div>
+
+        <!-- make handler functions and initialise ApiRTC -->
+        <script>
+        'use strict';
+        var session = null;
+
+        // handler function for media errors
+        function userMediaErrorHandler(e) {
+            $("#call").attr("disabled", false).val("Call");
+            $("#hangup").attr("disabled", true).val("Hangup");
+        }
+
+
+        // handler function for handling the remote user hanging up
+        function remoteHangupHandler(e) {
+            console.log('remoteHangupHandler');
+	    console.log(e.detail.reason);
+
+            if (e.detail.lastEstablishedCall === true) {
+                $("#call").attr("disabled", false).val("Call");
+                $("#hangup").attr("disabled", true).val("Hangup");
+            }
+        }
+
+
+        // handler function for when the local user hangs up
+        function hangupHandler(e) {
+            console.log('hangupHandler');
+	    console.log(e.detail.reason);
+            
+            if (e.detail.lastEstablishedCall === true) {
+                $("#call").attr("disabled", false).val("Call");
+                $("#hangup").attr("disabled", true).val("Hangup");
+            }
+        }
+
+
+        
+        function incomingCallHandler(e) {
+            apiRTC.addEventListener("remoteHangup", remoteHangupHandler);
+            $("#call").attr("disabled", true).val("Call ongoing");
+            $("#hangup").attr("disabled", false).val("Hangup");
+        }
+
+        function callAttemptHandler(e) {
+	    alert('Id :' + e.detail.callerId + 'is trying to reach you')
+        }
+
+
+        // callback when ApiRTC is ready
+        function sessionReadyHandler(e) {
+            console.log('sessionReadyHandler :' + apiCC.session.apiCCId);
+
+            $("#call").attr("disabled", false).val("Call");
+
+            apiRTC.addEventListener("incomingCall", incomingCallHandler);
+            apiRTC.addEventListener("userMediaError", userMediaErrorHandler);
+
+	    apiRTC.addEventListener("callAttempt", callAttemptHandler);
+
+            apiRTC.addEventListener("hangup", hangupHandler);
+
+            var webRTCClient = apiCC.session.createWebRTCClient({
+                localVideo : "myLocalVideo",
+                minilocalVideo : "myMiniVideo",
+                remoteVideo : "myRemoteVideo",
+                status : "status"
+            });
+
+
+            $("#call").click(function () {
+                $("#call").attr("disabled", true).val("Call ongoing");
+                $("#hangup").attr("disabled", false).val("Hangup");
+                apiRTC.addEventListener("remoteHangup", remoteHangupHandler);
+                webRTCClient.call($("#number").val());
+            });
+
+            $("#hangup").click(function () {
+                $("#call").attr("disabled", false).val("Call");
+                $("#hangup").attr("disabled", true).val("Hangup");
+                webRTCClient.hangUp();
+            });
+        }
+        
+        
+        // initialise ApiRTC
+        apiRTC.init({
+            apiKey : "myDemoApiKey",
+            onReady : sessionReadyHandler
+        });
+
+        </script>
+    </body>
+</html>
