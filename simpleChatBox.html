@@ -7,7 +7,6 @@
     </head>
 
     <body>
-        <span id="status"></span>
         <br/>
         <input type="text" id="number" value="" placeholder="Enter Destination ID..." />
         <input id="create" type="button" disabled="true" value="Registration Ongoing..." />
@@ -73,11 +72,6 @@
 
             function sessionReadyHandler(e) {
                 console.log('sessionReadyHandler :' + apiCC.session.apiCCId);
-
-                var htmlText = 'Your ApiRTC Id is :' + apiCC.session.apiCCId +
-                    '.You can be reached using this number.';
-
-                $("#status").html(htmlText);
 
                 $("#create").attr("disabled", false).val("Create Chat Box");
 
