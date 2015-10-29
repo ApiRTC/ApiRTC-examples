@@ -1,6 +1,6 @@
 
 
-This directory contains usage example of ApiRTC.
+This directory contains usage example of [ApiRTC](www.apirtc.com).
 
-An online version is available [HERE](www.apizee.com/Demo/Tuto)
+An online version of these diffrent example is available [HERE](www.apizee.com/Demo/Tuto)
 
