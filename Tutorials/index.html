@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="../../favicon.ico">
+        <title>apiRTC Client</title>
+
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+        <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        main {
+            flex: 1 0 auto;
+        }
+        .container.master { padding: 50px; }
+        .fa {
+            display: inline-block !important;
+        }
+        footer {  margin-top: 0 !important; }
+        </style>
+    </head>
+
+    <body>
+        <nav class="light-blue darken-4">
+            <div class="nav-wrapper">
+                <aclass="brand-logo"><img src="./images/apirtc-logo.png" alt="" style="height:50px;margin:8px 40px;"></a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="https://github.com/apizee/ApiRTC-examples"><i class="fa fa-github" style="vertical-align: middle;"></i> Source code on Github</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container master grey lighten-5">
+            <div class="row">
+                <h4><i class="fa fa-dot-circle-o"></i> How to use the demos :</h4>
+                <p class="lead text-justify">
+                    Each demo represents an apiRTC Client. To established a call you need to open two clients.</br>
+                    You can open it on a different computer with a different browser or you can use two tabs on the same browser.</br>
+                    We have added a button on the right of each demo to open a new client.</br>
+                    Your client will be assigned a random Identifier, that you will need to use to establish the call.
+                </p>
+            </div>
+
+            <!-- Demos list -->
+            <div class="row">
+                <h4><i class="fa fa-dot-circle-o"></i> Access to the different demos :</h4>
+                <div class="col s12 m4">
+                    <div class="card hoverable white">
+                        <div class="card-content black-text">
+                            <span class="card-title black-text">Tutorial 1</span>
+                            <p>Basic video client</p>
+                        </div>
+                        <div class="card-action">
+                            <a href="./Video_client_basic/apiRTC-Basic-Client.html">Access to the demo</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m4">
+                    <div class="card hoverable white">
+                        <div class="card-content black-text">
+                            <span class="card-title black-text">Tutorial 2</span>
+                            <p>Video client with JQuery</p>
+                        </div>
+                        <div class="card-action">
+                            <a href="./Video_client_jquery/apiRTC-JQuery-Client.html">Access to the demo</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m4">
+                    <div class="card hoverable white">
+                        <div class="card-content black-text">
+                            <span class="card-title black-text">Tutorial 3</span>
+                            <p>Video client with Material and a complete separation between UI and apiRTC</p>
+                        </div>
+                        <div class="card-action">
+                            <a href="./Video_client_Material/apiRTC-Material-Client-Video.html">Access to the demo</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col s12 m12 l12">
+                <div class="card orange lighten-2">
+                    <div class="card-content white-text">
+                        <p><i class="fa fa-exclamation-circle"></i> Our demos are all using HTTPS as HTTPS is now mandatory in Chrome > 47</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <h4><i class="fa fa-dot-circle-o"></i> Ready to develop your application ?</h4>
+                <p class="lead">
+                <a href="./startingGuide.html">
+                    <span class="glyphicon glyphicon-file"></span>Check our starting guide</a>
+                </p>
+            </div>
+
+        </div>
+
+        <footer class="page-footer grey darken-3">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">ApiRTC Tutorials</h5>
+                <p class="grey-text text-lighten-4">This page give you access to different apiRTC sample to easily build your application</p>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Useful links</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" href="//apirtc.com">ApiRTC Website</a></li>
+                  <li><a class="grey-text text-lighten-3" href="//apizee.com">Apizee Website</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright grey darken-2">
+            <div class="container">
+            &copy; 2014-2015 Apizee
+            </div>
+          </div>
+        </footer>
+
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+    </body>
+</html>
