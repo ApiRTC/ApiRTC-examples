@@ -32,14 +32,47 @@
     <body>
         <nav class="light-blue darken-4">
             <div class="nav-wrapper">
-                <aclass="brand-logo"><img src="./images/apirtc-logo.png" alt="" style="height:50px;margin:8px 40px;"></a>
+                <a href="//apirtc.com" title="Go to homepage" class="brand-logo"><img src="./images/apirtc-logo.png" alt="" style="height:50px;margin:8px 40px;"></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="https://github.com/apizee/ApiRTC-examples"><i class="fa fa-github" style="vertical-align: middle;"></i> Source code on Github</a></li>
+                    <li><a href="https://github.com/apizee/ApiRTC-examples/tree/master/Tutorials"><i class="fa fa-github" style="vertical-align: middle;"></i> Source code on Github</a></li>
                 </ul>
             </div>
         </nav>
 
         <div class="container master grey lighten-5">
+            <div class="row" style="margin-bottom:40px;">
+                <div class="col s12 m12 l12" style="margin-bottom: 40px;">
+                    <h4><i class="fa fa-dot-circle-o"></i> WebRTC technology</h4>
+                    <div class="col s12 m4 l2">
+                        <img src="http://apirtc.com/wp-content/uploads/webrtc-300x288.png" alt="webrtc" height="130" class="alignnone size-medium wp-image-1043"/>
+                    </div>
+                    <div class="col s12 m8 l10 valign-wrapper">
+                        <p class="valign">
+                        ApiRTC is a library that allows a developer to easily integrate real-time communications (chat, audio, video) into a web or mobile application, using HTML and JavaScript.<br>Behind the scenes, the WebRTC technology is used : this means that the media flows are encrypted and exchanged in peer-to-peer when possible. Otherwise a media relay (TURN server) may be required
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col s12 m12 l12">
+                    <h4><i class="fa fa-dot-circle-o"></i> Anatomy of ApiRTC Call</h4>
+                    <div class="col s12 m6 l4">
+                    <h4 style="font-size:17px;"><b>Step 1:</b> Initialize the connection</h4>
+                        <img class="aligncenter size-large wp-image-90" src="http://apirtc.com/wp-content/uploads/intro1_cmp.png" alt="intro1_cmp" width="100%" />Let's say that we have a mobile user that wants to call a desktop user (Client 1 calling Client 2).
+                        The signaling offer of the Client 1 goes through the signaling server (CCS), and is relayed to the desktop client who can choose to accept or refuse the call
+                    </div>
+                    <div class="col s12 m6 l4">
+                        <h4 style="font-size:17px;"><b>Step 2:</b> Initiate a call</h4>
+                        <img class="aligncenter size-large wp-image-91" src="http://apirtc.com/wp-content/uploads/intro2_cmp.png" alt="intro2_cmp" width="100%" />Now both clients are aware of the capabilities of each other (audio/video codecs supported for instance).
+                        In a typical scenario they will at this point also be capable to “talk” to each other: the signaling server is essentially useless now. They are now capable to exchange their media (audio/video) flux between each other.
+                    </div>
+                    <div class="col s12 m6 l4">
+                        <h4 style="font-size:17px;"><b>Step 3:</b> Peer to peer media exchange</h4>
+                        <img class="aligncenter size-large wp-image-92" src="http://apirtc.com/wp-content/uploads/intro3_cmp.png" alt="intro3_cmp" width="100%" />As we see with this simple example, the signalisation phase is absolutely crucial to establish calls. There are also many factors not presented in this simple example (differences between browsers, media constraints, fallback if there are firewalls…), but this simple scenario is helpful to understand the following tutorials.
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr style="margin-top:60px;">
+                </div>
+            </div>
             <div class="row">
                 <h4><i class="fa fa-dot-circle-o"></i> How to use the demos :</h4>
                 <p class="lead text-justify">
