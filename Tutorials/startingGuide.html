@@ -85,9 +85,20 @@
                 <br>
                 <div class="row">
                     <div class="col s12 m8 l8">
-                        <p>Create an account to get your apiRTC key</p>
+                        <h4>Create an account</h4>
+                        <p>First thing to do is to create an account to get your apiRTC key</p>
+                        <h4>Customize your userId</h4>
+                        <p>Then you can customize your client Id. For instance, if you have a database on your application you can use the userId that is defined in this database</br>
+                        You only have to add the parameter "apiCCId" in the apirtc.init() function in set it with your userId.</br>
+                    For example, to set a userId to "1" :</br>
+            apiRTC.init({</br>
+                apiKey : "myDemoApiKey",</br>
+                apiCCId : "1",</br>
+                onReady : sessionReadyHandler,</br>
+                ccsServer : "ccs3.apizee.com"</br>
+            });</br>
 
-                        <p>Customize your client Id</p>
+                        </p>
 
                     </div>
                     <div class="col s12 m4 l4 valign-wrapper">
