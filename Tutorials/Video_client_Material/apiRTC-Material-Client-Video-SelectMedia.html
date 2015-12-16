@@ -66,7 +66,10 @@
             background: #d6d6d6;
         }
         </style>
+<!--
         <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
+-->
+        <script src="https://cloud.apizee.com/apiRTC/v2.15/apiRTC-2.15.min.js"></script>
     </head>
 
     <body>
@@ -213,11 +216,17 @@
                     var sourceInfo = sourceInfos[i];
                     var option = document.createElement("option");
                     option.value = sourceInfo.id;
-                    if (sourceInfo.kind === 'audio') {
+
+
+//ENUMERATE
+                    if (sourceInfo.kind === 'audio' || sourceInfo.kind === 'audioinput') {
+//ENUMERATE
                         console.log('audio');
                         option.text = sourceInfo.label || 'microphone ' + (audioSelect.length);
                         audioSelect.appendChild(option);
-                    } else if (sourceInfo.kind === 'video') {
+//ENUMERATE
+                    } else if (sourceInfo.kind === 'video' || sourceInfo.kind === 'videoinput') {
+//ENUMERATE
                         console.log('video');
                         option.text = sourceInfo.label || 'camera ' + (videoSelect.length);
                         videoSelect.appendChild(option);
