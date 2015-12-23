@@ -66,10 +66,7 @@
             background: #d6d6d6;
         }
         </style>
-<!--
         <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
--->
-        <script src="https://cloud.apizee.com/apiRTC/v2.15/apiRTC-2.15.min.js"></script>
     </head>
 
     <body>
@@ -211,35 +208,42 @@
                     i = 0,
                     audioSourceIdInLocalStorage = localStorage.getItem('audioSourceId_' + apiRTC.session.apiCCId),
                     videoSourceIdInLocalStorage = localStorage.getItem('videoSourceId_' + apiRTC.session.apiCCId);
-                for (i = 0; i != sourceInfos.length; ++i) {
 
-                    var sourceInfo = sourceInfos[i];
-                    var option = document.createElement("option");
-                    option.value = sourceInfo.id;
+                if(sourceInfos !== null) {
+
+                    for (i = 0; i != sourceInfos.length; ++i) {
+
+                        var sourceInfo = sourceInfos[i];
+                        var option = document.createElement("option");
+                        option.value = sourceInfo.id;
 
 
 //ENUMERATE
-                    if (sourceInfo.kind === 'audio' || sourceInfo.kind === 'audioinput') {
+                        if (sourceInfo.kind === 'audio' || sourceInfo.kind === 'audioinput') {
 //ENUMERATE
-                        console.log('audio');
-                        option.text = sourceInfo.label || 'microphone ' + (audioSelect.length);
-                        audioSelect.appendChild(option);
+                            console.log('audio');
+                            option.text = sourceInfo.label || 'microphone ' + (audioSelect.length);
+                            audioSelect.appendChild(option);
 //ENUMERATE
-                    } else if (sourceInfo.kind === 'video' || sourceInfo.kind === 'videoinput') {
+                        } else if (sourceInfo.kind === 'video' || sourceInfo.kind === 'videoinput') {
 //ENUMERATE
-                        console.log('video');
-                        option.text = sourceInfo.label || 'camera ' + (videoSelect.length);
-                        videoSelect.appendChild(option);
-                    } else {
-                        console.log('Some other kind of source: ', sourceInfo);
+                            console.log('video');
+                            option.text = sourceInfo.label || 'camera ' + (videoSelect.length);
+                            videoSelect.appendChild(option);
+                        } else {
+                            console.log('Some other kind of source: ', sourceInfo);
+                        }
+                        if (sourceInfo.id === audioSourceIdInLocalStorage) {
+                            audioDeviceFound = true;
+                        }
+                        if (sourceInfo.id === videoSourceIdInLocalStorage) {
+                            videoDeviceFound = true;
+                        }
                     }
-                    if (sourceInfo.id === audioSourceIdInLocalStorage) {
-                        audioDeviceFound = true;
-                    }
-                    if (sourceInfo.id === videoSourceIdInLocalStorage) {
-                        videoDeviceFound = true;
-                    }
+                } else {
+                    console.log("Media detection is not supported by browser");
                 }
+
                 if (audioDeviceFound) {
                     console.log("setting with localStorage audioSourceId value");
                     audioSelect.value = audioSourceIdInLocalStorage;
