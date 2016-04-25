@@ -121,6 +121,12 @@
                         <input id="SXGA" class="btn btn-primary" type="button" value="SXGA" />
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col s12 m12 l12">
+                        Selected resolution :
+                        <span id="resolution"></span>
+                    </div>
+                </div>
 <!--RESOLUTION-->
 
                 <div class="row">
@@ -419,6 +425,8 @@
             $("#QVGA").click(function () {
                 console.log("QVGA");
 
+                $("#resolution").html('QVGA');
+
                 var constraint = {
                     'audio':{'mandatory': {}, 'optional': []},
                     'video': {'mandatory': {maxWidth: 320, maxHeight: 240}, 'optional': []}};
@@ -428,6 +436,9 @@
 
             $("#VGA").click(function () {
                 console.log("VGA");
+
+                $("#resolution").html('VGA');
+
                 var constraint = {
                     'audio':{'mandatory': {}, 'optional': []},
                     'video': {'mandatory': {maxWidth: 640, maxHeight: 480}, 'optional': []}};
@@ -437,6 +448,9 @@
 
             $("#XGA").click(function () {
                 console.log("XGA");
+
+                $("#resolution").html('XGA');
+
                 var constraint = {
                     'audio':{'mandatory': {}, 'optional': []},
                     'video': {'mandatory': {maxWidth: 1024, maxHeight: 768}, 'optional': []}};
@@ -446,6 +460,9 @@
 
             $("#SXGA").click(function () {
                 console.log("SXGA");
+
+                $("#resolution").html('SXGA');
+
                 var constraint = {
                     'audio':{'mandatory': {}, 'optional': []},
                     'video': {'mandatory': {maxWidth: 1280, maxHeight: 720}, 'optional': []}};
