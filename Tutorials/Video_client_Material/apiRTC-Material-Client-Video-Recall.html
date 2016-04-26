@@ -122,9 +122,7 @@
                                   <i class="fa fa-phone"></i>
                                 </button>
                                 <input id="hangup" class="btn red" type="button" disabled="true" value="Hangup" />
-                                <!-- RECALL -->
-                                <input id="recall" class="btn blue" type="button" disabled="true" value="Recall" />
-                                <!-- RECALL -->
+                               
                                 <input type="text" id="number" class="form-control" placeholder="Username" aria-describedby="sizing-addon1">
                             </div>
                         </div>
@@ -198,8 +196,29 @@
                 audioSelect = document.querySelector("select#audioSource"),
                 videoSelect = document.querySelector("select#videoSource");
 
-            function selectMediaChange(){
-                console.log('selectMediaChange',audioSelect,videoSelect);
+//RECALL
+            function recall() {
+                // Recall button event
+                if (dataClient) {
+                    reCalling = true;
+                    //sendData to prevent corresponding user recalling call is comming 
+                    dataClient.sendData(callingUser, {
+                        event: 'autoAcceptRecall'
+                    }, function() {
+                        //$("#recall").attr("disabled", true);
+                        webRTCClient.hangUp();
+                        var callId = webRTCClient.call(callingUser);
+                        callingUser = $("#number").val();
+                        console.log("callId on Recall =" + callId);
+                        if (callId != null) {
+                            addHangupButton(callId);
+                        }
+                    });
+                }
+            }
+//RECALL
+            function selectMediaChange() {
+                console.log('selectMediaChange', audioSelect, videoSelect);
                 webRTCClient.setAudioSourceId(audioSelect.value);
                 //Storing audioSourceId in localStorage
                 localStorage.setItem("audioSourceId_" + apiRTC.session.apiCCId, audioSelect.value);
@@ -207,9 +226,9 @@
                 //Storing videoSourceId in localStorage
                 localStorage.setItem("videoSourceId_" + apiRTC.session.apiCCId, videoSelect.value);
 
-//RECALL
-                if(callingUser!=0){
-                    $('#recall').attr('disabled',false);
+                //RECALL
+                if (callingUser != 0) {
+                    recall();
                 }
 //RECALL
 
@@ -534,29 +553,9 @@
                     $("#call").attr("disabled", false).val("Call");
                     webRTCClient.hangUp();
                 });
-
-//RECALL
-                // Recall button event
-                $("#recall").click(function () {
-                    if(dataClient){
-                        reCalling=true;
-                        //sendData to prevent corresponding user recalling call is comming 
-                        dataClient.sendData(callingUser, {
-                            event: 'autoAcceptRecall'
-                        },function(){
-                            $("#recall").attr("disabled", true);
-                            webRTCClient.hangUp();
-                            var callId = webRTCClient.call(callingUser);
-                            callingUser=$("#number").val();
-                            console.log("callId on Recall =" + callId);
-                            if (callId != null) {
-                                addHangupButton(callId);
-                            }
-                        });
-                    }
-                });
+                
             }
-//RECALL
+
 //
             $("#addressBook").on('click', function() {
                 $("#addressBookDropDown").toggle();
