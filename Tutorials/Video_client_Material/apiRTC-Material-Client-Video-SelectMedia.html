@@ -214,9 +214,11 @@
                     for (i = 0; i != sourceInfos.length; ++i) {
 
                         var sourceInfo = sourceInfos[i];
-                        var option = document.createElement("option");
-                        option.value = sourceInfo.id;
+                        console.log('sourceInfo :', sourceInfo);
 
+                        var option = document.createElement("option");
+                        option.value = sourceInfo.id || sourceInfo.deviceId;
+                        console.log('option.value :', option.value);
 
 //ENUMERATE
                         if (sourceInfo.kind === 'audio' || sourceInfo.kind === 'audioinput') {
