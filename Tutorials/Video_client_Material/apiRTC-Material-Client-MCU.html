@@ -366,7 +366,7 @@
                 $("#localStreamList").append('<li class="collection-item" id=publishAudio><div>' + 'My Stream :' + '<a onclick="publishStream(' + "'" + $("#number").val() + "','" + sessionId + "','" + token + "','" + audioOnly + "'" + ');" class="secondary-content"><i class="material-icons">Publish Audio Only</i></a></div></li>');
             }
 
-            function subscribeToUserStream(userId, streamId) {
+            function subscribeToUserStream(userId, streamId, audioOnly) {
                 //console.log("subscribe stream of userId :", userId);
 
                 console.log("subscribeToUserStream :", streamId);
@@ -378,27 +378,34 @@
                 if (stream !== null) {
                     var streamArray = [];
                     streamArray.push(stream);
-                    webRTCClient.subscribe(streamArray);
+                    webRTCClient.subscribe(streamArray, audioOnly);
                 } else {
                     console.log("stream not found");
                 }
 
                 $( "#" + streamId ).replaceWith( '<li class="collection-item" id=' + streamId + '><div>' + 'Stream for Id:' + userId + '<a onclick="unsubscribeStream(' + userId + ',' + streamId + ')" class="secondary-content"><i class="material-icons">Unsubscribe</i></a></div></li>');
+                $("#" + streamId + '_audio').remove();
             }
 
             function unsubscribeStream(userId, streamId) {
                 console.log("unsubscribeStream :", streamId);
+                var audioOnly = false;
 
                 webRTCClient.unsubscribe(streamId);
 
                 $( "#" + streamId ).replaceWith( '<li class="collection-item" id=' + streamId + '><div>' + 'Stream for Id:' + userId + '<a onclick="subscribeToUserStream(' + userId + ',' + streamId + ')" class="secondary-content"><i class="material-icons">Subscribe</i></a></div></li>');
-            }
 
+                audioOnly = true;
+
+                $("#remoteStreamList").append('<li class="collection-item" id=' + streamId + '_audio' + '><div>' + 'Stream for Id:' + userId + '<a onclick="subscribeToUserStream(' + userId + ',' + streamId + ',' + audioOnly + ')" class="secondary-content"><i class="material-icons">Subscribe Audio Only</i></a></div></li>');
+            }
 
             function MCUAvailableStreamHandler(e) {
                 console.log("MCUAvailableStreamHandler :", e);
 
                 var i = 0;
+
+                var audioOnly = false;
 
                 if (e.detail.isRemoteStream) {
                     //This a remote stream list, subscribing to remote streams
@@ -406,14 +413,24 @@
 
                     for (i = 0; i < e.detail.streams.length; i += 1) {
 
-                        $("#remoteStreamList").append('<li class="collection-item" id=' + e.detail.streams[i].id + '><div>' + 'Stream for Id:' + e.detail.streams[i].attributes.callerId + '<a onclick="subscribeToUserStream(' + e.detail.streams[i].attributes.callerId + ',' + e.detail.streams[i].id + ')" class="secondary-content"><i class="material-icons">Subscribe</i></a></div></li>');
+
+                        $("#remoteStreamList").append('<li class="collection-item" id=' + e.detail.streams[i].id + '><div>' + 'Stream for Id:' + e.detail.streams[i].attributes.callerId + '<a onclick="subscribeToUserStream(' + e.detail.streams[i].attributes.callerId + ',' + e.detail.streams[i].id + ',' + audioOnly + ')" class="secondary-content"><i class="material-icons">Subscribe</i></a></div></li>');
+
+                        audioOnly = true;
+
+                        $("#remoteStreamList").append('<li class="collection-item" id=' + e.detail.streams[i].id + '_audio' + '><div>' + 'Stream for Id:' + e.detail.streams[i].attributes.callerId + '<a onclick="subscribeToUserStream(' + e.detail.streams[i].attributes.callerId + ',' + e.detail.streams[i].id + ',' + audioOnly + ')" class="secondary-content"><i class="material-icons">Subscribe Audio Only</i></a></div></li>');
                     }
 
                 } else {
                     //This my own stream, not subscribing to it
                     console.log("my own stream is available on MCU");
 
-                        $("#localStreamList").append('<li class="collection-item" id=' + e.detail.streams[i].id + '><div>' + 'Stream for Id:' + e.detail.streams[i].attributes.callerId + '<a onclick="subscribeToUserStream(' + e.detail.streams[i].attributes.callerId + ',' + e.detail.streams[i].id + ')" class="secondary-content"><i class="material-icons">Subscribe</i></a></div></li>');
+                    $("#localStreamList").append('<li class="collection-item" id=' + e.detail.streams[i].id + '><div>' + 'Stream for Id:' + e.detail.streams[i].attributes.callerId + '<a onclick="subscribeToUserStream(' + e.detail.streams[i].attributes.callerId + ',' + e.detail.streams[i].id + ',' + audioOnly + ')" class="secondary-content"><i class="material-icons">Subscribe</i></a></div></li>');
+
+                    audioOnly = true;
+
+                    $("#localStreamList").append('<li class="collection-item" id=' + e.detail.streams[i].id + '_audio' + '><div>' + 'Stream for Id:' + e.detail.streams[i].attributes.callerId + '<a onclick="subscribeToUserStream(' + e.detail.streams[i].attributes.callerId + ',' + e.detail.streams[i].id + ',' + audioOnly + ')" class="secondary-content"><i class="material-icons">Subscribe Audio Only</i></a></div></li>');
+
                 }
             }
 
@@ -491,7 +508,7 @@
             //apiRTC initialization
             apiRTC.init({
                 apiKey : "myDemoApiKey",
-                ccsServer : "ccs3.apizee.com",
+                //ccsServer : "ccs3.apizee.com",
                 //apiCCId : "1",
                 onReady : sessionReadyHandler
             });
