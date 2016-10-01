@@ -40,7 +40,6 @@
             padding: 3px 20px;
             margin-bottom: 10px;
             border-radius: 6px;
-
         }
         .container.formu #hangup,
         .container.formu #call {
@@ -66,7 +65,10 @@
             background: #d6d6d6;
         }
         </style>
+<!--
         <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
+-->
+	<script src="https://cloud.apizee.com/apiRTC/v3.5/apiRTC-3.5.min.debug.js"></script>
     </head>
 
     <body>
@@ -81,70 +83,58 @@
 
         <main class="container grey lighten-5">
             <div class="container master grey lighten-5">
-                <h3><i class="fa fa-dot-circle-o"></i> Tutorial 7: ApiRTC client with recording feature</h3>
+                <h3><i class="fa fa-dot-circle-o"></i> Tutorial 15: ApiRTC - Group Video call with recording</h3>
                 <p>
-                <a href="https://github.com/apizee/ApiRTC-examples/blob/master/Tutorials/Video_client_Material/apiRTC-Material-Client-Video-Record.html" target="_blank"><i class="fa fa-github" style="vertical-align: middle;"></i> This sample is accessible on Github</a>
+                <a href="https://github.com/apizee/ApiRTC-examples/blob/master/Tutorials/Video_client_Material/apiRTC-Material-Client-MCU.html" target="_blank"><i class="fa fa-github" style="vertical-align: middle;"></i> This sample is accessible on Github</a>
                 </p>
                 <br>
                 <div class="row">
                     <div class="col s12 m8 l8">
-                        <p>This sample shows an apiRTC client that enable calls recording.
-                        </p>
-                        <p>At the end of the call an apiRTC event is fired that enables you to get all the needed informations to play the recorded files.
-                        </p>
-                        <p>Check the comment "Record" in the source code to know what need to be added on your apiRTC application for the recording feature.
-                        </p>
-                        <p>Used apiRTC functions are :
-                            <ul>
-                            <li> - webRTCClient.call() with option 'RECORD'</li>
-                            <li> - webRTCClient.setRecordedCall() can be use to set an option to RECORD all the calls (this is not shown in this demo)</li>
-                            </ul>
-                        </p>
-                        <p>Used apiRTC events are :
-                            <ul>
-                            <li> - recordedStreamsAvailable</li>
-                            </ul>
-                        </p>
+                        This sample shows an apiRTC client build with Material design.
+                        This sample enables you to establish multiple simultaneous call with different client.
+                        This sample also shows you how to publish, unpublish, subscribe, unsubscribe video streams depending of your choice.
+                        Finally, you have the possibility to record the published stream and then to read the associated recorded file.
                     </div>
                     <div class="col s12 m4 l4 valign-wrapper">
-                        <a href="../Video_client_Material/apiRTC-Material-Client-Video-Record.html" target="_blank" class="valign btn btn-large waves-effect waves-light btn-open">Open another client</a>
+                        <a href="../Video_client_Material/apiRTC-Material-Client-MCU.html" target="_blank" class="valign btn btn-large waves-effect waves-light btn-open">Open another client</a>
                     </div>
                     <div style="clear: both;"></div>
                 </div>
 
                 <div class="row">
-                <div class="col s12 m12 l12">
-                    <div class="col s12 m6 l6">
-                        <div class="input-field">
-                            <button type="button" id="addressBook"  class="btn btn-success">
-                              <i class="fa fa-book"></i>
-                            </button>
-                            <ul id="addressBookDropDown" style="display:none;">
-                                <li><a id="client1" href="#">client1</a></li>
-                                <li><a id="client2" href="#">client2</a></li>
-                            </ul>
-                            <button type="button" id="callVideo" class="btn btn-success">
-                              <i class="fa fa-phone"></i>
-                            </button>
-            <!--ScreenSharing-->
-                            <button type="button" id="recordVideo" class="btn red">
-                              <i class="fa fa-dot-circle-o"></i>
-                            </button>
+                    <div class="col s12 m12 l12">
+                        <div class="col s12 m6 l6">
+                            <div class="input-field">
 
+                                <input type="text" id="number" class="form-control" placeholder="Room name" aria-describedby="sizing-addon1">
 
-    <!--TODO ajouter setRecorded -->
+                                <input id="joinMCUSession" class="btn green" type="button" value="join Video Group" />
 
+                                <input id="leaveMCUSession" class="btn green" type="button" value="leave" />
 
-                            <input id="hangup" class="btn red" type="button" disabled="true" value="Hangup" />
-                            <input type="text" id="number" class="form-control" placeholder="Username" aria-describedby="sizing-addon1">
+                                <input id="startRecording" class="btn green" type="button" disabled="true" value="start Record" />
+
+                                <input id="stopRecording" class="btn green" type="button" disabled="true" value="stop Record" />
+                            </div>
+                        </div>
+
+                        <div class="col s12 m6 l6">
+                           <div id="hangupButtons"></div>
                         </div>
                     </div>
-
-                    <div class="col s12 m6 l6">
-                       <div id="hangupButtons"></div>
-                    </div>
                 </div>
-            </div>
+
+                <div class="row">
+                    <ul id="streamsList" class="collection with-header">
+<!--
+                        <li class="collection-header" id=remoteStream><h5>List of available streams in room :</h5></li>
+-->
+<!--
+                        <li class="collection-item"><div>Stream 1<a onclick="unsubscribe()" class="secondary-content"><i class="material-icons">- Unsubscribe</i></a><a onclick="subscribe()" class="secondary-content"><i class="material-icons">Subscribe -</i></a></div></li>
+                        <li class="collection-item"><div>Alvin<a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div></li>
+-->
+                    </ul>
+                </div>
 
                 <div class="row">
                     <div class="col s12 m12 l12">
@@ -178,7 +168,7 @@
           </div>
           <div class="footer-copyright grey darken-2">
             <div class="container">
-            &copy; 2014-2015 Apizee
+            &copy; 2014-2016 Apizee
             </div>
           </div>
         </footer>
@@ -190,20 +180,20 @@
             'use strict';
             var session = null,
                 webRTCClient = null,
-                connectedUsersList = [];
+                connectedUsersList = [],
+                imClient = null,
+                sessionId = null,
+                token = null;
 
             function selectPhonebookItem(idItem) {
                 $("#number").val(idItem);
                 $("#addressBookDropDown").toggle();
             }
-
             //Function to add media stream in Div
-            function addStreamInDiv(stream, callType, divId, mediaEltId, style, muted) {
-
+            function addStreamInDiv(stream, streamType, divId, mediaEltId, style, muted) {
                 var mediaElt = null,
                     divElement = null;
-
-                if (callType === 'audio') {
+                if (streamType === 'audio') {
                     mediaElt = document.createElement("audio");
                 } else {
                     mediaElt = document.createElement("video");
@@ -211,22 +201,16 @@
                 mediaElt.id = mediaEltId;
                 mediaElt.autoplay = true;
                 mediaElt.muted = muted;
-
                 mediaElt.style.width = style.width;
                 mediaElt.style.height = style.height;
-
                 divElement = document.getElementById(divId);
                 divElement.appendChild(mediaElt);
-
                 webRTCClient.attachMediaStream(mediaElt, stream);
             }
-
             //Function to remove media stream element
             function removeElementFromDiv(divId, eltId) {
-
                 var element = null,
                     divElement = null;
-
                 element = document.getElementById(eltId);
                 if (element !== null) {
                     console.log('Removing video element with Id : ' + eltId);
@@ -234,10 +218,8 @@
                     divElement.removeChild(element);
                 }
             }
-
             function initMediaElementState(callId) {
                 //function that remove media element on hangup
-
             //You can decide to manage your own stream display function or use the integrated one of ApiRTC
             /*
                 removeElementFromDiv('mini', 'miniElt-' + callId)
@@ -246,75 +228,67 @@
                 webRTCClient.removeElementFromDiv('mini', 'miniElt-' + callId);
                 webRTCClient.removeElementFromDiv('remote', 'remoteElt-' + callId);
             }
-
             function addHangupButton(callId) {
                 var hangupButtons = document.getElementById("hangupButtons"),
                     input = document.createElement("input");
-
                 input.setAttribute("id", "hangup-" + callId);
                 input.setAttribute("value", "hangup-" + callId);
                 input.setAttribute("type", "button");
                 input.setAttribute("onclick", "webRTCClient.hangUp(" + callId + " );");
                 hangupButtons.appendChild(input);
             }
-
             function removeHangupButton(callId) {
                 var hangupButtonId = 'hangup-' + callId,
                     hangupButton = document.getElementById(hangupButtonId),
                     hangupButtons = null;
-
                 if (hangupButton !== null) {
                     console.log('Removing hangUpButton with Id : ' + hangupButtonId);
                     hangupButtons = document.getElementById("hangupButtons");
                     hangupButtons.removeChild(hangupButton);
                 }
             }
-
             function userMediaErrorHandler(e) {
                 $("#call").attr("disabled", false).val("Call");
                 $("#hangup").attr("disabled", false).val("Hangup");
             }
-
             function hangupHandler(e) {
                 console.log('hangupHandler :' + e.detail.callId);
-
                 if (e.detail.lastEstablishedCall === true) {
                     $("#call").attr("disabled", false).val("Call");
                 }
                 console.log(e.detail.reason);
-
                 initMediaElementState(e.detail.callId);
                 removeHangupButton(e.detail.callId);
             }
-
             function incomingCallHandler(e) {
                 $("#hangup").attr("disabled", false).val("Hangup");
                 addHangupButton(e.detail.callId);
             }
-
             function userMediaSuccessHandler(e) {
                 console.log("userMediaSuccessHandler e.detail.callId :" + e.detail.callId);
                 console.log("userMediaSuccessHandler e.detail.callType :" + e.detail.callType);
                 console.log("userMediaSuccessHandler e.detail.remoteId :" + e.detail.remoteId);
-
                 //Adding local Stream in Div. Video is muted
 
+                var streamType = 'video';
+
+                if( e.detail.videoIsAvailable === false) {
+                    //User has no webcam
+                    streamType = 'audio';
+                }
             //You can decide to manage your own stream display function or use the integrated one of ApiRTC
             /*
                 addStreamInDiv(e.detail.stream, e.detail.callType, "mini", 'miniElt-' + e.detail.callId,
                                {width : "160px", height : "120px"}, true);
             */
-                webRTCClient.addStreamInDiv(e.detail.stream, e.detail.callType, "mini", 'miniElt-' + e.detail.callId,
+                webRTCClient.addStreamInDiv(e.detail.stream, streamType, "mini", 'miniElt-' + e.detail.callId,
                                {width : "128px", height : "96px"}, true);
             }
-
             function remoteStreamAddedHandler(e) {
                 console.log("remoteStreamAddedHandler, e.detail.callId :" + e.detail.callId);
                 console.log("remoteStreamAddedHandler, e.detail.callType :" + e.detail.callType);
                 console.log("userMediaSuccessHandler e.detail.remoteId :" + e.detail.remoteId);
-
                 //Adding Remote Stream in Div. Video is not muted
-
             //You can decide to manage your own stream display function or use the integrated one of ApiRTC
             /*
                 addStreamInDiv(e.detail.stream, e.detail.callType, "remote", 'remoteElt-' + e.detail.callId,
@@ -323,22 +297,17 @@
                 webRTCClient.addStreamInDiv(e.detail.stream, e.detail.callType, "remote", 'remoteElt-' + e.detail.callId,
                                {width : "640px", height : "480px"}, false);
             }
-
             function updateAddressBook() {
                 console.log("updateAddressBook");
                 var length = connectedUsersList.length,
                     i = 0;
-
                 //Cleaning addressBook list
                 $("#addressBookDropDown").empty();
 
                 for (i = 0; i < length; i += 1) {
-
                     //Checking if connectedUser is not current user befire adding in addressBook list
                     if (connectedUsersList[i].userId !== apiRTC.session.apiCCId) {
-
                         if(connectedUsersList[i].group !== undefined) {
-
                             $("#addressBookDropDown").append('<li><a href="#" onclick="selectPhonebookItem(' + connectedUsersList[i].userId + ')">' + connectedUsersList[i].userId + ' - ' + connectedUsersList[i].group + '</a></li>');
                         } else {
                             $("#addressBookDropDown").append('<li><a href="#" onclick="selectPhonebookItem(' + connectedUsersList[i].userId + ')">' + connectedUsersList[i].userId + '</a></li>');
@@ -346,132 +315,250 @@
                     }
                 }
             }
-
             function connectedUsersListUpdateHandler(e) {
                 console.log("connectedUsersListUpdateHandler, e.detail.group :" + e.detail.group);
-
                 //getting complete connectedUsersList
                 //connectedUsersList = apiRTC.session.getConnectedUsersList();
-
                 //getting connectedUsersList of updated group
                 //connectedUsersList = apiRTC.session.getConnectedUsersList(e.detail.group);
-
                 connectedUsersList = apiRTC.session.getConnectedUserIdsList();
                 //console.log("connectedUsersList.length :" + connectedUsersList.length);
-
                 //Updating addressBook
                 updateAddressBook();
             }
 
-        //Record
-            function recordedStreamsAvailableHandler(e) {
-                console.error("recordedStreamsAvailableHandler");
-                console.log("confId : " + e.detail.confId);
-                console.log("userId1 : " + e.detail.userId1);
-                console.log("userId2 : " + e.detail.userId2);
+            function unpublishStream(callId) {
+                console.log("unpublishStream");
+                webRTCClient.unpublish(callId);
+                var audioOnly = false;
+                $( "#publish" ).replaceWith( '<li class="collection-item" id=publish><div>' + 'My Stream :' + '<a onclick="publishStream(' + "'" + $("#number").val() + "','" + sessionId + "','" + token + "','" + audioOnly + "'" + ');" class="secondary-content"><i class="material-icons">Publish</i></a></div></li>');
+                audioOnly = true;
+                $("#localStreamList").append('<li class="collection-item" id=publishAudio><div>' + 'My Stream :' + '<a onclick="publishStream(' + "'" + $("#number").val() + "','" + sessionId + "','" + token + "','" + audioOnly + "'" + ');" class="secondary-content"><i class="material-icons">Publish Audio Only</i></a></div></li>');
 
-                document.getElementById('status2').innerHTML = 'Read recorded streams thanks to following <a href="http://www.apizee.com/apiRTC/Video_record/recordReader.html?apiKey=myDemoApiKey&confId=' + e.detail.confId  + '&userId1=' + e.detail.userId1  + '&userId2=' + e.detail.userId2 + '" target="_blank">link</a>';
-
+                $("#startRecording").attr("disabled", true);
             }
 
-        //screenSharing
-            function desktopCaptureHandler(e) {
-                console.log("e.detail.event :" + e.detail.event);
+            function publishStream(roomId, sessionId, token, audioOnly) {
+                console.log("publishStream roomId :" + roomId);
+                console.log("publishStream sessionId :" + sessionId);
+                console.log("publishStream token:" + token);
+                console.log("publishStream audioOnly:" + audioOnly);
+                var callId = webRTCClient.publish(roomId, sessionId, token, audioOnly);
+                $("#publish").replaceWith( '<li class="collection-item" id=publish><div>' + 'My Stream :' + '<a onclick="unpublishStream(' + callId + ');" class="secondary-content"><i class="material-icons">Unpublish</i></a></div></li>');
+                $("#publishAudio").remove();
 
-                var divElement = null;
+                $("#startRecording").attr("disabled", false);
+            }
 
-                if (e.detail.event === "Extension_installation_Error") {
-                    divElement = document.getElementById('status');
-                    divElement.innerHTML = 'Inline extension installation is not possible, please install extension using following link: <a href="https://chrome.google.com/webstore/detail/apizee-desktop-capture/mjjnofoemoepfididplbfimokpnpcoeg?hl=fr" target="_blank">ApiRTC desktopCapture extension</a>';
+//MCU
+            function joinMCUSessionAnswerHandler(e) {
+                console.log("joinMCUSessionAnswerHandler :", e);
+                //We are now connected in the room
+                //Publishing our own stream in the room
+
+//You can decide to automatically publish your stream
+                //webRTCClient.publish(e.detail.roomId, e.detail.sessionId, e.detail.token);
+
+                var sessionId = e.detail.sessionId;
+                var token =  e.detail.token;
+                var audioOnly = false;
+
+                console.log("audioOnly in joinMCUSessionAnswerHandler:", audioOnly);
+
+//OR to display a button for the user to publish
+
+                $("#localStreamList").append('<li class="collection-item" id=publish><div>' + 'My Stream :' + '<a onclick="publishStream(' + "'" + $("#number").val() + "','" + sessionId + "','" + token + "','" + audioOnly + "'" + ');" class="secondary-content"><i class="material-icons">Publish</i></a></div></li>');
+
+                audioOnly = true;
+
+                console.log("audioOnly in joinMCUSessionAnswerHandler:", audioOnly);
+
+                $("#localStreamList").append('<li class="collection-item" id=publishAudio><div>' + 'My Stream :' + '<a onclick="publishStream(' + "'" + $("#number").val() + "','" + sessionId + "','" + token + "','" + audioOnly + "'" + ');" class="secondary-content"><i class="material-icons">Publish Audio Only</i></a></div></li>');
+            }
+
+            function subscribeToUserStream(userId, streamId, audioOnly) {
+                //console.log("subscribe stream of userId :", userId);
+
+                console.log("subscribeToUserStream :", streamId);
+
+                var stream = webRTCClient.getStreamFromList(streamId);
+
+                console.log("stream :", stream);
+
+                if (stream !== null) {
+                    var streamArray = [];
+                    streamArray.push(stream);
+                    webRTCClient.subscribe(streamArray, audioOnly);
+                } else {
+                    console.log("stream not found");
+                }
+
+                $( "#" + streamId ).replaceWith( '<li class="collection-item" id=' + streamId + '><div>' + 'Stream for Id:' + userId + '<a onclick="unsubscribeStream(' + userId + ',' + streamId + ')" class="secondary-content"><i class="material-icons">Unsubscribe</i></a></div></li>');
+                $("#" + streamId + '_audio').remove();
+            }
+
+            function unsubscribeStream(userId, streamId) {
+                console.log("unsubscribeStream :", streamId);
+                var audioOnly = false;
+
+                webRTCClient.unsubscribe(streamId);
+
+                $( "#" + streamId ).replaceWith( '<li class="collection-item" id=' + streamId + '><div>' + 'Stream for Id:' + userId + '<a onclick="subscribeToUserStream(' + userId + ',' + streamId + ')" class="secondary-content"><i class="material-icons">Subscribe</i></a></div></li>');
+
+                audioOnly = true;
+
+                $("#remoteStreamList").append('<li class="collection-item" id=' + streamId + '_audio' + '><div>' + 'Stream for Id:' + userId + '<a onclick="subscribeToUserStream(' + userId + ',' + streamId + ',' + audioOnly + ')" class="secondary-content"><i class="material-icons">Subscribe Audio Only</i></a></div></li>');
+            }
+
+            function MCUAvailableStreamHandler(e) {
+                console.log("MCUAvailableStreamHandler :", e);
+
+                var i = 0;
+
+                var audioOnly = false;
+
+                if (e.detail.isRemoteStream) {
+                    //This a remote stream list, subscribing to remote streams
+                    console.log("Remote streams available");
+
+                    for (i = 0; i < e.detail.streams.length; i += 1) {
+
+
+                        $("#remoteStreamList").append('<li class="collection-item" id=' + e.detail.streams[i].id + '><div>' + 'Stream for Id:' + e.detail.streams[i].attributes.callerId + '<a onclick="subscribeToUserStream(' + e.detail.streams[i].attributes.callerId + ',' + e.detail.streams[i].id + ',' + audioOnly + ')" class="secondary-content"><i class="material-icons">Subscribe</i></a></div></li>');
+
+                        audioOnly = true;
+
+                        $("#remoteStreamList").append('<li class="collection-item" id=' + e.detail.streams[i].id + '_audio' + '><div>' + 'Stream for Id:' + e.detail.streams[i].attributes.callerId + '<a onclick="subscribeToUserStream(' + e.detail.streams[i].attributes.callerId + ',' + e.detail.streams[i].id + ',' + audioOnly + ')" class="secondary-content"><i class="material-icons">Subscribe Audio Only</i></a></div></li>');
+                    }
+
+                } else {
+                    //This my own stream, not subscribing to it
+                    console.log("my own stream is available on MCU");
+
+                    $("#localStreamList").append('<li class="collection-item" id=' + e.detail.streams[i].id + '><div>' + 'Stream for Id:' + e.detail.streams[i].attributes.callerId + '<a onclick="subscribeToUserStream(' + e.detail.streams[i].attributes.callerId + ',' + e.detail.streams[i].id + ',' + audioOnly + ')" class="secondary-content"><i class="material-icons">Subscribe</i></a></div></li>');
+
+                    audioOnly = true;
+
+                    $("#localStreamList").append('<li class="collection-item" id=' + e.detail.streams[i].id + '_audio' + '><div>' + 'Stream for Id:' + e.detail.streams[i].attributes.callerId + '<a onclick="subscribeToUserStream(' + e.detail.streams[i].attributes.callerId + ',' + e.detail.streams[i].id + ',' + audioOnly + ')" class="secondary-content"><i class="material-icons">Subscribe Audio Only</i></a></div></li>');
+
                 }
             }
 
+            function MCURemoveStreamHandler(e) {
+                console.log("MCURemoveStreamHandler :", e);
+
+                $("#" + e.detail.streamId).remove();
+            }
+
+            function MCURecordedStreamsAvailableHandler(e) {
+                console.log("MCURecordedStreamsAvailableHandler :", e.detail);
+
+
+                $("#recordedStreamList").append('<li class="collection-item" id=' + e.detail.recordedFileName + '><div>' + 'File : ' + e.detail.recordedFileName + '<a href="https://data2.apizee.com:10000/videoManager?action=play&recordedFileName=' + e.detail.recordedFileName + '" target="_blank" class="secondary-content">Play File</a></div></li>');
+
+                $("#startRecording").attr("disabled", false);
+                $("#stopRecording").attr("disabled", true);
+            }
+
+            function MCURecordingStartedHandler(e) {
+                console.log("MCURecordingStartedHandler :", e.detail);
+                $("#startRecording").attr("disabled", true);
+                $("#stopRecording").attr("disabled", false);
+            }
+
+            function errorHandler(e) {
+                console.log("errorHandler :" + e);
+                console.log('e.detail.errorInfo :' + e.detail.errorInfo);
+                console.log('e.detail.errorCode :' + e.detail.errorCode);
+            }
+//MCU
+
             //sessionReadyHandler : apiRTC is now connected
             function sessionReadyHandler(e) {
-
                 console.log('sessionReadyHandler :' + apiRTC.session.apiCCId);
-
                 $("#call").attr("disabled", false).val("Call");   //Modification of Call button when phone is registered on Apizee
-
                 apiRTC.addEventListener("userMediaSuccess", userMediaSuccessHandler);
                 apiRTC.addEventListener("incomingCall", incomingCallHandler);
                 apiRTC.addEventListener("userMediaError", userMediaErrorHandler);
                 apiRTC.addEventListener("hangup", hangupHandler);
                 apiRTC.addEventListener("remoteStreamAdded", remoteStreamAddedHandler);
-
-            //screenSharing
-                apiRTC.addEventListener("desktopCapture", desktopCaptureHandler);
-
             //connectedUsersList
                 apiRTC.addEventListener("connectedUsersListUpdate", connectedUsersListUpdateHandler);
             //connectedUsersList
 
-            //Record
-                apiRTC.addEventListener("recordedStreamsAvailable", recordedStreamsAvailableHandler);
+//MCU
+                apiRTC.addEventListener("joinMCUSessionAnswer", joinMCUSessionAnswerHandler);
+                apiRTC.addEventListener("MCUAvailableStream", MCUAvailableStreamHandler);
+                apiRTC.addEventListener("MCURemoveStream", MCURemoveStreamHandler);
+
+                apiRTC.addEventListener("MCURecordingStarted", MCURecordingStartedHandler);
+                apiRTC.addEventListener("MCURecordedStreamsAvailable", MCURecordedStreamsAvailableHandler);
+                apiRTC.addEventListener("error", errorHandler);
+//MCU
 
                 //webRTC Client creation
                 webRTCClient = apiRTC.session.createWebRTCClient({
                     status : "status" //Optionnal
                 });
-
             //Multi calls Activation
                 webRTCClient.setAllowMultipleCalls(true);
-
             //Bandwitdh limitation
-                webRTCClient.setVideoBandwidth(300);
+                webRTCClient.setVideoBandwidth(1500);
 
-            //ScreenSharing Activation
-                webRTCClient.activateScreenSharing();
+                webRTCClient.setMCUConnector('mcu3.apizee.com');
+
+                imClient = apiCC.session.createIMClient();
 
             //Call establishment
                 $("#callVideo").click(function () {
                     $("#hangup").attr("disabled", false).val("Hangup");
                     var callId = webRTCClient.call($("#number").val());
-
                     console.log("callId on call =" + callId);
                     if (callId != null) {
                         addHangupButton(callId);
                     }
                 });
-
-            //Record
-                $("#recordVideo").click(function () {
-                    $("#hangup").attr("disabled", false).val("Hangup");
-                    var callId = webRTCClient.call($("#number").val(), 'RECORD');
-
-                    console.log("callId on call =" + callId);
-                    if (callId != null) {
-                        addHangupButton(callId);
-                    }
-                });
-
-                $("#setRecordedCall").click(function () {
-                    console.log("setRecordedCall");
-                    apiRTC.session.apiCCWebRTCClient.setRecordedCall(true);
-                });
-
-            //ScreenSharing establishment
-                $("#shareScreen").click(function () {
-                    $("#hangup").attr("disabled", false).val("Hangup");
-                    var callId = webRTCClient.shareScreen($("#number").val());
-
-                    console.log("callId on sharescreen =" + callId);
-                    if (callId != null) {
-                        addHangupButton(callId);
-                    }
-                });
-
             //Global hangup management : all established client calls will be hangup
                 $("#hangup").click(function () {
                     $("#call").attr("disabled", false).val("Call");
                     webRTCClient.hangUp();
                 });
-            }
 
+                $("#joinMCUSession").click(function () {
+                    console.log("joinMCUSession");
+                    $("#streamsList").append('<li class="collection-header" id=localStreamList><h5>Manage my stream :</h5></li>');
+
+                    $("#streamsList").append('<li class="collection-header" id=remoteStreamList><h5>List of available streams in room :</h5></li>');
+
+                    $("#streamsList").append('<li class="collection-header" id=recordedStreamList><h5>List of available recorded streams:</h5></li>');
+
+                    webRTCClient.joinMCUSession($("#number").val());
+                });
+
+                $("#leaveMCUSession").click(function () {
+                    console.log("leaveMCUSession");
+                    webRTCClient.leaveMCUSession($("#number").val());
+                    $("#streamsList").remove();
+                });
+
+                $("#startRecording").click(function () {
+                    console.log("startRecording");
+
+                    var customIdToAddOnFilename = "myCustomIdToAddOnFilename";
+
+                    webRTCClient.startRecording(customIdToAddOnFilename);
+                });
+
+                $("#stopRecording").click(function () {
+                    console.log("stopRecording");
+                    webRTCClient.stopRecording();
+                });
+            }
             $("#addressBook").on('click', function() {
+                console.log("click on addressBookDropDown");
+
                 $("#addressBookDropDown").toggle();
             });
-
             //apiRTC initialization
             apiRTC.init({
                 apiKey : "myDemoApiKey",
