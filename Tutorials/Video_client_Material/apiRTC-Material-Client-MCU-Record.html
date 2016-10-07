@@ -103,7 +103,7 @@
 
                 <div class="row">
                     <div class="col s12 m12 l12">
-                        <div class="col s12 m6 l6">
+                        <div class="col s12 m12 l12">
                             <div class="input-field">
 
                                 <input type="text" id="number" class="form-control" placeholder="Room name" aria-describedby="sizing-addon1">
@@ -111,8 +111,12 @@
                                 <input id="joinMCUSession" class="btn green" type="button" value="join Video Group" />
 
                                 <input id="leaveMCUSession" class="btn green" type="button" value="leave" />
+                                <br>
+                                <input id="startRecording" class="btn green" type="button" disabled="true" value="Record Audio & Video" />
 
-                                <input id="startRecording" class="btn green" type="button" disabled="true" value="start Record" />
+                                <input id="startRecordingAudioOnly" class="btn green" type="button" disabled="true" value="Record Audio Only" />
+
+                                <input id="startRecordingVideoOnly" class="btn green" type="button" disabled="true" value="Record Video only" />
 
                                 <input id="stopRecording" class="btn green" type="button" disabled="true" value="stop Record" />
                             </div>
@@ -336,6 +340,8 @@
                 $("#localStreamList").append('<li class="collection-item" id=publishAudio><div>' + 'My Stream :' + '<a onclick="publishStream(' + "'" + $("#number").val() + "','" + sessionId + "','" + token + "','" + audioOnly + "'" + ');" class="secondary-content"><i class="material-icons">Publish Audio Only</i></a></div></li>');
 
                 $("#startRecording").attr("disabled", true);
+                $("#startRecordingAudioOnly").attr("disabled", true);
+                $("#startRecordingVideoOnly").attr("disabled", true);
             }
 
             function publishStream(roomId, sessionId, token, audioOnly) {
@@ -348,6 +354,8 @@
                 $("#publishAudio").remove();
 
                 $("#startRecording").attr("disabled", false);
+                $("#startRecordingAudioOnly").attr("disabled", false);
+                $("#startRecordingVideoOnly").attr("disabled", false);
             }
 
 //MCU
@@ -457,12 +465,18 @@
                 $("#recordedStreamList").append('<li class="collection-item" id=' + e.detail.recordedFileName + '><div>' + 'File : ' + e.detail.recordedFileName + '<a href="https://data2.apizee.com:10000/videoManager?action=play&recordedFileName=' + e.detail.recordedFileName + '" target="_blank" class="secondary-content">Play File</a></div></li>');
 
                 $("#startRecording").attr("disabled", false);
+                $("#startRecordingAudioOnly").attr("disabled", false);
+                $("#startRecordingVideoOnly").attr("disabled", false);
+
                 $("#stopRecording").attr("disabled", true);
             }
 
             function MCURecordingStartedHandler(e) {
                 console.log("MCURecordingStartedHandler :", e.detail);
                 $("#startRecording").attr("disabled", true);
+                $("#startRecordingAudioOnly").attr("disabled", false);
+                $("#startRecordingVideoOnly").attr("disabled", false);
+
                 $("#stopRecording").attr("disabled", false);
             }
 
@@ -545,10 +559,20 @@
                     console.log("startRecording");
 
                     var customIdToAddOnFilename = "myCustomIdToAddOnFilename";
-
-                    webRTCClient.startRecording(customIdToAddOnFilename);
+                    webRTCClient.startRecording('AUDIO-VIDEO', customIdToAddOnFilename);
                 });
+                $("#startRecordingAudioOnly").click(function () {
+                    console.log("startRecordingAudioOnly");
 
+                    var customIdToAddOnFilename = "myCustomIdToAddOnFilename";
+                    webRTCClient.startRecording('AUDIO-ONLY', customIdToAddOnFilename);
+                });
+                $("#startRecordingVideoOnly").click(function () {
+                    console.log("startRecordingVideoOnly");
+
+                    var customIdToAddOnFilename = "myCustomIdToAddOnFilename";
+                    webRTCClient.startRecording('VIDEO-ONLY', customIdToAddOnFilename);
+                });
                 $("#stopRecording").click(function () {
                     console.log("stopRecording");
                     webRTCClient.stopRecording();
