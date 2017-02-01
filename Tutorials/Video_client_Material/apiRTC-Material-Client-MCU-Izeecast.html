@@ -357,6 +357,9 @@
             //Bandwitdh limitation
                 webRTCClient.setVideoBandwidth(1500);
 
+            //Adding MCU selection
+                webRTCClient.setMCUConnector('mcu3.apizee.com');
+
                 imClient = apiCC.session.createIMClient();
 
             //Call establishment
