@@ -313,14 +313,18 @@
                 console.log("remoteStreamAddedHandler, e.detail.callType :" + e.detail.callType);
                 console.log("userMediaSuccessHandler e.detail.remoteId :" + e.detail.remoteId);
 
+                console.log("remoteStreamAddedHandler e.detail.destCallType :" + e.detail.destCallType);
+
                 //Adding Remote Stream in Div. Video is not muted
 
             //You can decide to manage your own stream display function or use the integrated one of ApiRTC
             /*
-                addStreamInDiv(e.detail.stream, e.detail.callType, "remote", 'remoteElt-' + e.detail.callId,
+                addStreamInDiv(e.detail.stream, e.detail.destCallType, "remote", 'remoteElt-' + e.detail.callId,
                                {width : "640px", height : "480px"}, false);
             */
-                webRTCClient.addStreamInDiv(e.detail.stream, e.detail.callType, "remote", 'remoteElt-' + e.detail.callId,
+
+                // using e.detail.destCallType as streamType
+                webRTCClient.addStreamInDiv(e.detail.stream, e.detail.destCallType, "remote", 'remoteElt-' + e.detail.callId,
                                {width : "640px", height : "480px"}, false);
             }
 
