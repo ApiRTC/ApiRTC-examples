@@ -82,7 +82,7 @@
 
         <main class="container grey lighten-5">
             <div class="container master grey lighten-5">
-                <h3><i class="fa fa-dot-circle-o"></i> Tutorial 16: Video client compatible with Safari v11 - BETA</h3>
+                <h3><i class="fa fa-dot-circle-o"></i> Tutorial 16: Video client compatible with Safari v11  - macOS and iOS v11 - BETA</h3>
                 <p>
                 <a href="https://github.com/apizee/ApiRTC-examples/blob/master/Tutorials/Video_client_Material/apiRTC-Material-Client-Video.html" target="_blank"><i class="fa fa-github" style="vertical-align: middle;"></i> This sample is accessible on Github</a>
                 </p>
@@ -91,7 +91,7 @@
                     <div class="col s12 m8 l8">
                         This sample shows an apiRTC client that is compatible with the new version of Safari : v11.
                         Support of WebRTC standard was announced by Apple on the 7th of June 2017.</br>
-                        If you want to test our Safari support, you will have to download the <a href="https://developer.apple.com/safari/download/" target="_blank">Safari Technology Preview</a> version.
+                        If you want to test our Safari support, you will have to download the <a href="https://developer.apple.com/safari/download/" target="_blank">Safari Technology Preview for macOS</a> version.
                         
                     </div>
                     <div class="col s12 m4 l4 valign-wrapper">
@@ -279,10 +279,10 @@
                 //Adding local Stream in Div. Video is muted
 
             //You can decide to manage your own stream display function or use the integrated one of ApiRTC
-            /*
+ /*           
                 addStreamInDiv(e.detail.stream, e.detail.callType, "mini", 'miniElt-' + e.detail.callId,
                                {width : "160px", height : "120px"}, true);
-            */
+ */           
                 webRTCClient.addStreamInDiv(e.detail.stream, e.detail.callType, "mini", 'miniElt-' + e.detail.callId,
                                {width : "128px", height : "96px"}, true);
             }
@@ -295,10 +295,11 @@
                 //Adding Remote Stream in Div. Video is not muted
 
             //You can decide to manage your own stream display function or use the integrated one of ApiRTC
-            /*
+ /*           
                 addStreamInDiv(e.detail.stream, e.detail.callType, "remote", 'remoteElt-' + e.detail.callId,
                                {width : "640px", height : "480px"}, false);
-            */
+*/
+            
                 webRTCClient.addStreamInDiv(e.detail.stream, e.detail.callType, "remote", 'remoteElt-' + e.detail.callId,
                                {width : "640px", height : "480px"}, false);
             }
