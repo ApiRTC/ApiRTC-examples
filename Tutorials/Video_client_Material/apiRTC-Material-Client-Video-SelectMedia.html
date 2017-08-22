@@ -145,6 +145,9 @@
                     </div>
 
                 </div>
+                <div class="row">
+                    <input id="updateMediaDeviceOnCall" class="btn green" type="button" value="updateMediaDeviceOnCall" />
+                </div>
                 <br>
                 <div class="row">
                     <div id="remote" style="width:100%;"></div>
@@ -187,7 +190,8 @@
 //SELECT_MEDIA
             // camera select
                 audioSelect = document.querySelector("select#audioSource"),
-                videoSelect = document.querySelector("select#videoSource");
+                videoSelect = document.querySelector("select#videoSource"),
+                callId = 0;
 
             function selectMediaChange(){
                 console.log('selectMediaChange');
@@ -348,6 +352,17 @@
                 $("#hangup").attr("disabled", false).val("Hangup");
             }
 
+//UpdateMediaDeviceOnCall
+            function userMediaStopHandler(e) {
+                console.log('userMediaStopHandler :', e.detail);
+                webRTCClient.removeElementFromDiv('mini', 'miniElt-' + e.detail.callId);
+            }
+            function remoteStreamRemovedHandler(e) {
+                console.log("remoteStreamRemovedHandler, e.detail :" + e.detail);
+                webRTCClient.removeElementFromDiv('remote', 'remoteElt-' + e.detail.callId);
+            }
+//UpdateMediaDeviceOnCall
+
             function hangupHandler(e) {
                 console.log('hangupHandler :' + e.detail.callId);
 
@@ -446,6 +461,10 @@
                 apiRTC.addEventListener("userMediaSuccess", userMediaSuccessHandler);
                 apiRTC.addEventListener("incomingCall", incomingCallHandler);
                 apiRTC.addEventListener("userMediaError", userMediaErrorHandler);
+//UpdateMediaDeviceOnCall
+                apiRTC.addEventListener("userMediaStop", userMediaStopHandler);
+                apiRTC.addEventListener("remoteStreamRemoved", remoteStreamRemovedHandler);
+//UpdateMediaDeviceOnCall
                 apiRTC.addEventListener("hangup", hangupHandler);
                 apiRTC.addEventListener("remoteStreamAdded", remoteStreamAddedHandler);
 
@@ -471,7 +490,7 @@
             //Call establishment
                 $("#callVideo").click(function () {
                     $("#hangup").attr("disabled", false).val("Hangup");
-                    var callId = webRTCClient.call($("#number").val());
+                    callId = webRTCClient.call($("#number").val());
 
                     console.log("callId on call =" + callId);
                     if (callId != null) {
@@ -484,6 +503,13 @@
                     $("#call").attr("disabled", false).val("Call");
                     webRTCClient.hangUp();
                 });
+
+//UpdateMediaDeviceOnCall
+                $("#updateMediaDeviceOnCall").click(function () {
+                    console.log("updateMediaDeviceOnCall");
+                    webRTCClient.updateMediaDeviceOnCall(callId);
+                });
+//UpdateMediaDeviceOnCall
             }
 
             $("#addressBook").on('click', function() {
