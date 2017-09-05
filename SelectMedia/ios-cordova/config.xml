@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.apizee.apirtc" version="0.2.1" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>apirtc 8</name>
+    <description>
+        A sample Apache Cordova application that test APIRTC media select.
+    </description>
+    <author email="francois.legoff@apizee.com" href="http://apizee.com">
+        Apizee Team
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <platform name="android">
+        <allow-intent href="market:*" />
+        <preference name="android-minSdkVersion" value="21" />
+        <uses-permission android:name="android.permission.CAMERA" />
+        <uses-permission android:name="android.permission.RECORD_AUDIO" />
+        <uses-feature android:name="android.hardware.camera" />
+    </platform>
+    <platform name="ios">
+        <preference name="AllowInlineMediaPlayback" value="true" />
+        <preference name="deployment-target" value="9.0" />
+        <preference name="BackupWebStorage" value="local" />
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+        <allow-intent href="apizee:" />
+        <preference name="ios-XCBuildConfiguration-ENABLE_BITCODE" value="NO" />
+        <hook src="hooks/iosrtc-swift-support.js" type="after_platform_add" />
+        <feature name="InAppBrowser">
+            <param name="ios-package" value="CDVInAppBrowser" />
+        </feature>
+        <config-file parent="UISupportedInterfaceOrientations" platform="ios" target="*-Info.plist">
+            <array>
+                <string>UIInterfaceOrientationPortrait</string>
+                <string>UIInterfaceOrientationPortraitUpsideDown</string>
+                <string>UIInterfaceOrientationLandscapeLeft</string>
+                <string>UIInterfaceOrientationLandscapeRight</string>
+            </array>
+        </config-file>
+        <config-file parent="UISupportedInterfaceOrientations~ipad" platform="ios" target="*-Info.plist">
+            <array>
+                <string>UIInterfaceOrientationPortrait</string>
+                <string>UIInterfaceOrientationPortraitUpsideDown</string>
+                <string>UIInterfaceOrientationLandscapeLeft</string>
+                <string>UIInterfaceOrientationLandscapeRight</string>
+            </array>
+        </config-file>
+        <config-file parent="UIStatusBarHidden" platform="ios" target="*-Info.plist">
+            <true />
+        </config-file>
+        <config-file parent="CFBundleDisplayName" platform="ios" target="*-Info.plist">
+            <string>Apizee</string>
+        </config-file>
+        <config-file parent="CFBundleVersion" platform="ios" target="*-Info.plist">
+            <string>208</string>
+        </config-file>
+        <config-file parent="CFBundleIdentifier" platform="ios" target="*-Info.plist">
+            <string>com.apizee.izeechat</string>
+        </config-file>
+        <config-file parent="ITSAppUsesNonExemptEncryption" platform="ios" target="*-Info.plist">
+            <false />
+        </config-file>
+        <config-file parent="NSCameraUsageDescription" platform="ios" target="*-Info.plist">
+            <string>Use of camera for video calls and conference</string>
+        </config-file>
+        <config-file parent="NSMicrophoneUsageDescription" platform="ios" target="*-Info.plist">
+            <string>Use of microphone for audio and video calls</string>
+        </config-file>
+        <config-file parent="NSPhotoLibraryUsageDescription" platform="ios" target="*-Info.plist">
+            <string>Access the gallery to share media with other users</string>
+        </config-file>
+    </platform>
+    <engine name="android" spec="^6.2.3" />
+    <engine name="browser" spec="^4.1.0" />
+    <engine name="ios" spec="^4.4.0" />
+    <plugin name="com.dooble.audiotoggle" spec="./custom-plugins/audiotoggle" />
+    <plugin name="cordova-custom-config" spec="^2.0.3" />
+    <plugin name="cordova-plugin-android-permissions" spec="^0.10.0" />
+    <plugin name="cordova-plugin-audioroute" />
+    <plugin name="cordova-plugin-camera" spec="^2.4.1">
+        <variable name="CAMERA_USAGE_DESCRIPTION" value=" " />
+        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value=" " />
+    </plugin>
+    <plugin name="cordova-plugin-console" spec="^1.0.7" />
+    <plugin name="cordova-plugin-device" spec="^1.1.6" />
+    <plugin name="cordova-plugin-iosrtc" spec="^4.0.1" />
+    <plugin name="cordova-plugin-whitelist" spec="^1.3.2" />
+</widget>
