@@ -650,7 +650,11 @@
             $("#addressBookDropDown").toggle();
         });
         var onDeviceReady = function () {
-
+            if (typeof AudioToggle !== "undefined") {
+                console.log('audiotoggle is loaded');
+            }else{
+                console.log('audiotoggle not loaded');
+            }
             console.log("#### Register IOSRTC #####", cordova.plugins.iosrtc);
             cordova.plugins.iosrtc.registerGlobals();
             //apiRTC initialization

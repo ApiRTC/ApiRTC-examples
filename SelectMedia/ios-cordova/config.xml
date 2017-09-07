@@ -81,7 +81,6 @@
     <plugin name="com.dooble.audiotoggle" spec="./custom-plugins/audiotoggle" />
     <plugin name="cordova-custom-config" spec="^2.0.3" />
     <plugin name="cordova-plugin-android-permissions" spec="^0.10.0" />
-    <plugin name="cordova-plugin-audioroute" />
     <plugin name="cordova-plugin-camera" spec="^2.4.1">
         <variable name="CAMERA_USAGE_DESCRIPTION" value=" " />
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value=" " />
