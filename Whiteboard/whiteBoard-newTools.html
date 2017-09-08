@@ -1,6 +1,6 @@
 <html>
     <head>
-        <script src="http://cloud.apizee.com/libs/jquery-1.9.0.min.js"></script>
+        <script src="https://cloud.apizee.com/libs/jquery-1.9.0.min.js"></script>
         <script src="http://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
         <link rel="stylesheet" type="text/css" href="assets/css/whiteBoard.css">
     </head>
@@ -13,233 +13,273 @@
                 <input id="hangup" type="button" disabled="true" value="Hangup" />
                 <input id="createRoom" type="button" disabled="true" value="Registration Ongoing..." />
                 <input id="leaveRoom" type="button" disabled="true" value="Registration Ongoing..." />
-                <input id="takeSnapshot" type="button" disabled="true" value="Registration Ongoing..." />
-                <input id="takeRemoteSnapshot" type="button" disabled="true" value="Registration Ongoing..." />
                 <input id="clearPaper" type="button" disabled="true" value="Registration Ongoing..." />
-                <input id="clearLocalAndRemotePaper" type="button" disabled="true" value="Registration Ongoing..." />
-                <input id="audioRecord" type="button" disabled="true" value="Registration Ongoing..." />
-                <input id="videoRecord" type="button" disabled="true" value="Registration Ongoing..." />
-                <input id="videoOnlyRecord" type="button" disabled="true" value="Registration Ongoing..." />
-                <input id="stopRecord" type="button" disabled="true" value="Registration Ongoing..." />
+                <input id="inviteButton" type="button" disabled="true" value="Registration Ongoing..." />
                 <span id="status"></span>
+                <div class='select'>
+                <label for='audioSource'>Audio source: </label><select id='audioSource'></select>
+                </div>
 
-	          <div class='select'>
-	            <label for='audioSource'>Audio source: </label><select id='audioSource'></select>
-	          </div>
-
-	          <div class='select'>
-	            <label for='videoSource'>Video source: </label><select id='videoSource'></select>
-	          </div>
+                <div class='select'>
+                <label for='videoSource'>Video source: </label><select id='videoSource'></select>
+                </div>
+                <div class='select'>
+                <label for='drawingTool'>Drawing tool: </label>
+                <select id='drawingTool'>
+                  <option>pen</option>
+                  <option>erase</option>
+                  <option>arrow</option>
+                  <option>ellipse</option>
+                  <option>rectangle</option>
+                </select>
+                </div>
+                <div class='select'>
+                <label for='brushSize'>Brush size: </label>
+                <select id='brushSize'>
+                  <option>1</option>
+                  <option>3</option>
+                  <option>5</option>
+                  <option>10</option>
+                </select>
+                </div>
+                <div class='select'>
+                <label for='brushColor'>Brush color: </label>
+                <select id='brushColor'>
+                  <option>black</option>
+                  <option>blue</option>
+                  <option>red</option>
+                  <option>green</option>
+                  <option>rgba(255,0,0,0.5)</option>
+                </select>
+                </div>
+                <div class='select'>
+                <label for='textInput'>Print text: </label>
+                <input id='textInput' type="text" />
+                <label for='textInputX'>x: </label>
+                <input id='textInputX' type="number" min=0 max=800 value=0 step=50 />
+                <label for='textInputY'>y: </label>
+                <input id='textInputY' type="number" min=0 max=800 value=0 step=50 />
+                <button id="textInputButton">Print!</button>
+                </div>
+                <div class='select'>
+                <label for='textInputScale'>Scale: </label>
+                <input id='textInputScale' type="number" min=0 max=10 value=1 step='0.1' />
+                <label for='textInputOffsetX'>Offsetx: </label>
+                <input id='textInputOffsetX' type="number" min=0 max=2000 value=0 step=50 />
+                <label for='textInputOffsetY'>Offsety: </label>
+                <input id='textInputOffsetY' type="number" min=0 max=2000 value=0 step=50 />
+                </div>
                 <div id="local" style="position: absolute;"><video id="myLocalVideo" style="width:640px; height:480px;" autoplay="autoplay" muted="true"></video></div>
-                <div id="remote" style="position: absolute;">
+                <div id="remote" style="position: absolute; background-color:rgba(0,0,0,0.2);">
                     <div id="myRemoteVideo" style="width:640px; height:480px;"></div>
                     <div id="mini"><video width="30%" height="30%" id="myMiniVideo" autoplay="autoplay" muted="true"></video></div>
                 </div>
             </div>
         </div>
+<!--
+        <img id="photo" style="position: absolute; width:360px; height:240px;"/>
+-->
 
-		<div id="cursors">
-		</div>
+        <div id="whiteboardContainer">
+            <div id="cursors"></div>
 
-		<canvas id="paper" width="1900" height="1000">
-			Your browser needs to support canvas for this to work!
-		</canvas>
-		
-		<hgroup id="instructions">		
-			<h1>Start Drawing !</h1>
-			<h2>Start by creating a room : "createRoom". it will invite your contact</h2>
-			<h2>You will then be able to work together on your drawing</h2>
-		</hgroup>       
+            <canvas id="paper" width="1900" height="1000">
+                Your browser needs to support canvas for this to work!
+            </canvas>
+
+            <hgroup id="instructions">
+                <h1>Start Drawing !</h1>
+                <h2>Start by creating a room : "createRoom". it will invite your contact</h2>
+                <h2>You will then be able to work together on your drawing</h2>
+            </hgroup>
+        </div>
+
         <script>
-                       
+
         'use strict';
         var session = null,
             whiteBoardClient = null,
             whiteBoardRoomId = 0,
-            dataClient = null;
-            
-        var dest = "8";
-            
+            dataClient = null,
+            dest = "800";
+
         function receiveDataHandler(e) {
             console.log("receiveDataHandler on whiteBoard HTML :" + e.detail.data);
-            
+
+            //var data = {event: 'snapShotPhotoUploaded', filename: e.detail.filename};
+
             if (e.detail.data.event === 'snapShotPhotoUploaded') {
                 console.log("loadingPhoto in background :" + e.detail.data.fileName);
                 whiteBoardClient.loadPhotoInBackground(e.detail.data.fileName);
             }
-            
-            if (e.detail.data.event === 'recordedFileUploaded') {
-                console.log("recordedFileUploaded :" + e.detail.data.fileName);
-                alert("Recorded file available :" +e.detail.data.fileName);
-            }
-        }            
-            
+        }
+
         function receiveRoomMessageHandler(e) {
             console.log("receiveRoomMessageHandler on whiteBoard HTML :" + e.detail.roomId);
         }
-            
+
         function roomMemberUpdateHandler(e) {
             console.log("roomMemberUpdateHandler on whiteBoard HTML :" + e.detail.roomId);
         }
 
         function roomCreationHandler(e) {
             console.log("roomCreationHandler on whiteBoard HTML :" + e.detail.roomId);
-            
             //Starting whiteboard process : mousemove detection ...
             whiteBoardClient.start();
-            
             whiteBoardRoomId = e.detail.roomId;
-            whiteBoardClient.inviteInRoom(e.detail.roomId, dest);
+            whiteBoardClient.inviteInRoom(e.detail.roomId, $("#number").val());
+        }
+
+        function inviteButtonHandler(){
+
+            whiteBoardClient.inviteInRoom(whiteBoardRoomId, $("#number").val());
         }
 
         function userMediaErrorHandler(e) {
             $("#call").attr("disabled", false).val("Call");
             $("#hangup").attr("disabled", true).val("Hangup");
         }
-            
+
         function remoteHangupHandler(e) {
             if (e.detail.lastEstablishedCall === true) {
                 $("#call").attr("disabled", false).val("Call");
                 $("#hangup").attr("disabled", true).val("Hangup");
             }
         }
-            
+
         function incomingCallHandler(e) {
             apiRTC.addEventListener("remoteHangup", remoteHangupHandler);
             $("#call").attr("disabled", true).val("Call ongoing");
             $("#hangup").attr("disabled", false).val("Hangup");
         }
 
-        function recordedFileAvailableHandler(e) {
-            console.log('recordedFileAvailableHandler :' + e.detail.fileName);        
+        function closingWhiteBoardHandler(e) {
+            console.log('closingWhiteBoardHandler :' + e.detail.reason);
         }
-            
+
+        function roomInvitationHandler(e) {
+            console.log("roomInvitationHandler on whiteBoard HTML :" + e.detail.roomId);
+
+            whiteBoardRoomId = e.detail.roomId;
+            if (whiteBoardClient.answerToRoomInvitation(e.detail.roomId, true)) {
+                whiteBoardClient.start();
+                whiteBoardRoomId = e.detail.roomId;
+            }
+        }
+
+        function contactListInRoomHandler(e) {
+            console.log("contactListInRoomHandler on whiteBoard HTML :" + e.detail.roomId);
+            console.log(e.detail.contactList);
+        }
+
         function sessionReadyHandler(e) {
             console.log('sessionReadyHandler :' + apiCC.session.apiCCId);
-    
+
             apiRTC.addEventListener("roomCreation", roomCreationHandler);
             apiRTC.addEventListener("roomMemberUpdate", roomMemberUpdateHandler);
             apiRTC.addEventListener("receiveRoomMessage", receiveRoomMessageHandler);
             apiRTC.addEventListener("receiveData", receiveDataHandler);
-            
-            apiCC.addEventListener("recordedFileAvailable", recordedFileAvailableHandler);
-            
+            apiRTC.addEventListener("roomInvitation", roomInvitationHandler);
+            apiRTC.addEventListener("contactListInRoom", contactListInRoomHandler);
+            apiCC.addEventListener("closingWhiteBoard", closingWhiteBoardHandler);
+
             $("#call").attr("disabled", false).val("Call");
             $("#videoMute").attr("disabled", false).val("videoMute");
             $("#createRoom").attr("disabled", false).val("createRoom");
             $("#leaveRoom").attr("disabled", false).val("leaveRoom");
-            $("#takeSnapshot").attr("disabled", false).val("TakeSnapshot");
-            $("#takeRemoteSnapshot").attr("disabled", false).val("AskRemotetoTakeSnapshot");
             $("#clearPaper").attr("disabled", false).val("clearPaper");
             $("#clearLocalAndRemotePaper").attr("disabled", false).val("clearLocalAndRemotePaper");
-            
-            $("#audioRecord").attr("disabled", false).val("remoteAudioRecord");
-            $("#videoRecord").attr("disabled", false).val("remoteVideoRecord");
-            $("#videoOnlyRecord").attr("disabled", false).val("remoteOnlyVideoRecord");
-            
-            $("#stopRecord").attr("disabled", false).val("stopRecord");
+            $("#inviteButton").attr("disabled", false).val("INVITE").click(inviteButtonHandler);
 
             apiRTC.addEventListener("incomingCall", incomingCallHandler);
             apiRTC.addEventListener("userMediaError", userMediaErrorHandler);
-            
+
             var webRTCClient = apiCC.session.createWebRTCClient({
                 localVideo : "myLocalVideo",
                 minilocalVideo : "myMiniVideo",
                 remoteVideo : "myRemoteVideo",
                 status : "status"
             });
-            
+
             dataClient = apiCC.session.createDataClient();
-            
+
+            $("#call").unbind( "click" );
             $("#call").click(function () {
                 $("#call").attr("disabled", true).val("Call ongoing");
                 $("#hangup").attr("disabled", false).val("Hangup");
                 apiRTC.addEventListener("remoteHangup", remoteHangupHandler);
                 webRTCClient.call($("#number").val());
             });
-            
             $("#videoMute").click(function () {
                 webRTCClient.toggleVideoMute();
             });
-            
+            $("#hangup").unbind( "click" );
             $("#hangup").click(function () {
                 $("#call").attr("disabled", false).val("Call");
                 $("#hangup").attr("disabled", true).val("Hangup");
                 webRTCClient.hangUp();
             });
-            
+            $("#createRoom").unbind( "click" );
             $("#createRoom").click(function () {
                 whiteBoardClient.createRoom();
             });
-            
+            $("#leaveRoom").unbind( "click" );
             $("#leaveRoom").click(function () {
                 whiteBoardClient.leaveRoom(whiteBoardRoomId);
-                
+
                 //Stopping whiteboard process : mousemove detection ...
                 whiteBoardClient.stop();
             });
-            
-            $("#takeSnapshot").click(function () {
-                var div = null;
-                webRTCClient.takeSnapshot('//beta.apizee.com/contactBox.php/main/uploadFile', div, 0, '287077');
-            });
-            
-            $("#takeRemoteSnapshot").click(function () {
-                console.log('takeRemoteSnapshot');
-                dataClient.sendData(dest, {command: 'takeSnapshot'});
-            });
-
             $("#clearPaper").click(function () {
                 console.log('clearPaper');
-                whiteBoardClient.clearPaper();
+                whiteBoardClient.deleteHistory();
             });
-            
-            $("#clearLocalAndRemotePaper").click(function () {
-                console.log('clearLocalAndRemotePaper');
-                whiteBoardClient.clearPaper();
-                dataClient.sendData(dest, {command: 'clearPaper'});
+            $('#drawingTool').change(function(){
+                whiteBoardClient.setDrawingTool($('#drawingTool').val());
             });
- 
-            $("#audioRecord").click(function () {
-                console.log('audioRecord');
-                dataClient.sendData(dest, {command: 'audioRecord', duration : 60000});
+            $('#brushSize').change(function(){
+                whiteBoardClient.setBrushSize($('#brushSize').val());
             });
-            
-            $("#videoRecord").click(function () {
-                console.log('videoRecord');
-                dataClient.sendData(dest, {command: 'videoRecord', duration : 60000});
-            })
-            
-            $("#videoOnlyRecord").click(function () {
-                console.log('videoOnlyRecord');
-                dataClient.sendData(dest, {command: 'videoOnlyRecord', duration : 60000});
-            })
+            $('#brushColor').change(function(){
+                whiteBoardClient.setBrushColor($('#brushColor').val());
+            });
+            $('#textInputScale').change(function(){
+                whiteBoardClient.setScale($('#textInputScale').val());
+            });
+            $('#textInputOffsetX').change(function(){
+                whiteBoardClient.setOffset($('#textInputOffsetX').val(), $('#textInputOffsetY').val());
+            });
+            $('#textInputOffsetY').change(function(){
+                whiteBoardClient.setOffset($('#textInputOffsetX').val(), $('#textInputOffsetY').val());
+            });
+            $('#textInputButton').click(function(){
+                whiteBoardClient.printSharedText($('#textInputX').val(), $('#textInputY').val(), $('#textInput').val(), 20);
+            });
 
-            $("#stopRecord").click(function () {
-                console.log('stopRecord');
-                dataClient.sendData(dest, {command: 'stopRecord', duration : 60000});
-            })
+            whiteBoardClient = apiCC.session.createWhiteBoard('paper', 'cursors', 'instructions', 6000);
+            //whiteBoardClient = apiCC.session.createWhiteBoard(null, null, 'instructions', 6000);
 
-            whiteBoardClient = apiCC.session.createWhiteBoard('paper', 'cursors', 'instructions');
-
-            whiteBoardClient.getContext().lineWidth = 15;
-            whiteBoardClient.getContext().lineCap = "round"
+            //whiteBoardClient.getContext().lineWidth = 15;
+            //whiteBoardClient.getContext().lineCap = "round"
+            //whiteBoardClient.createRoom();
 
             webRTCClient.getMediaDevices(gotSources);
         }
-          
+
         apiRTC.init({
-            apiKey : "myDemoApiKey_whiteboard",
-            apiCCId : "7",
+            apiKey : "myDemoApiKey",
             onReady : sessionReadyHandler,
-            recordActivated : true
+            userData : {
+                    "lastName": "lastName",
+                    "firstName": "firstName"
+                }
         });
 
         var audioSelect = document.querySelector("select#audioSource");
         var videoSelect = document.querySelector("select#videoSource");
 
         function gotSources(sourceInfos) {
-            
+
             if (sourceInfos !== null) {
                 var i = 0;
                 console.log('sourceInfos.length' + sourceInfos.length);
@@ -249,10 +289,10 @@
                     var option = document.createElement("option");
                     option.value = sourceInfo.id;
 
-                    if (sourceInfo.kind === 'audio') {
+                    if (sourceInfo.kind === 'audio' || sourceInfo.kind === 'audioinput') {
                         option.text = sourceInfo.label || 'microphone ' + (audioSelect.length + 1);
                         audioSelect.appendChild(option);
-                    } else if (sourceInfo.kind === 'video') {
+                    } else if (sourceInfo.kind === 'video' || sourceInfo.kind === 'videoinput') {
                         option.text = sourceInfo.label || 'camera ' + (videoSelect.length + 1);
                         videoSelect.appendChild(option);
                     } else {
@@ -263,7 +303,6 @@
                 console.log('getMediaDevices is not supported on this browser');
             }
         }
-
         </script>
     </body>
 </html>
