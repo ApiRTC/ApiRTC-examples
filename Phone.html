@@ -31,11 +31,10 @@
             $("#hangup").attr("disabled", true).val("Hangup");
         }
 
-
         // handler function for handling the remote user hanging up
         function remoteHangupHandler(e) {
             console.log('remoteHangupHandler');
-	    console.log(e.detail.reason);
+	        console.log(e.detail.reason);
 
             if (e.detail.lastEstablishedCall === true) {
                 $("#call").attr("disabled", false).val("Call");
@@ -43,11 +42,10 @@
             }
         }
 
-
         // handler function for when the local user hangs up
         function hangupHandler(e) {
             console.log('hangupHandler');
-	    console.log(e.detail.reason);
+	        console.log(e.detail.reason);
             
             if (e.detail.lastEstablishedCall === true) {
                 $("#call").attr("disabled", false).val("Call");
@@ -55,8 +53,6 @@
             }
         }
 
-
-        
         function incomingCallHandler(e) {
             apiRTC.addEventListener("remoteHangup", remoteHangupHandler);
             $("#call").attr("disabled", true).val("Call ongoing");
@@ -64,9 +60,8 @@
         }
 
         function callAttemptHandler(e) {
-	    alert('Id :' + e.detail.callerId + 'is trying to reach you')
+	        alert('Id :' + e.detail.callerId + ' is trying to reach you');
         }
-
 
         // callback when ApiRTC is ready
         function sessionReadyHandler(e) {
@@ -76,9 +71,7 @@
 
             apiRTC.addEventListener("incomingCall", incomingCallHandler);
             apiRTC.addEventListener("userMediaError", userMediaErrorHandler);
-
-	    apiRTC.addEventListener("callAttempt", callAttemptHandler);
-
+            apiRTC.addEventListener("callAttempt", callAttemptHandler);
             apiRTC.addEventListener("hangup", hangupHandler);
 
             var webRTCClient = apiCC.session.createWebRTCClient({
@@ -87,7 +80,6 @@
                 remoteVideo : "myRemoteVideo",
                 status : "status"
             });
-
 
             $("#call").click(function () {
                 $("#call").attr("disabled", true).val("Call ongoing");
@@ -102,14 +94,12 @@
                 webRTCClient.hangUp();
             });
         }
-        
-        
+
         // initialise ApiRTC
         apiRTC.init({
             apiKey : "myDemoApiKey",
             onReady : sessionReadyHandler
         });
-
         </script>
     </body>
 </html>
