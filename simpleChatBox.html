@@ -10,6 +10,7 @@
         <br/>
         <input type="text" id="number" value="" placeholder="Enter Destination ID..." />
         <input id="create" type="button" disabled="true" value="Registration Ongoing..." />
+        <div id="status"></div>
 
         <!-- Here is your awesome chat box -->
         <!-- It's hidden on page load -->
@@ -72,6 +73,7 @@
 
             function sessionReadyHandler(e) {
                 console.log('sessionReadyHandler :' + apiCC.session.apiCCId);
+                $("#status").append('<span> Your client Id is : ' + apiCC.session.apiCCId + '</span> ');
 
                 $("#create").attr("disabled", false).val("Create Chat Box");
 
