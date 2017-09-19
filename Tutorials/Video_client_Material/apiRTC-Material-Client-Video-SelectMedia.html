@@ -66,7 +66,7 @@
             background: #d6d6d6;
         }
         </style>
-        <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
+        <script src="https://cloud.apizee.com/apiRTC/v3.14/apiRTC-3.14.min.js"></script>
     </head>
 
     <body>
@@ -246,7 +246,15 @@
                 i = 0,
                 audioSourceIdInLocalStorage = localStorage.getItem('audioSourceId_' + apiRTC.session.apiCCId),
                 videoSourceIdInLocalStorage = localStorage.getItem('videoSourceId_' + apiRTC.session.apiCCId),
-                audioOutputIdInLocalStorage = localStorage.getItem('audioOutputId_' + apiRTC.session.apiCCId);
+                audioOutputIdInLocalStorage = localStorage.getItem('audioOutputId_' + apiRTC.session.apiCCId),
+                selectors = [audioSelect, audioOutputDeviceSelect, videoSelect];
+
+            //Cleaning selectors
+            selectors.forEach(function(select) {
+                while (select.firstChild) {
+                    select.removeChild(select.firstChild);
+                }
+            });
         
             if (sourceInfos !== null) {
         
@@ -477,6 +485,9 @@
             webRTCClient.addStreamInDiv(e.detail.stream, e.detail.callType, "mini", 'miniElt-' + e.detail.callId,
                     {width: "128px", height: "96px"}, true);
         */
+
+            //SAFARI : media devices list can be updated after a userMediaSuccess
+            webRTCClient.getMediaDevices(gotSources);
         }
         
         function remoteStreamAddedHandler(e) {
