@@ -66,7 +66,10 @@
             background: #d6d6d6;
         }
         </style>
+<!--
         <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
+-->
+        <script src="https://cloud.apizee.com/apiRTC/v3.14/apiRTC-3.14.min.debug.js"></script>
     </head>
 
     <body>
@@ -420,6 +423,23 @@
                 $("#shareScreen").click(function () {
                     $("#hangup").attr("disabled", false).val("Hangup");
                     var callId = webRTCClient.shareScreen($("#number").val());
+
+                    var data = {dataTest: 'DataOnShareScreen'};
+
+                    if (apiRTC.browser === "Chrome") {
+                        //var callId = webRTCClient.shareScreen($("#number").val(), data, ["screen", "window", "tab", "audio"]);
+                        var callId = webRTCClient.shareScreen($("#number").val(), data);
+                        //var callId = webRTCClient.shareScreen($("#number").val(), data, ["screen"]);
+                        //var callId = webRTCClient.shareScreen($("#number").val(), data, ["window", "tab"]);
+                        //var callId = webRTCClient.shareScreen($("#number").val(), data, ["tab", "audio"]);
+                        //var callId = webRTCClient.shareScreen($("#number").val(), data, ["screen", "window", "tab"]);
+
+                    } else if (apiRTC.browser === "Firefox") {
+
+                        var callId = webRTCClient.shareScreen($("#number").val(), data, "screen");
+                        //var callId = webRTCClient.shareScreen($("#number").val(), data, "window");
+                        //var callId = webRTCClient.shareScreen($("#number").val(), data, "application");
+                    }
 
                     console.log("callId on sharescreen =" + callId);
                     if (callId != null) {
