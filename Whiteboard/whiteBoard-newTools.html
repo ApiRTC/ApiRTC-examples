@@ -1,100 +1,202 @@
-<html>
+
+<!DOCTYPE html>
+<html lang="en">
     <head>
-        <script src="https://cloud.apizee.com/libs/jquery-1.9.0.min.js"></script>
-        <script src="http://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>apiRTC Client</title>
+
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+        <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        .btn-open {
+            height: auto;
+            line-height: inherit;
+            padding: 15px 25px;
+        }
+        main {
+            flex: 1 0 auto;
+        }
+        .container.master { padding: 50px; }
+        .fa {
+            display: inline-block !important;
+        }
+        footer {  margin-top: 0 !important; }
+        #remote {
+            position: relative !important;
+        }
+        #command form input[type="texte"] {
+            display: block;
+            border: 2px solid rgb(74, 74, 74);
+            padding: 3px 20px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+
+        }
+        </style>
+        <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
         <link rel="stylesheet" type="text/css" href="assets/css/whiteBoard.css">
     </head>
-    <body>
-        <div id="overlay">
-            <div style="border:solid 1px black; background-color:white; padding:10px;">
-                <input type="text" id="number" value="" placeholder="Enter Destination ID..."/>
-                <input id="call" type="button" disabled="true" value="Registration Ongoing..." />
-                <input id="videoMute" type="button" disabled="true" value="Registration Ongoing..." />
-                <input id="hangup" type="button" disabled="true" value="Hangup" />
-                <input id="createRoom" type="button" disabled="true" value="Registration Ongoing..." />
-                <input id="leaveRoom" type="button" disabled="true" value="Registration Ongoing..." />
-                <input id="clearPaper" type="button" disabled="true" value="Registration Ongoing..." />
-                <input id="inviteButton" type="button" disabled="true" value="Registration Ongoing..." />
-                <span id="status"></span>
-                <div class='select'>
-                <label for='audioSource'>Audio source: </label><select id='audioSource'></select>
+        <body>
+            <nav class="light-blue darken-4">
+                <div class="nav-wrapper">
+                    <a class="brand-logo" href="../."><img src="../images/apirtc-logo.png" alt="" style="height:50px;margin:8px 40px;" ></a>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li><a href="https://github.com/apizee/ApiRTC-examples/tree/master/Tutorials" target="_blank"><i class="fa fa-github" style="vertical-align: middle;"></i> Source code on Github</a></li>
+                    </ul>
                 </div>
+            </nav>
+    
+            <main class="container grey lighten-5">
+                <div class="container master grey lighten-5">
+                    <div id="overlay">
+                        <div class="row" style="border:solid 1px black; background-color:white; padding:10px;">
+                            <div class="col s12">
+                                <input type="text" id="number" value="" placeholder="Enter Destination ID..."/>
+                                <input class="btn" id="call" type="button" disabled="true" value="Registration Ongoing..." />
+                                <input class="btn" id="videoMute" type="button" disabled="true" value="Registration Ongoing..." />
+                                <input class="btn" id="hangup" type="button" disabled="true" value="Hangup" />
+                                <input class="btn" id="createRoom" type="button" disabled="true" value="Registration Ongoing..." />
+                                <input class="btn" id="leaveRoom" type="button" disabled="true" value="Registration Ongoing..." />
+                                <input class="btn" id="clearPaper" type="button" disabled="true" value="Registration Ongoing..." />
+                                <input class="btn" id="touchScreen" type="button" disabled="true" value="ENABLE/DISABLE TOUCHSCREEN (Mobile)" />                                
+                                <input class="btn" id="inviteButton" type="button" disabled="true" value="Registration Ongoing..." />
+                            </div>
+                            <div class="col s12">
+                                <span id="status"></span>                        
+                            </div>
+                            <div class='select col s6'>
+                            <label for='audioSource'>Audio source: </label><select id='audioSource'></select>
+                            </div>
 
-                <div class='select'>
-                <label for='videoSource'>Video source: </label><select id='videoSource'></select>
-                </div>
-                <div class='select'>
-                <label for='drawingTool'>Drawing tool: </label>
-                <select id='drawingTool'>
-                  <option>pen</option>
-                  <option>erase</option>
-                  <option>arrow</option>
-                  <option>ellipse</option>
-                  <option>rectangle</option>
-                </select>
-                </div>
-                <div class='select'>
-                <label for='brushSize'>Brush size: </label>
-                <select id='brushSize'>
-                  <option>1</option>
-                  <option>3</option>
-                  <option>5</option>
-                  <option>10</option>
-                </select>
-                </div>
-                <div class='select'>
-                <label for='brushColor'>Brush color: </label>
-                <select id='brushColor'>
-                  <option>black</option>
-                  <option>blue</option>
-                  <option>red</option>
-                  <option>green</option>
-                  <option>rgba(255,0,0,0.5)</option>
-                </select>
-                </div>
-                <div class='select'>
-                <label for='textInput'>Print text: </label>
-                <input id='textInput' type="text" />
-                <label for='textInputX'>x: </label>
-                <input id='textInputX' type="number" min=0 max=800 value=0 step=50 />
-                <label for='textInputY'>y: </label>
-                <input id='textInputY' type="number" min=0 max=800 value=0 step=50 />
-                <button id="textInputButton">Print!</button>
-                </div>
-                <div class='select'>
-                <label for='textInputScale'>Scale: </label>
-                <input id='textInputScale' type="number" min=0 max=10 value=1 step='0.1' />
-                <label for='textInputOffsetX'>Offsetx: </label>
-                <input id='textInputOffsetX' type="number" min=0 max=2000 value=0 step=50 />
-                <label for='textInputOffsetY'>Offsety: </label>
-                <input id='textInputOffsetY' type="number" min=0 max=2000 value=0 step=50 />
-                </div>
-                <div id="local" style="position: absolute;"><video id="myLocalVideo" style="width:640px; height:480px;" autoplay="autoplay" muted="true"></video></div>
-                <div id="remote" style="position: absolute; background-color:rgba(0,0,0,0.2);">
-                    <div id="myRemoteVideo" style="width:640px; height:480px;"></div>
-                    <div id="mini"><video width="30%" height="30%" id="myMiniVideo" autoplay="autoplay" muted="true"></video></div>
-                </div>
-            </div>
-        </div>
+                            <div class='select col s6'>
+                            <label for='videoSource'>Video source: </label><select id='videoSource'></select>
+                            </div>
+                            <div class='select col s4'>
+                            <label for='drawingTool'>Drawing tool: </label>
+                            <select id='drawingTool'>
+                                <option>pen</option>
+                                <option>erase</option>
+                                <option>arrow</option>
+                                <option>ellipse</option>
+                                <option>rectangle</option>
+                            </select>
+                            </div>
+                            <div class='select col s4'>
+                                <label for='brushSize'>Brush size: </label>
+                                <select id='brushSize'>
+                                    <option>1</option>
+                                    <option>3</option>
+                                    <option>5</option>
+                                    <option>10</option>
+                                </select>
+                            </div>
+                            <div class='select col s4'>
+                            <label for='brushColor'>Brush color: </label>
+                            <select id='brushColor'>
+                                <option>black</option>
+                                <option>blue</option>
+                                <option>red</option>
+                                <option>green</option>
+                                <option>rgba(255,0,0,0.5)</option>
+                            </select>
+                            </div>
+                            <div class='select col s12'>
+                                <div class="row">
+                                    <div class="col s12">
+                                        <label for='textInput'>Print text: </label>
+                                        <input id='textInput' type="text" />
+                                    </div>
+                                    <div class="col s6">
+                                        <label for='textInputX'>x: </label>
+                                        <input id='textInputX' type="number" min=0 max=800 value=0 step=50 />
+                                    </div>
+                                    <div class="col s6">
+                                        <label for='textInputY'>y: </label>
+                                        <input id='textInputY' type="number" min=0 max=800 value=0 step=50 />
+                                    </div>
+                                    <div class="col s12">
+                                        <button id="textInputButton" class="btn">Print!</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='select col s12'>
+                                <div class="row">
+                                    <div class="col s4">
+                                            <label for='textInputScale'>Scale: </label>
+                                            <input id='textInputScale' type="number" min=0 max=10 value=1 step='0.1' />
+                                    </div>
+                                    <div class="col s4">
+                                        <label for='textInputOffsetX'>Offsetx: </label>
+                                        <input id='textInputOffsetX' type="number" min=0 max=2000 value=0 step=50 />
+                                    </div>
+                                    <div class="col s4">
+                                        <label for='textInputOffsetY'>Offsety: </label>
+                                        <input id='textInputOffsetY' type="number" min=0 max=2000 value=0 step=50 />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='select col s12'>
+                                <div id="local" style="position: absolute;"><video id="myLocalVideo" style="width:640px; height:480px;" autoplay="autoplay" muted="true"></video></div>
+                                <div id="remote" style="position: absolute; background-color:rgba(0,0,0,0.2);">
+                                    <div id="myRemoteVideo" style="width:640px; height:480px;"></div>
+                                    <div id="mini"><video width="30%" height="30%" id="myMiniVideo" autoplay="autoplay" muted="true"></video></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 <!--
         <img id="photo" style="position: absolute; width:360px; height:240px;"/>
 -->
-
-        <div id="whiteboardContainer">
+    <div class="row" style="width:100%;height:600px;overflow:auto;position:relative;">
+        <div id="whiteboardContainer" class="col s12">
             <div id="cursors"></div>
 
-            <canvas id="paper" width="1900" height="1000">
+            <canvas id="paper" style="background-image:url('assets/img/1227m.gif')" width="1900" height="1000">
                 Your browser needs to support canvas for this to work!
             </canvas>
-
-            <hgroup id="instructions">
+        </div>
+    </div>
+        </div><!-- /.container -->
+        <hgroup id="instructions">
                 <h1>Start Drawing !</h1>
                 <h2>Start by creating a room : "createRoom". it will invite your contact</h2>
                 <h2>You will then be able to work together on your drawing</h2>
+                <input class="btn" onclick="document.getElementById('instructions').style.display='none'; " value="START !" />                
             </hgroup>
+    </main>
+    <footer class="page-footer grey darken-3">
+        <div class="container">
+          <div class="row">
+            <div class="col l6 s12">
+              <h5 class="white-text">ApiRTC Tutorials</h5>
+              <p class="grey-text text-lighten-4">This page give you access to different apiRTC sample to easily build your application</p>
+            </div>
+            <div class="col l4 offset-l2 s12">
+              <h5 class="white-text">Useful links</h5>
+              <ul>
+                <li><a class="grey-text text-lighten-3" href="//apirtc.com">ApiRTC Website</a></li>
+                <li><a class="grey-text text-lighten-3" href="//apizee.com">Apizee Website</a></li>
+              </ul>
+            </div>
+          </div>
         </div>
-
-        <script>
+        <div class="footer-copyright grey darken-2">
+          <div class="container">
+          &copy; 2014-2017 Apizee
+          </div>
+        </div>
+      </footer>    
+    <script>
 
         'use strict';
         var session = null,
@@ -221,6 +323,8 @@
             });
             $("#createRoom").unbind( "click" );
             $("#createRoom").click(function () {
+                $("#touchScreen").attr("disabled", false);
+
                 whiteBoardClient.createRoom();
             });
             $("#leaveRoom").unbind( "click" );
@@ -229,6 +333,9 @@
 
                 //Stopping whiteboard process : mousemove detection ...
                 whiteBoardClient.stop();
+            });
+            $("#touchScreen").click(function () {
+                whiteBoardClient.toggleTouchScreen();
             });
             $("#clearPaper").click(function () {
                 console.log('clearPaper');
@@ -304,5 +411,9 @@
             }
         }
         </script>
+
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
     </body>
 </html>
