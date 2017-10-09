@@ -68,8 +68,11 @@
 <!--
         <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
 -->
-        <!--  MAKE SURE TO USE APIRTC VERSION 3.9  -->
-        <script src="https://cloud.apizee.com/apiRTC/v3.9/apiRTC-3.9.min.debug.js"></script>
+<!--
+        <script src="https://cloud.apizee.com/apiRTC/v3.14/apiRTC-3.14.min.debug.js"></script>
+-->
+
+        <script src="https://localhost:8443/~fred/dev/apirtc/bin/apiRTC-latest.min.debug.js"></script>
 
     </head>
 
@@ -510,7 +513,7 @@
                 webRTCClient.setVideoBandwidth(1500);
 
             //Adding MCU selection
-                webRTCClient.setMCUConnector('mcu3.apizee.com');
+                //webRTCClient.setMCUConnector('mcu4.apizee.com');
 
                 imClient = apiCC.session.createIMClient();
 
@@ -551,6 +554,8 @@
             //apiRTC initialization
             apiRTC.init({
                 apiKey : "myDemoApiKey",
+                //ccsServer : "192.168.1.12:8000",
+                ccsServer : "dev-ccs.apizee.com",
                 //apiCCId : "1",
                 onReady : sessionReadyHandler
             });
