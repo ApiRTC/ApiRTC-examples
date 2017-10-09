@@ -1,0 +1,157 @@
+/*-------------------------
+	Simple reset
+--------------------------*/
+
+
+*{
+	margin:0;
+	padding:0;
+}
+
+
+/*-------------------------
+	General Styles
+--------------------------*/
+
+
+html{
+	/*background:url('../img/bg.png') repeat #e4e4e4;*/
+    /*background:url('../img/Lighthouse.jpg');
+    background-position:50% 50%;
+    background-repeat:no-repeat;*/
+    
+    
+		
+	/* This will hide the extra canvas if the screen is small */
+	/*overflow:hidden;*/
+}
+
+body{
+	font:14px/1.3 'Segoe UI',Arial, sans-serif;
+	color:#444;
+    /*background:url('../img/1227m.gif') repeat #e4e4e4;*/
+/*    
+    background-image:url('../img/Lighthouse.jpg');
+    background-position:50% 50%;
+    background-repeat:no-repeat;
+*/
+}
+
+a, a:visited {
+	outline:none;
+	color:#43819b;
+}
+
+a:hover{
+	text-decoration:none;
+}
+
+section, footer, header{
+	display: block;
+}
+#myRemoteVideo video{
+	width:100%!important;
+}
+
+/*-------------------------
+	Main Area
+--------------------------*/
+
+hgroup{
+	position: fixed;
+	background-color: rgba(255, 255, 255, 0.9);
+	width: 400px;
+	/* height: 78px; */
+	height:auto;
+	top: 50%;
+	left: 50%;
+	margin: -120px 0 0 -225px;
+	text-align: center;
+	padding: 25px;
+	border-radius: 10px;
+	box-shadow: 0 0 3px rgba(100, 100, 100, 0.1), 0 3px 1px #D4D4D4;
+	color: #555;
+}
+
+h1{
+	font-size: 22px;
+	padding-bottom: 8px;
+}
+
+h2{
+	font-size: 13px;
+	font-weight: normal;
+	padding-bottom: 8px;
+}
+
+/* h3{
+	font-size: 12px;
+	font-weight: normal;
+	font-style: italic;
+	color: #999;
+} */
+
+#cursors{
+	position:relative;
+}
+
+#cursors .cursor{
+	position:absolute;
+	width:15px;
+	height:22px;
+	background:url('../img/pointer.png') no-repeat -4px 0;
+}
+
+
+
+/*----------------------------
+	The Footer
+-----------------------------*/
+
+
+footer{
+	background-color: #111111;
+	bottom: 0;
+	box-shadow: 0 -1px 2px rgba(0,0,0,0.4);
+	height: 45px;
+	left: 0;
+	position: fixed;
+	width: 100%;
+	z-index: 100000;
+}
+
+footer h2{
+	color: #EEEEEE;
+	font-size: 14px;
+	font-weight: normal;
+	left: 50%;
+	margin-left: -400px;
+	padding: 13px 0 0;
+	position: absolute;
+	width: 540px;
+}
+
+footer h2 i{
+	font-style:normal;
+	color:#888;
+}
+
+footer a.tzine,a.tzine:visited{
+	color: #999999;
+	font-size: 12px;
+	left: 50%;
+	margin: 16px 0 0 110px;
+	position: absolute;
+	text-decoration: none;
+	top: 0;
+}
+
+footer a i{
+	color:#ccc;
+	font-style: normal;
+}
+
+footer a i b{
+	color:#c92020;
+	font-weight: normal;
+}
