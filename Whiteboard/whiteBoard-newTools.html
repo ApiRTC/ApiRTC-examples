@@ -56,10 +56,13 @@
                 </div>
             </nav>
     
-            <main class="container grey lighten-5">
-                <div class="container master grey lighten-5">
-                    <div id="overlay">
-                        <div class="row" style="border:solid 1px black; background-color:white; padding:10px;">
+            <main class="container grey lighten-5 master">
+                <div class="row"  style="border:solid 1px black; background-color:white; padding:10px;">
+                    <div class='col s12'>
+                        <div class="row">
+                            <h3>
+                                <i class="fa fa-dot-circle-o"></i> Tutorial 17 : Whiteboard
+                            </h3>
                             <div class="col s12">
                                 <input type="text" id="number" value="" placeholder="Enter Destination ID..."/>
                                 <input class="btn" id="call" type="button" disabled="true" value="Registration Ongoing..." />
@@ -145,28 +148,28 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class='select col s12'>
-                                <div id="local" style="position: absolute;"><video id="myLocalVideo" style="width:640px; height:480px;" autoplay="autoplay" muted="true"></video></div>
-                                <div id="remote" style="position: absolute; background-color:rgba(0,0,0,0.2);">
-                                    <div id="myRemoteVideo" style="width:640px; height:480px;"></div>
-                                    <div id="mini"><video width="30%" height="30%" id="myMiniVideo" autoplay="autoplay" muted="true"></video></div>
-                                </div>
-                            </div>
                         </div>
                     </div>
+                        <div class="col s12 l8" style="max-height:600px;overflow:auto";>
+                                <div id="whiteboardContainer" >
+                                    <div id="cursors"></div>
+                                    <canvas id="paper" style="background-image:url('assets/img/1227m.gif')" width="1900" height="1000">
+                                        Your browser needs to support canvas for this to work!
+                                    </canvas>
+                                </div>
+                            </div>
+                            <div class='select col s12 l4'>
+                                    <div id="local" style="position: absolute;"><video id="myLocalVideo" style="width:100%; height:auto" autoplay="autoplay" muted="true"></video></div>
+                                    <div id="remote" style="position: absolute; background-color:rgba(0,0,0,0.2);">
+                                        <div id="myRemoteVideo" style="width:100%; height:auto;"></div>
+                                        <div id="mini"><video width="30%" height="30%" id="myMiniVideo" autoplay="autoplay" muted="true"></video></div>
+                                    </div>
+                                </div>
 <!--
         <img id="photo" style="position: absolute; width:360px; height:240px;"/>
 -->
-    <div class="row" style="width:100%;height:600px;overflow:auto;position:relative;">
-        <div id="whiteboardContainer" class="col s12">
-            <div id="cursors"></div>
-
-            <canvas id="paper" style="background-image:url('assets/img/1227m.gif')" width="1900" height="1000">
-                Your browser needs to support canvas for this to work!
-            </canvas>
-        </div>
-    </div>
-        </div><!-- /.container -->
+    
+        </div><!-- /.row -->
         <hgroup id="instructions">
                 <h1>Start Drawing !</h1>
                 <h2>Start by creating a room : "createRoom". it will invite your contact</h2>
