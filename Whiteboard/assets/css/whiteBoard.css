@@ -49,7 +49,9 @@ a:hover{
 section, footer, header{
 	display: block;
 }
-
+#myRemoteVideo video{
+	width:100%!important;
+}
 
 /*-------------------------
 	Main Area
