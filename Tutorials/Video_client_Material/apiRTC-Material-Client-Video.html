@@ -67,7 +67,7 @@
         }
         </style>
 
-        <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
+        <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.debug.js"></script>
     </head>
 
     <body>
@@ -193,6 +193,12 @@
 
                 mediaElt.style.width = style.width;
                 mediaElt.style.height = style.height;
+
+                //Patch for ticket on Chrome 61 Android : https://bugs.chromium.org/p/chromium/issues/detail?id=769148
+                if (apiRTC.browser === 'Chrome' && apiRTC.browser_major_version === '61' && apiRTC.osName === "Android") {
+                    mediaElt.style.borderRadius = "1px";
+                    console.log('Patch for video display on Chrome 61 Android');
+                }
 
                 divElement = document.getElementById(divId);
                 divElement.appendChild(mediaElt);
@@ -342,6 +348,10 @@
                 updateAddressBook();
             }
 
+            function webRTCClientCreatedHandler(e) {
+                console.log('webRTCClientCreatedHandler');
+            }
+
             //sessionReadyHandler : apiRTC is now connected
             function sessionReadyHandler(e) {
 
@@ -354,11 +364,11 @@
                 apiRTC.addEventListener("userMediaError", userMediaErrorHandler);
                 apiRTC.addEventListener("hangup", hangupHandler);
                 apiRTC.addEventListener("remoteStreamAdded", remoteStreamAddedHandler);
-
             //connectedUsersList
                 apiRTC.addEventListener("connectedUsersListUpdate", connectedUsersListUpdateHandler);
             //connectedUsersList
-
+                apiRTC.addEventListener("webRTCClientCreated", webRTCClientCreatedHandler);
+                
                 //webRTC Client creation
                 webRTCClient = apiRTC.session.createWebRTCClient({
                     status : "status" //Optionnal
