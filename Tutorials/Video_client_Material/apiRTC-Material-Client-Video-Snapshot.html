@@ -190,11 +190,10 @@
             var session = null,
                 webRTCClient = null,
                 connectedUsersList = [],
-                callingUser=0,
                 dataClient=null,
-                callId=null;
-               
-//SELECT_MEDIA
+                callId=null,
+                dataToSend = null,
+                remoteId = 0;
 
             function selectPhonebookItem(idItem) {
                 $("#number").val(idItem);
@@ -218,6 +217,12 @@
 
                 mediaElt.style.width = style.width;
                 mediaElt.style.height = style.height;
+
+                //Patch for ticket on Chrome 61 Android : https://bugs.chromium.org/p/chromium/issues/detail?id=769148
+                if (apiRTC.browser === 'Chrome' && apiRTC.browser_major_version === '61' && apiRTC.osName === "Android") {
+                    mediaElt.style.borderRadius = "1px";
+                    console.log('Patch for video display on Chrome 61 Android');
+                }
 
                 divElement = document.getElementById(divId);
                 divElement.appendChild(mediaElt);
@@ -287,17 +292,14 @@
                 console.log(e.detail.reason);
                 initMediaElementState(e.detail.callId);
                 removeHangupButton(e.detail.callId);
-//SNAPSHOT
                 $('.takeSnapshot').attr('disabled',false);
-                callingUser = 0;
                 callId=null;
-//SNAPSHOT
             }
 
             function incomingCallHandler(e) {
                 $("#hangup").attr("disabled", false).val("Hangup");
                 addHangupButton(e.detail.callId);
-                callingUser=e.detail.callerId;
+                remoteId = e.detail.callerId;
             }
 
             function userMediaSuccessHandler(e) {
@@ -331,10 +333,8 @@
             */
                 webRTCClient.addStreamInDiv(e.detail.stream, e.detail.callType, "remote", 'remoteElt-' +callId,
                                {width : "640px", height : "480px"}, false);
-//SNAPSHOT
-                webRTCClient.startDataChannelOnCall(callId);
+
                 $('.takeSnapshot').attr('disabled',false);
-//SNAPSHOT
             }
 
             function updateAddressBook() {
@@ -376,19 +376,16 @@
             }
 
             // receiveData from sendData 
-//SNAPSHOT
             function receiveData(e) {
                 switch (e.detail.data.event) {
                     case "takeSnapshot":
-                        takeLocalSnapshot();
+                        takeLocalSnapshot(e.detail.senderId);
                     default:
                         console.log("receiveData",e);
                         break;
                 }
             }
-//SNAPSHOT
-//
-//SNAPSHOT
+
            function debounce(fn, delay) {
               var timer = null;
               return function () {
@@ -399,25 +396,19 @@
                 }, delay);
               };
             }
-//SNAPSHOT
 
-//SNAPSHOT
             function onFileReceivingHandler(e) {
                 console.log('onFileReceivingHandler', e.detail);
                 if (e.detail.remoteId) {
                     $('#timeline').append('<progress id="snap-'+e.detail.callId+'" max="100" min="0" />');
                 }
             }
-//SNAPSHOT
 
-//SNAPSHOT
             function onFileProgressHandler(e) {
                 console.log('onFileProgressHandler', e.detail);
                 $('#timeline').find('progress#snap-'+e.detail.callId).val(e.detail.percentage);
             };
-//SNAPSHOT
 
-//SNAPSHOT
            function onFileReceivedHandler(e) {
                 console.log('received file', e.detail);
                 var imageUrl = e.detail.data.file;
@@ -425,70 +416,89 @@
                 $('#timeline').find('progress').remove();
                 $('#timeline').append('<a href="'+imageUrl+'" target="_blank"><img src="'+imageUrl+'" /></a>');
                 
+                webRTCClient.hangUp(e.detail.callId);
             };
-//SNAPSHOT
 
-//SNAPSHOT
             //create canvas dom element and draw video on it to send data
-            function takeSnapshot() {
-                var callingUser,
-                    videoId=$('#mini').find('video').attr('id'),
+            function takeSnapshot(userId) {
+
+                var videoId=$('#mini').find('video').attr('id'),
                     c = null,
                     img = null,
                     time = new Date(),
                     timeInJSON = time.toJSON().replace(new RegExp(':', 'g'), '-'),
                     snapshot = document.createElement('canvas'),
                     videoForSnapShot = null,
-                    userDestId = callingUser,
-                    fileName = 'snapshot-' + userDestId + '-' + timeInJSON + '.png',
+                    fileName = 'snapshot-' + apiRTC.session.apiCCId + '-' + timeInJSON + '.png',
                     data = null,
-                    onProgress= function(e){
-                        console.log("On progress upload :",e);
-                    },
                     videoForSnapShot=document.getElementById(videoId);
-                    // Make the canvas the same size as the live video
-                    snapshot.width = videoForSnapShot.videoWidth;
-                    snapshot.height = videoForSnapShot.videoHeight;
-                    console.log("videoForSnapShot",videoForSnapShot.videoWidth,videoForSnapShot.videoHeight);
 
-                    // Draw a frame of the live video onto the canvas
-                    c = snapshot.getContext('2d');
-                    c.drawImage(videoForSnapShot, 0, 0, snapshot.width, snapshot.height);
+                // Make the canvas the same size as the live video
+                snapshot.width = videoForSnapShot.videoWidth;
+                snapshot.height = videoForSnapShot.videoHeight;
+                console.log("videoForSnapShot",videoForSnapShot.videoWidth,videoForSnapShot.videoHeight);
 
-                    // Create an image element with the canvas image data
-                    img = document.createElement('img');
-                    img.src = snapshot.toDataURL('image/png');
-                    img.style.padding = 5;
-                    img.width = snapshot.width;
-                    img.height = snapshot.height;
-                    // convert base64/URLEncoded data component to raw binary data held in a string
+                // Draw a frame of the live video onto the canvas
+                c = snapshot.getContext('2d');
+                c.drawImage(videoForSnapShot, 0, 0, snapshot.width, snapshot.height);
 
-                    //Sending snapshot on DataChannel
-                    data = snapshot.toDataURL("image/png");
-                    $('#timeline').append('<a href="'+data+'" target="_blank"><img src="'+data+'" /></a>');
-                    webRTCClient.sendDataWithCallId(callId, {
-                        "file": data,
-                        "name": fileName,
-                        "type": 'image/png-dataUrl'
-                    }, onProgress);
+                // Create an image element with the canvas image data
+                img = document.createElement('img');
+                img.src = snapshot.toDataURL('image/png');
+                img.style.padding = 5;
+                img.width = snapshot.width;
+                img.height = snapshot.height;
+                // convert base64/URLEncoded data component to raw binary data held in a string
+
+                //Sending snapshot on DataChannel
+                data = snapshot.toDataURL("image/png");
+                $('#timeline').append('<a href="'+data+'" target="_blank"><img src="'+data+'" /></a>');
+
+                dataToSend = {
+                    "file": data,
+                    "name": fileName,
+                    "type": 'image/png-dataUrl'
+                };
+
+                var data = {testdataDataCall : true, apiRTCId : apiRTC.session.apiCCId};
+
+                // init dataChannel call
+                if (userId !== undefined) {
+                    webRTCClient.startDataChannel(userId, data);
+                } else {
+                    webRTCClient.startDataChannel(remoteId, data);
+                }
+
             }
-//SNAPSHOT
-
-//SNAPSHOT
 
             function takeRemoteSnapshot(){
-                dataClient.sendData(callingUser, {
+                dataClient.sendData(remoteId, {
                     event: 'takeSnapshot'
                 });
             }
-//SNAPSHOT
 
-//SNAPSHOT
-            function takeLocalSnapshot(){
-                takeSnapshot();
+            function takeLocalSnapshot(userId){
+                takeSnapshot(userId);
             }
-            
-//SNAPSHOT
+
+            function onProgress (e) {
+                console.log("sendData onProgress", e);
+            }
+
+            function onSendDataChannelOpen(e) {
+                console.log("GOT SEND CHANNEL OPEN EVT IN HTML", e);
+                // send file using the datachannel
+                if (dataToSend) {
+                    console.log("Sending file");
+                    webRTCClient.sendDataWithCallId(e.detail.callId, dataToSend, onProgress);
+                } else {
+                    console.log("no file to send");
+                }
+            }
+
+            function webRTCClientCreatedHandler(e) {
+                console.log('webRTCClientCreatedHandler');
+            }
 
             //sessionReadyHandler : apiRTC is now connected
             function sessionReadyHandler(e) {
@@ -502,25 +512,22 @@
                 apiRTC.addEventListener("userMediaError", userMediaErrorHandler);
                 apiRTC.addEventListener("hangup", hangupHandler);
                 apiRTC.addEventListener("remoteStreamAdded", remoteStreamAddedHandler);
-
-//SNAPSHOT
                 apiRTC.addEventListener("onFileReceiving",onFileReceivingHandler);
                 apiRTC.addEventListener("onFileProgress",onFileProgressHandler);
                 apiRTC.addEventListener("onFileReceived",onFileReceivedHandler);
                 apiRTC.addEventListener("receiveData", receiveData);
-//SNAPSHOT
+                apiRTC.addEventListener("sendDataChannelOpen", onSendDataChannelOpen);
             //connectedUsersList
                 apiRTC.addEventListener("connectedUsersListUpdate", connectedUsersListUpdateHandler);
             //connectedUsersList
+                apiRTC.addEventListener("webRTCClientCreated", webRTCClientCreatedHandler);
 
                 //webRTC Client creation
                 webRTCClient = apiRTC.session.createWebRTCClient({
                     status : "status" //Optionnal
                 });
 
-//SNAPSHOT
                 dataClient = apiRTC.session.createDataClient(); //enable user to send event to users
-//SNAPSHOT
 
             //Multi calls Activation
                 webRTCClient.setAllowMultipleCalls(false);
@@ -531,8 +538,9 @@
             //Call establishment
                 $("#callVideo").click(function () {
                     $("#hangup").attr("disabled", false).val("Hangup");
+
+                    remoteId = $("#number").val();
                     callId = webRTCClient.call($("#number").val());
-                    callingUser = $("#number").val();
                     console.log("callId on call =" + callId);
                     if (callId != null) {
                         addHangupButton(callId);
@@ -545,7 +553,6 @@
                     webRTCClient.hangUp();
                 });
 
-//SNAPSHOT
                 // Take Local Snapshot button event
                 $("#takeLocalSnapshot").click(function() {
                     takeLocalSnapshot();
@@ -554,7 +561,6 @@
                 $("#takeRemoteSnapshot").click(function() {
                     takeRemoteSnapshot();
                 });
-//SNAPSHOT
             }
 
             $("#addressBook").on('click', function() {
