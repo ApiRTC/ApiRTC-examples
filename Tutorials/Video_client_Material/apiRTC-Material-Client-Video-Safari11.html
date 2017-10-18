@@ -67,7 +67,8 @@
         }
         </style>
 
-        <script src="https://cloud.apizee.com/apiRTC/v3.12/apiRTC-3.12.min.debug.js"></script>
+        <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
+        
     </head>
 
     <body>
@@ -82,9 +83,9 @@
 
         <main class="container grey lighten-5">
             <div class="container master grey lighten-5">
-                <h3><i class="fa fa-dot-circle-o"></i> Tutorial 16: Video client compatible with Safari v11  - macOS and iOS v11 - BETA</h3>
+                <h3><i class="fa fa-dot-circle-o"></i> Tutorial 16: Video client compatible with Safari v11  - macOS and iOS v11</h3>
                 <p>
-                <a href="https://github.com/apizee/ApiRTC-examples/blob/master/Tutorials/Video_client_Material/apiRTC-Material-Client-Video.html" target="_blank"><i class="fa fa-github" style="vertical-align: middle;"></i> This sample is accessible on Github</a>
+                <a href="https://github.com/apizee/ApiRTC-examples/blob/master/Tutorials/Video_client_Material/apiRTC-Material-Client-Video-Safari11.html" target="_blank"><i class="fa fa-github" style="vertical-align: middle;"></i> This sample is accessible on Github</a>
                 </p>
                 <br>
                 <div class="row">
@@ -95,7 +96,7 @@
                         
                     </div>
                     <div class="col s12 m4 l4 valign-wrapper">
-                        <a href="../Video_client_Material/apiRTC-Material-Client-Video.html" target="_blank" class="valign btn btn-large waves-effect waves-light btn-open">Open another client</a>
+                        <a href="../Video_client_Material/apiRTC-Material-Client-Video-Safari11.html" target="_blank" class="valign btn btn-large waves-effect waves-light btn-open">Open another client</a>
                     </div>
                     <div style="clear: both;"></div>
                 </div>
@@ -193,6 +194,12 @@
 
                 mediaElt.style.width = style.width;
                 mediaElt.style.height = style.height;
+
+                //Patch for ticket on Chrome 61 Android : https://bugs.chromium.org/p/chromium/issues/detail?id=769148
+                if (apiRTC.browser === 'Chrome' && apiRTC.browser_major_version === '61' && apiRTC.osName === "Android") {
+                    mediaElt.style.borderRadius = "1px";
+                    console.log('Patch for video display on Chrome 61 Android');
+                }
 
                 divElement = document.getElementById(divId);
                 divElement.appendChild(mediaElt);

@@ -65,10 +65,7 @@
             background: #d6d6d6;
         }
         </style>
-<!--
         <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
--->
-	<script src="https://cloud.apizee.com/apiRTC/v3.5/apiRTC-3.5.min.debug.js"></script>
     </head>
 
     <body>
@@ -107,17 +104,12 @@
                             <div class="input-field">
 
                                 <input type="text" id="number" class="form-control" placeholder="Room name" aria-describedby="sizing-addon1">
-
                                 <input id="joinMCUSession" class="btn green" type="button" value="join Video Group" />
-
                                 <input id="leaveMCUSession" class="btn green" type="button" value="leave" />
                                 <br>
                                 <input id="startRecording" class="btn green" type="button" disabled="true" value="Record Audio & Video" />
-
                                 <input id="startRecordingAudioOnly" class="btn green" type="button" disabled="true" value="Record Audio Only" />
-
                                 <input id="startRecordingVideoOnly" class="btn green" type="button" disabled="true" value="Record Video only" />
-
                                 <input id="stopRecording" class="btn green" type="button" disabled="true" value="stop Record" />
                             </div>
                         </div>
@@ -207,6 +199,13 @@
                 mediaElt.muted = muted;
                 mediaElt.style.width = style.width;
                 mediaElt.style.height = style.height;
+
+                //Patch for ticket on Chrome 61 Android : https://bugs.chromium.org/p/chromium/issues/detail?id=769148
+                if (apiRTC.browser === 'Chrome' && apiRTC.browser_major_version === '61' && apiRTC.osName === "Android") {
+                    mediaElt.style.borderRadius = "1px";
+                    console.log('Patch for video display on Chrome 61 Android');
+                }
+
                 divElement = document.getElementById(divId);
                 divElement.appendChild(mediaElt);
                 webRTCClient.attachMediaStream(mediaElt, stream);
