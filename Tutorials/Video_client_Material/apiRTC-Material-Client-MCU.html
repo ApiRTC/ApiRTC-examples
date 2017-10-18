@@ -65,14 +65,8 @@
             background: #d6d6d6;
         }
         </style>
-<!--
-        <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
--->
-<!--
-        <script src="https://cloud.apizee.com/apiRTC/v3.14/apiRTC-3.14.min.debug.js"></script>
--->
 
-        <script src="https://localhost:8443/~fred/dev/apirtc/bin/apiRTC-latest.min.debug.js"></script>
+        <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
 
     </head>
 
@@ -216,6 +210,13 @@
                 mediaElt.muted = muted;
                 mediaElt.style.width = style.width;
                 mediaElt.style.height = style.height;
+
+                //Patch for ticket on Chrome 61 Android : https://bugs.chromium.org/p/chromium/issues/detail?id=769148
+                if (apiRTC.browser === 'Chrome' && apiRTC.browser_major_version === '61' && apiRTC.osName === "Android") {
+                    mediaElt.style.borderRadius = "1px";
+                    console.log('Patch for video display on Chrome 61 Android');
+                }
+
                 divElement = document.getElementById(divId);
                 divElement.appendChild(mediaElt);
                 webRTCClient.attachMediaStream(mediaElt, stream);
@@ -515,6 +516,9 @@
             //Adding MCU selection
                 //webRTCClient.setMCUConnector('mcu4.apizee.com');
 
+                //webRTCClient.setUserAcceptOnIncomingCall(true);
+                //webRTCClient.setUserAcceptOnIncomingCallBeforeGetUserMedia(true);
+
                 imClient = apiCC.session.createIMClient();
 
             //Call establishment
@@ -554,8 +558,6 @@
             //apiRTC initialization
             apiRTC.init({
                 apiKey : "myDemoApiKey",
-                //ccsServer : "192.168.1.12:8000",
-                ccsServer : "dev-ccs.apizee.com",
                 //apiCCId : "1",
                 onReady : sessionReadyHandler
             });
