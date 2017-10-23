@@ -401,8 +401,17 @@
             //ScreenSharing establishment
                 $("#shareScreen").click(function () {
                     $("#hangup").attr("disabled", false).val("Hangup");
-                    //var callId = webRTCClient.shareScreen($("#number").val());
-                    var callId = webRTCClient.publishScreen($("#number").val());
+
+                    var callId = 0,
+                        data = {},
+                        callConfiguration = {};
+
+                    if (apiRTC.browser === "Chrome") {
+                        callId = webRTCClient.publishScreen($("#number").val(), data, callConfiguration);
+                    } else if (apiRTC.browser === "Firefox") {
+                        callId = webRTCClient.publishScreen($("#number").val(), data, callConfiguration, 'screen');
+                    }
+
                     console.log("callId on sharescreen =" + callId);
                     if (callId != null) {
                         addHangupButton(callId);
