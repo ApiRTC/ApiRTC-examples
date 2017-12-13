@@ -66,6 +66,7 @@
             background: #d6d6d6;
         }
         </style>
+
         <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.debug.js"></script>
     </head>
 
@@ -190,7 +191,8 @@
             'use strict';
             var session = null,
                 webRTCClient = null,
-                connectedUsersList = [];
+                connectedUsersList = [],
+                yourApiKey = "myDemoApiKey";
 
             function selectPhonebookItem(idItem) {
                 $("#number").val(idItem);
@@ -380,8 +382,11 @@
                 console.log("userId1 : " + e.detail.userId1);
                 console.log("userId2 : " + e.detail.userId2);
 
-                document.getElementById('status2').innerHTML = 'Read recorded streams thanks to following <a href="http://www.apizee.com/apiRTC/Video_record/recordReader.html?apiKey=myDemoApiKey&confId=' + e.detail.confId  + '&userId1=' + e.detail.userId1  + '&userId2=' + e.detail.userId2 + '" target="_blank">link</a>';
-
+                if (e.detail.mediaURL !== undefined) {
+                    document.getElementById('status2').innerHTML = 'Read recorded streams thanks to following <a href="' + e.detail.mediaURL + '" target="_blank">link</a>';              
+                } else {
+                    document.getElementById('status2').innerHTML = 'Read recorded streams thanks to following <a href="http://www.apizee.com/apiRTC/Video_record/recordReader.html?apiKey=' + yourApiKey + '&confId=' + e.detail.confId  + '&userId1=' + e.detail.userId1  + '&userId2=' + e.detail.userId2 + '" target="_blank">link</a>';
+                }
             }
 
         //screenSharing
@@ -433,6 +438,7 @@
             //ScreenSharing Activation
                 webRTCClient.activateScreenSharing();
 
+                webRTCClient.setMCUConnector('mcu4.apizee.com');
             //Call establishment
                 $("#callVideo").click(function () {
                     $("#hangup").attr("disabled", false).val("Hangup");
@@ -484,7 +490,7 @@
 
             //apiRTC initialization
             apiRTC.init({
-                apiKey : "myDemoApiKey",
+                apiKey : yourApiKey,
                 //apiCCId : "1",
                 onReady : sessionReadyHandler
             });
