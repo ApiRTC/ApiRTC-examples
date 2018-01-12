@@ -144,6 +144,9 @@
                     <div class="col s12 m6 l6">
                        <div id="hangupButtons"></div>
                     </div>
+                    <div class="col s12 m6 l6">
+                       <div id="replayButtons"></div>
+                    </div>
                 </div>
             </div>
 
@@ -192,6 +195,7 @@
             var session = null,
                 webRTCClient = null,
                 connectedUsersList = [],
+                roomIds = {},
                 yourApiKey = "myDemoApiKey";
 
             function selectPhonebookItem(idItem) {
@@ -222,7 +226,7 @@
                     mediaElt.style.borderRadius = "1px";
                     console.log('Patch for video display on Chrome 61 Android');
                 }
-                
+
                 divElement = document.getElementById(divId);
                 divElement.appendChild(mediaElt);
 
@@ -278,6 +282,29 @@
                 }
             }
 
+            function addReplayButton(roomId) {
+                var replayButtons = document.getElementById("replayButtons"),
+                    input = document.createElement("input");
+
+                input.setAttribute("id", "replay-" + roomId);
+                input.setAttribute("value", "replay-" + roomId);
+                input.setAttribute("type", "button");
+                input.setAttribute("onclick", "window.open('../Video_client_Material/apiRTC-Material-Client-MCU-Replay.html?roomId=" + roomId + "');");
+                replayButtons.appendChild(input);
+            }
+
+            function removeReplayButton(roomId) {
+                var replayButtonId = 'replay-' + roomId,
+                    replayButton = document.getElementById(replayButtonId),
+                    replayButtons = null;
+
+                if (replayButton !== null) {
+                    console.log('Removing replayButton with Id : ' + replayButtonId);
+                    replayButtons = document.getElementById("replayButtons");
+                    replayButtons.removeChild(replayButton);
+                }
+            }
+
             function userMediaErrorHandler(e) {
                 $("#call").attr("disabled", false).val("Call");
                 $("#hangup").attr("disabled", false).val("Hangup");
@@ -293,6 +320,10 @@
 
                 initMediaElementState(e.detail.callId);
                 removeHangupButton(e.detail.callId);
+                for (var roomId in roomIds) {
+                    removeReplayButton(roomId);
+                }
+                roomIds = {};
             }
 
             function incomingCallHandler(e) {
@@ -383,9 +414,18 @@
                 console.log("userId2 : " + e.detail.userId2);
 
                 if (e.detail.mediaURL !== undefined) {
-                    document.getElementById('status2').innerHTML = 'Read recorded streams thanks to following <a href="' + e.detail.mediaURL + '" target="_blank">link</a>';              
+                    document.getElementById('status2').innerHTML = 'Read recorded streams thanks to following <a href="' + e.detail.mediaURL + '" target="_blank">link</a>';
                 } else {
                     document.getElementById('status2').innerHTML = 'Read recorded streams thanks to following <a href="http://www.apizee.com/apiRTC/Video_record/recordReader.html?apiKey=' + yourApiKey + '&confId=' + e.detail.confId  + '&userId1=' + e.detail.userId1  + '&userId2=' + e.detail.userId2 + '" target="_blank">link</a>';
+                }
+            }
+
+            function MCUAvailableReplayHandler(e) {
+                var roomId = e.detail.streams[0].room;
+                console.log("[MCUAvailableReplay] room: " + roomId);
+                if (typeof(roomId) === 'string' && roomIds[roomId] === undefined) {
+                    roomIds[roomId] = roomId;
+                    addReplayButton(roomId);
                 }
             }
 
@@ -413,6 +453,7 @@
                 apiRTC.addEventListener("userMediaError", userMediaErrorHandler);
                 apiRTC.addEventListener("hangup", hangupHandler);
                 apiRTC.addEventListener("remoteStreamAdded", remoteStreamAddedHandler);
+                apiRTC.addEventListener("MCUAvailableReplay", MCUAvailableReplayHandler);
 
             //screenSharing
                 apiRTC.addEventListener("desktopCapture", desktopCaptureHandler);
@@ -435,10 +476,12 @@
             //Bandwitdh limitation
                 webRTCClient.setVideoBandwidth(300);
 
+            //MCU connector
+                webRTCClient.setMCUConnector('mcu4.apizee.com');
+
             //ScreenSharing Activation
                 webRTCClient.activateScreenSharing();
 
-                webRTCClient.setMCUConnector('mcu4.apizee.com');
             //Call establishment
                 $("#callVideo").click(function () {
                     $("#hangup").attr("disabled", false).val("Hangup");
