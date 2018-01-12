@@ -67,7 +67,8 @@
         }
         </style>
 
-        <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
+        <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.debug.js"></script>
+
     </head>
 
     <body>
@@ -95,10 +96,13 @@
                         <ul>
                             <li>QVGA : 320 x 240</li>
                             <li>VGA : 640 x 480</li>
-                            <li>XGA : 1024 x 768</li>
-                            <li>SXGA : 1280 x 720</li>
+                            <li>HD : 1080 x 720</li>
+                            <li>Full HD : 1920 x 1080</li>
+                            <li>4K : 4096 x 2160</li>
                         </ul>
-
+                        <p><b>All resolutions may not work depending of your camera resolution support.</b></p>
+                        <p>In this sample, size is not setted on video display in order to easily check the impact of video resolution settings.
+                        </p>
                         <p>Used apiRTC functions is :
                             <ul>
                             <li> - webRTCClient.setGetUserMediaConfig()</li>
@@ -117,14 +121,20 @@
                         Select resolution :
                         <input id="QVGA" class="btn btn-primary" type="button" value="QVGA" />
                         <input id="VGA" class="btn btn-primary" type="button" value="VGA" />
-                        <input id="XGA" class="btn btn-primary" type="button" value="XGA" />
-                        <input id="SXGA" class="btn btn-primary" type="button" value="SXGA" />
+                        <input id="HD" class="btn btn-primary" type="button" value="HD" />
+                        <input id="FULLHD" class="btn btn-primary" type="button" value="FULL HD" />
+                        <input id="4K" class="btn btn-primary" type="button" value="4K" />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col s12 m12 l12">
                         Selected resolution :
                         <span id="resolution"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m12 l12">
+                        <span id="userMediaErrorReason"></span>
                     </div>
                 </div>
 <!--RESOLUTION-->
@@ -279,6 +289,9 @@
             }
 
             function userMediaErrorHandler(e) {
+
+                console.warn('userMediaErrorHandler error:', e.detail.error);
+                $("#userMediaErrorReason").html("userMediaError for reason :" + e.detail.error.name);
                 $("#call").attr("disabled", false).val("Call");
                 $("#hangup").attr("disabled", false).val("Hangup");
             }
@@ -312,8 +325,10 @@
                 addStreamInDiv(e.detail.stream, e.detail.callType, "mini", 'miniElt-' + e.detail.callId,
                                {width : "160px", height : "120px"}, true);
             */
+                //webRTCClient.addStreamInDiv(e.detail.stream, e.detail.callType, "mini", 'miniElt-' + e.detail.callId,
+                //               {width : "128px", height : "96px"}, true);
                 webRTCClient.addStreamInDiv(e.detail.stream, e.detail.callType, "mini", 'miniElt-' + e.detail.callId,
-                               {width : "128px", height : "96px"}, true);
+                               {}, true);
             }
 
             function remoteStreamAddedHandler(e) {
@@ -328,8 +343,10 @@
                 addStreamInDiv(e.detail.stream, e.detail.callType, "remote", 'remoteElt-' + e.detail.callId,
                                {width : "640px", height : "480px"}, false);
             */
+                //webRTCClient.addStreamInDiv(e.detail.stream, e.detail.callType, "remote", 'remoteElt-' + e.detail.callId,
+                //               {width : "640px", height : "480px"}, false);
                 webRTCClient.addStreamInDiv(e.detail.stream, e.detail.callType, "remote", 'remoteElt-' + e.detail.callId,
-                               {width : "640px", height : "480px"}, false);
+                               {}, false);
             }
 
             function updateAddressBook() {
@@ -401,6 +418,9 @@
 
             //Call establishment
                 $("#callVideo").click(function () {
+
+                    $("#userMediaErrorReason").html("");
+
                     $("#hangup").attr("disabled", false).val("Hangup");
                     var callId = webRTCClient.call($("#number").val());
 
@@ -427,9 +447,8 @@
 
                 $("#resolution").html('QVGA');
 
-                var constraint = {
-                    'audio':{'mandatory': {}, 'optional': []},
-                    'video': {'mandatory': {maxWidth: 320, maxHeight: 240}, 'optional': []}};
+                var constraint ={};
+                    constraint.video = {width: {exact: 320}, height: {exact: 240}};
 
                 webRTCClient.setGetUserMediaConfig(constraint);
             });
@@ -438,35 +457,35 @@
                 console.log("VGA");
 
                 $("#resolution").html('VGA');
-
-                var constraint = {
-                    'audio':{'mandatory': {}, 'optional': []},
-                    'video': {'mandatory': {maxWidth: 640, maxHeight: 480}, 'optional': []}};
-
+                var constraint = {};
+                    constraint.video = {width: {exact: 640}, height: {exact: 480}};
                 webRTCClient.setGetUserMediaConfig(constraint);
             });
 
-            $("#XGA").click(function () {
-                console.log("XGA");
+            $("#HD").click(function () {
+                console.log("HD");
 
-                $("#resolution").html('XGA');
-
-                var constraint = {
-                    'audio':{'mandatory': {}, 'optional': []},
-                    'video': {'mandatory': {maxWidth: 1024, maxHeight: 768}, 'optional': []}};
-
+                $("#resolution").html('HD');
+                var constraint = {};
+                    constraint.video = {width: {exact: 1280}, height: {exact: 720}};
                 webRTCClient.setGetUserMediaConfig(constraint);
             });
 
-            $("#SXGA").click(function () {
-                console.log("SXGA");
+            $("#FULLHD").click(function () {
+                console.log("FULLHD");
 
-                $("#resolution").html('SXGA');
+                $("#resolution").html('FULLHD');
+                var constraint = {};
+                    constraint.video = {width: {exact: 1920}, height: {exact: 1080}};
+                webRTCClient.setGetUserMediaConfig(constraint);
+            });
 
-                var constraint = {
-                    'audio':{'mandatory': {}, 'optional': []},
-                    'video': {'mandatory': {maxWidth: 1280, maxHeight: 720}, 'optional': []}};
+            $("#4K").click(function () {
+                console.log("4K");
 
+                $("#resolution").html('4K');
+                var constraint = {};
+                    constraint.video = {width: {exact: 4096}, height: {exact: 2160}};
                 webRTCClient.setGetUserMediaConfig(constraint);
             });
 //RESOLUTION
