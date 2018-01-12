@@ -32,16 +32,27 @@
     <div class="row" style="text-align: center;">
         <span id="status" style="text-align: center">Registration Ongoing...</span>
     </div>
+<!--
     <div class="row" style="margin-top: 20px">
         <div class="remote" id="myRemoteVideo" style="width:100%;"></div>
     </div>
     <div class="row">
         <video width="30%" height="30%" id="myMiniVideo" autoplay style="display: none" muted></video>
     </div>
+-->
+    <div class="row" style="margin-top: 20px">
+            <div id="remote" style="width:100%;">
+            </div>
+        </div>
+    <div class="row">
+        <div id="mini">
+        </div>
+    </div>
 </div>
 
 
 <script>
+    var webRTCClient = null;
 
     function refreshVideoView() {
         if ((typeof device !== "undefined") && device.platform == 'iOS'){
@@ -58,12 +69,20 @@
         setTimeout(refreshVideoView,2000);
     }
 
+    function initMediaElementState(callId) {
+        //function that remove media element on hangup
+        webRTCClient.removeElementFromDiv('mini', 'miniElt-' + callId);
+        webRTCClient.removeElementFromDiv('remote', 'remoteElt-' + callId);
+    }
+
     function hangupHandler(e) {
         $("#call").show();
         $("#number").show();
         $("#hangup").hide();
         $('#status').html(e.detail.reason);
         $('#status').show();
+
+        initMediaElementState(e.detail.callId);
     }
 
     function userMediaErrorHandler(e) {
@@ -72,21 +91,43 @@
         $("#hangup").hide();
     }
 
+    function userMediaSuccessHandler(e) {
+        console.log("userMediaSuccessHandler e.detail.callId :" + e.detail.callId);
+
+        var streamType = 'video';
+
+        if( e.detail.videoIsAvailable === false) {
+            //User has no webcam
+            streamType = 'audio';
+        }
+        webRTCClient.addStreamInDiv(e.detail.stream, streamType, "mini", 'miniElt-' + e.detail.callId, {width : "160px", height : "120px"}, true);
+
+    }
+
     function remoteStreamAddedHandler(e) {
         refreshVideoView();
+
+        //Adding Remote Stream in Div. Video is not muted
+
+        // using e.detail.destCallType as streamType
+        webRTCClient.addStreamInDiv(e.detail.stream, e.detail.destCallType, "remote", 'remoteElt-' + e.detail.callId,
+                        {}, false);
     }
 
     function sessionReadyHandler(e) {
 
         apiRTC.addEventListener("incomingCall", incomingCallHandler);
         apiRTC.addEventListener("userMediaError", userMediaErrorHandler);
+        apiRTC.addEventListener("userMediaSuccess", userMediaSuccessHandler);
         apiRTC.addEventListener("remoteStreamAdded", remoteStreamAddedHandler);
         apiRTC.addEventListener("hangup", hangupHandler);
-
+/*
         var webRTCClient = apiCC.session.createWebRTCClient({
             minilocalVideo : "myMiniVideo",
             remoteVideo : "myRemoteVideo"
         });
+*/
+        webRTCClient = apiCC.session.createWebRTCClient({});
 
         $('#localNumber').html("Your local ID :<BR/>"+apiCC.session.apiCCId);
         $('#myMiniVideo').show();
