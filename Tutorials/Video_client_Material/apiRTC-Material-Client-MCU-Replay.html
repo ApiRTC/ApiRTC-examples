@@ -93,7 +93,7 @@
                 <div class="row">
                     <div class="col s12 m8 l8">
                         This sample shows an apiRTC client build with Material design.
-                        This sample enable you to replay streams being recorded.
+                        This sample enables you to replay streams being recorded. Check our <a href="../Video_client_Material/apiRTC-Material-Client-Video-Record.html" target="_blank">Tuto 7</a> to start a recorded call
                     </div>
                     <div class="col s12 m4 l4 valign-wrapper">
                         <a href="../Video_client_Material/apiRTC-Material-Client-MCU-Replay.html" target="_blank" class="valign btn btn-large waves-effect waves-light btn-open">Open another client</a>
@@ -124,9 +124,11 @@
                 </div>
 
                 <div class="row">
+                    <div id="streamsListContainer">
                     <ul id="streamsList" class="collection with-header">
 
                     </ul>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -419,14 +421,6 @@
                     status : "status" //Optionnal
                 });
 
-
-                var url = new URL(window.location.href);
-                var roomId = url.searchParams.get("roomId");
-                if (typeof(roomId) === 'string') {
-                    console.log("roomId: " + roomId);
-                    document.getElementById("number").value = roomId;
-                }
-
 //Test join auto ongoing
                 //webRTCClient.joinMCUSession($("#number").val());
 
@@ -439,6 +433,20 @@
 
                 imClient = apiCC.session.createIMClient();
 
+                var url = new URL(window.location.href);
+                var roomId = url.searchParams.get("roomId");
+                if (typeof(roomId) === 'string') {
+                    console.log("roomId is present in URL: " + roomId);
+                    document.getElementById("number").value = roomId;
+                    
+                    $("#streamsList").append('<li class="collection-header" id=replayList><h5>List of available replay in room :</h5></li>');
+
+                    $("#joinMCUSession").attr("disabled", true);
+
+                    console.log("Joining room : " + roomId);
+                    webRTCClient.joinMCUSession($("#number").val());
+                }
+
             //Global hangup management : all established client calls will be hangup
                 $("#hangup").click(function () {
                     $("#call").attr("disabled", false).val("Call");
@@ -448,7 +456,9 @@
                 $("#joinMCUSession").click(function () {
                     console.log("joinMCUSession");
 
+                    $("#streamsListContainer").append('<ul id="streamsList" class="collection with-header"></ul>');
                     $("#streamsList").append('<li class="collection-header" id=replayList><h5>List of available replay in room :</h5></li>');
+                    $("#joinMCUSession").attr("disabled", true);
 
                     webRTCClient.joinMCUSession($("#number").val());
                 });
@@ -457,6 +467,7 @@
                     console.log("leaveMCUSession");
                     webRTCClient.leaveMCUSession($("#number").val());
                     $("#streamsList").remove();
+                    $("#joinMCUSession").attr("disabled", false);
                 });
 
             }
