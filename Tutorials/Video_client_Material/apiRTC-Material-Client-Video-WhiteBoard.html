@@ -43,7 +43,11 @@
 
         }
         </style>
+<!--
         <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
+-->
+        <script src="https://cloud.apizee.com/apiRTC/v3.17/apiRTC-3.17.min.debug.js"></script>
+
         <link rel="stylesheet" type="text/css" href="assets/css/whiteBoard.css">
     </head>
         <body>
@@ -73,6 +77,7 @@
                         <ul>
                         <li>o Establish video calls with different clients.</li>
                         <li>o Start a WhiteBoard session with another user</li>
+                        <li>o Start a WhiteBoard session offline</li>
                         </ul>
                         <br>
                     </div>
@@ -94,7 +99,7 @@
                                 <input class="btn" id="videoMute" type="button" disabled="true" value="Registration Ongoing..." />
                                 <input class="btn" id="hangup" type="button" disabled="true" value="Hangup" />
                                 <input class="btn" id="createRoom" type="button" disabled="true" value="Registration Ongoing..." />
-                                <input class="btn" id="leaveRoom" type="button" disabled="true" value="Registration Ongoing..." />
+                                <input class="btn" id="leaveRoom" type="button" value="leaveRoom" />
                                 <input class="btn" id="clearPaper" type="button" disabled="true" value="Registration Ongoing..." />
                                 <input class="btn" id="touchScreen" type="button" disabled="true" value="ENABLE/DISABLE TOUCHSCREEN (Mobile)" />                                
                                 <input class="btn" id="inviteButton" type="button" disabled="true" value="Registration Ongoing..." />
@@ -197,7 +202,8 @@
                 <h1>Start Drawing !</h1>
                 <h2>Enter the userId of the user you want to join, then start the whiteboard by creating a room : "createRoom". it will invite your contact</h2>
                 <h2>You will then be able to work together on your drawing</h2>
-                <input class="btn" onclick="document.getElementById('instructions').style.display='none'; " value="START !" />                
+                <input class="btn" onclick="document.getElementById('instructions').style.display='none'; " value="START !" />
+                <input class="btn orange" onclick="startOfflineWhiteboard()" value="START OFFLINE !" />           
             </hgroup>
     </main>
     <footer class="page-footer grey darken-3">
@@ -221,7 +227,12 @@
           &copy; 2014-2017 Apizee
           </div>
         </div>
-      </footer>    
+      </footer>
+
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+
     <script>
 
         'use strict';
@@ -353,13 +364,45 @@
 
                 whiteBoardClient.createRoom();
             });
+
+            //whiteBoardClient = apiCC.session.createWhiteBoard('paper', 'cursors', 'instructions', 6000);
+            whiteBoardClient = apiCC.createWhiteBoard('paper', 'cursors', 'instructions', 6000);
+            
+            //whiteBoardClient = apiCC.session.createWhiteBoard(null, null, 'instructions', 6000);
+
+            //whiteBoardClient.getContext().lineWidth = 15;
+            //whiteBoardClient.getContext().lineCap = "round"
+            //whiteBoardClient.createRoom();
+
+            webRTCClient.getMediaDevices(gotSources);
+        }
+
+        apiRTC.init({
+            apiKey : "myDemoApiKey",
+            onReady : sessionReadyHandler,
+            //ccsServer : "testfredccs.apizee.com",
+            userData : {
+                    "lastName": "lastName",
+                    "firstName": "firstName"
+                }
+        });
+
+        function startOfflineWhiteboard() {
+            document.getElementById('instructions').style.display='none';
+
+            whiteBoardClient = apiCC.createWhiteBoard('paper', 'cursors', 'instructions', 6000);
+            whiteBoardClient.start();
+        }
+
+        $(document).ready(function () {
+
             $("#leaveRoom").unbind( "click" );
             $("#leaveRoom").click(function () {
                 whiteBoardClient.leaveRoom(whiteBoardRoomId);
-
                 //Stopping whiteboard process : mousemove detection ...
                 whiteBoardClient.stop();
             });
+
             $("#touchScreen").click(function () {
                 whiteBoardClient.toggleTouchScreen();
             });
@@ -388,24 +431,6 @@
             $('#textInputButton').click(function(){
                 whiteBoardClient.printSharedText($('#textInputX').val(), $('#textInputY').val(), $('#textInput').val(), 20);
             });
-
-            whiteBoardClient = apiCC.session.createWhiteBoard('paper', 'cursors', 'instructions', 6000);
-            //whiteBoardClient = apiCC.session.createWhiteBoard(null, null, 'instructions', 6000);
-
-            //whiteBoardClient.getContext().lineWidth = 15;
-            //whiteBoardClient.getContext().lineCap = "round"
-            //whiteBoardClient.createRoom();
-
-            webRTCClient.getMediaDevices(gotSources);
-        }
-
-        apiRTC.init({
-            apiKey : "myDemoApiKey",
-            onReady : sessionReadyHandler,
-            userData : {
-                    "lastName": "lastName",
-                    "firstName": "firstName"
-                }
         });
 
         var audioSelect = document.querySelector("select#audioSource");
@@ -438,8 +463,5 @@
         }
         </script>
 
-        <!-- Compiled and minified JavaScript -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
     </body>
 </html>
