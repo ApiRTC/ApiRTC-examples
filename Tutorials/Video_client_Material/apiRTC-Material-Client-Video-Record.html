@@ -97,7 +97,7 @@
                         </p>
                         <p>Used apiRTC functions are :
                             <ul>
-                            <li> - webRTCClient.call() with option 'RECORD'</li>
+                            <li> - webRTCClient.call() with callconfiguration.record parameter</li>
                             <li> - webRTCClient.setRecordedCall() can be use to set an option to RECORD all the calls (this is not shown in this demo)</li>
                             </ul>
                         </p>
@@ -502,7 +502,12 @@
             //Record
                 $("#recordVideo").click(function () {
                     $("#hangup").attr("disabled", false).val("Hangup");
-                    var callId = webRTCClient.call($("#number").val(), 'RECORD');
+
+                    var data = {};
+                    var callConfiguration = {
+                        record : true
+                    };
+                    var callId = webRTCClient.call($("#number").val(), data, callConfiguration);
 
                     console.log("callId on call =" + callId);
                     if (callId != null) {
