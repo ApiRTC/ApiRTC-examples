@@ -66,7 +66,11 @@
             background: #d6d6d6;
         }
         </style>
+<!--
         <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.debug.js"></script>
+-->
+        <script src="https://cloud.apizee.com/apiRTC/v3.17/apiRTC-3.17.min.debug.js"></script>
+
     </head>
 
     <body>
@@ -148,6 +152,10 @@
                     <select class="browser-default" id='audioOutputDevice'>
                         <option value="" disabled selected>Choose your option</option>
                     </select>
+                    <label>Facing mode: (Mobile devices)</label>
+                    <select class="browser-default" id='facingMode'>
+                        <option value="" disabled selected>Choose your option</option>
+                    </select>
 <!--SELECT_MEDIA-->
                     </div>
 
@@ -198,12 +206,23 @@
             audioSelect = document.querySelector("select#audioSource"),
             videoSelect = document.querySelector("select#videoSource"),
             audioOutputDeviceSelect = document.querySelector("select#audioOutputDevice"),
+            facingModeSelect = document.querySelector("select#facingMode"),
             callId = 0;
-        
+
+        function setFacingModeOption(option, text) {
+            var optionElt = document.createElement("option");
+            optionElt.value = option;
+            optionElt.text = text;
+            facingModeSelect.appendChild(optionElt);
+        }
+        setFacingModeOption("user", "user - Front Camera" );
+        setFacingModeOption("environment", "environment - Back Camera"); 
+        setFacingModeOption("deactivated", "deactivated - Default Camera" ); 
+
         function selectMediaChange() {
 
             console.log('selectMediaChange');
-            webRTCClient.setAudioSourceId(audioSelect.value);
+            //webRTCClient.setAudioSourceId(audioSelect.value);
             //Storing audioSourceId in localStorage
             localStorage.setItem("audioSourceId_" + apiRTC.session.apiCCId, audioSelect.value);
             webRTCClient.setVideoSourceId(videoSelect.value);
@@ -234,10 +253,17 @@
             }
         }
 
+        function selectfacingModeChange() {
+
+            console.log('selectfacingModeChange :', facingModeSelect.value);
+            webRTCClient.setVideoFacingMode(facingModeSelect.value)
+        }
+
         audioSelect.onchange = selectMediaChange;
         videoSelect.onchange = selectMediaChange;
         audioOutputDeviceSelect.onchange = selectOutputDeviceChange;
-        
+        facingModeSelect.onchange = selectfacingModeChange;
+
         function gotSources(sourceInfos) {
             console.log('gotSources');
             var audioDeviceFound = false,
@@ -307,7 +333,7 @@
             if (audioDeviceFound) {
                 console.log("setting with localStorage audioSourceId value");
                 audioSelect.value = audioSourceIdInLocalStorage;
-                webRTCClient.setAudioSourceId(audioSourceIdInLocalStorage);
+                //webRTCClient.setAudioSourceId(audioSourceIdInLocalStorage);
             } else {
                 //removing audioSourceId from localStorage
                 console.log("removing audioSourceId_ in localStorage");
@@ -555,7 +581,7 @@
         //sessionReadyHandler : apiRTC is now connected
         function sessionReadyHandler(e) {
         
-            console.log('sessionReadyHandler :' + apiRTC.session.apiCCId);
+            console.log('sessionReadyHandler:' + apiRTC.session.apiCCId);
         
             $("#call").attr("disabled", false).val("Call");   //Modification of Call button when phone is registered on Apizee
         
