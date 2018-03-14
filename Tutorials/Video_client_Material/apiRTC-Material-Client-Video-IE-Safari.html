@@ -66,7 +66,10 @@
             background: #d6d6d6;
         }
         </style>
+<!--
         <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
+-->
+        <script src="https://cloud.apizee.com/apiRTC/v3.18/apiRTC-3.18.min.debug.js"></script>
     </head>
 
     <body>
@@ -348,9 +351,8 @@
 
                 console.log('webRTCPluginInstallationHandler in Page');
 
-                alert('A plugin is necessary on your browser to establish calls. Please follow the installation instruction and then refresh your page. You will then be able to establish your calls');
-
-                $("#hangup").attr("disabled", true).val("Hangup");
+                $('#status2').append("A plugin is necessary on your browser to establish calls. Please follow the installation instruction, call will then be established. Please note that a page refresh may be needed");
+                //$("#hangup").attr("disabled", true).val("Hangup");
             }
 
             //sessionReadyHandler : apiRTC is now connected

@@ -65,9 +65,10 @@
             background: #d6d6d6;
         }
         </style>
-
+<!--
         <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
-
+-->
+        <script src="https://cloud.apizee.com/apiRTC/v3.18/apiRTC-3.18.min.debug.js"></script>
     </head>
 
     <body>
@@ -114,14 +115,9 @@
                     <div class="col s12 m12 l12">
                         <div class="col s12 m6 l6">
                             <div class="input-field">
-
                                 <input type="text" id="number" class="form-control" placeholder="Room name" aria-describedby="sizing-addon1">
-
                                 <input id="joinMCUSession" class="btn green" type="button" value="join Video Group" />
-
                                 <input id="leaveMCUSession" class="btn green" type="button" value="leave" />
-
-
                             </div>
                         </div>
 
@@ -559,7 +555,8 @@
             apiRTC.init({
                 apiKey : "myDemoApiKey",
                 //apiCCId : "1",
-                onReady : sessionReadyHandler
+                onReady : sessionReadyHandler,
+                webRTCPluginActivated : true
             });
         </script>
     </body>

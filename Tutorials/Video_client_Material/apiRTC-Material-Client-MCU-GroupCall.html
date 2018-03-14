@@ -65,7 +65,10 @@
             background: #d6d6d6;
         }
         </style>
-        <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.debug.js"></script>
+<!--
+        <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
+-->
+        <script src="https://cloud.apizee.com/apiRTC/v3.18/apiRTC-3.18.min.debug.js"></script>
     </head>
 
     <body>
@@ -443,7 +446,8 @@
             apiRTC.init({
                 apiKey : "myDemoApiKey",
                 //apiCCId : "1",
-                onReady : sessionReadyHandler
+                onReady : sessionReadyHandler,
+                webRTCPluginActivated : true
             });
         </script>
     </body>

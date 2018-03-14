@@ -65,7 +65,10 @@
             background: #d6d6d6;
         }
         </style>
+<!--
         <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
+-->
+        <script src="https://cloud.apizee.com/apiRTC/v3.18/apiRTC-3.18.min.debug.js"></script>
     </head>
 
     <body>
@@ -460,8 +463,11 @@
             function MCURecordedStreamsAvailableHandler(e) {
                 console.log("MCURecordedStreamsAvailableHandler :", e.detail);
 
-
-                $("#recordedStreamList").append('<li class="collection-item" id=' + e.detail.recordedFileName + '><div>' + 'File : ' + e.detail.recordedFileName + '<a href="https://data2.apizee.com:10000/videoManager?action=play&recordedFileName=' + e.detail.recordedFileName + '" target="_blank" class="secondary-content">Play File</a></div></li>');
+                if (e.detail.mediaURL !== undefined) {
+                    $("#recordedStreamList").append('<li class="collection-item" id=' + e.detail.recordedFileName + '><div>' + 'File : ' + e.detail.recordedFileName + '<a href="' + e.detail.mediaURL + '" target="_blank" class="secondary-content">Play File</a></div></li>');
+                } else {
+                    $("#recordedStreamList").append('<li class="collection-item" id=' + e.detail.recordedFileName + '><div>' + 'File : ' + e.detail.recordedFileName + '<a href="https://data2.apizee.com:10000/videoManager?action=play&recordedFileName=' + e.detail.recordedFileName + '" target="_blank" class="secondary-content">Play File</a></div></li>');
+                }
 
                 $("#startRecording").attr("disabled", false);
                 $("#startRecordingAudioOnly").attr("disabled", false);
@@ -518,7 +524,7 @@
             //Bandwitdh limitation
                 webRTCClient.setVideoBandwidth(1500);
 
-                webRTCClient.setMCUConnector('mcu3.apizee.com');
+                webRTCClient.setMCUConnector('mcu4.apizee.com');
 
                 imClient = apiCC.session.createIMClient();
 
@@ -586,7 +592,8 @@
             apiRTC.init({
                 apiKey : "myDemoApiKey",
                 //apiCCId : "1",
-                onReady : sessionReadyHandler
+                onReady : sessionReadyHandler,
+                webRTCPluginActivated : true
             });
         </script>
     </body>
