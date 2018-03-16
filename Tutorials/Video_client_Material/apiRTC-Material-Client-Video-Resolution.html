@@ -448,7 +448,9 @@
                 $("#resolution").html('QVGA');
 
                 var constraint ={};
-                    constraint.video = {width: {exact: 320}, height: {exact: 240}};
+                
+                constraint.video = {width: {exact: 320}, height: {exact: 240}};
+                constraint.audio = {};
 
                 webRTCClient.setGetUserMediaConfig(constraint);
             });
@@ -458,7 +460,10 @@
 
                 $("#resolution").html('VGA');
                 var constraint = {};
-                    constraint.video = {width: {exact: 640}, height: {exact: 480}};
+
+                constraint.video = {width: {exact: 640}, height: {exact: 480}};
+                constraint.audio = {};
+
                 webRTCClient.setGetUserMediaConfig(constraint);
             });
 
@@ -467,7 +472,10 @@
 
                 $("#resolution").html('HD');
                 var constraint = {};
-                    constraint.video = {width: {exact: 1280}, height: {exact: 720}};
+                
+                constraint.video = {width: {exact: 1280}, height: {exact: 720}};
+                constraint.audio = {};
+
                 webRTCClient.setGetUserMediaConfig(constraint);
             });
 
@@ -476,7 +484,10 @@
 
                 $("#resolution").html('FULLHD');
                 var constraint = {};
-                    constraint.video = {width: {exact: 1920}, height: {exact: 1080}};
+                
+                constraint.video = {width: {exact: 1920}, height: {exact: 1080}};
+                constraint.audio = {};
+
                 webRTCClient.setGetUserMediaConfig(constraint);
             });
 
@@ -485,7 +496,10 @@
 
                 $("#resolution").html('4K');
                 var constraint = {};
-                    constraint.video = {width: {exact: 4096}, height: {exact: 2160}};
+                
+                constraint.video = {width: {exact: 4096}, height: {exact: 2160}};
+                constraint.audio = {};
+                
                 webRTCClient.setGetUserMediaConfig(constraint);
             });
 //RESOLUTION
