@@ -67,7 +67,6 @@
         }
         </style>
         <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.debug.js"></script>
-
     </head>
 
     <body>
@@ -516,7 +515,18 @@
         */
 
             //SAFARI : media devices list can be updated after a userMediaSuccess
-            webRTCClient.getMediaDevices(gotSources);
+            if ((apiRTC.browser === 'IE') && (apiRTC.browser_version > 8.0)) {
+                apiRTC.getMediaDevicesWithCB(gotSources);
+            } else {
+                apiRTC.getMediaDevices()
+                    .then(function (sources) {
+                        console.log("getMediaDevices(), sources :", sources);
+                        gotSources(sources);
+                    })
+                    .catch(function (err) {
+                        console.log("getMediaDevices(), error :", err);
+                    });
+            }
         }
         
         function remoteStreamAddedHandler(e) {
@@ -575,6 +585,18 @@
             updateAddressBook();
         }
         
+        function mediaDeviceChangedHandler(e) {
+            console.log("mediaDeviceChangedHandler");
+            apiRTC.getMediaDevices()
+                .then(function (sources) {
+                    console.log("getMediaDevices(), sources :", sources);
+                    gotSources(sources);
+                })
+                .catch(function (err) {
+                    console.log("getMediaDevices(), error :", err);
+                });
+        }
+
         //sessionReadyHandler : apiRTC is now connected
         function sessionReadyHandler(e) {
         
@@ -595,14 +617,28 @@
         //connectedUsersList
             apiRTC.addEventListener("connectedUsersListUpdate", connectedUsersListUpdateHandler);
         //connectedUsersList
-        
+ 
+            apiRTC.addEventListener("mediaDeviceChanged", mediaDeviceChangedHandler);
+
             //webRTC Client creation
             webRTCClient = apiRTC.session.createWebRTCClient({
                 status: "status" //Optionnal
             });
         
         //SELECT_MEDIA
-            webRTCClient.getMediaDevices(gotSources);
+            //webRTCClient.getMediaDevices(gotSources);
+            if ((apiRTC.browser === 'IE') && (apiRTC.browser_version > 8.0)) {
+                apiRTC.getMediaDevicesWithCB(gotSources);
+            } else {
+                apiRTC.getMediaDevices()
+                    .then(function (sources) {
+                        console.log("getMediaDevices(), sources :", sources);
+                        gotSources(sources);
+                    })
+                    .catch(function (err) {
+                        console.log("getMediaDevices(), error :", err);
+                    });
+            }
         //SELECT_MEDIA
         
         //Multi calls Activation
