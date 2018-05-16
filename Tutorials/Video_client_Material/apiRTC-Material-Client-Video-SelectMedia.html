@@ -98,7 +98,7 @@
                         </p>
                         <p>This sample also demonstrate the usage of updateMediaDeviceOnCall() function which enable to change your device during a call.
                         During a call, select another device and click on updateMediaDevice button to update your stream with your new device.
-                        </p>                       
+                        </p>
                     </div>
                     <div class="col s12 m4 l4 valign-wrapper">
                         <a href="../Video_client_Material/apiRTC-Material-Client-Video-SelectMedia.html" target="_blank" class="valign btn btn-large waves-effect waves-light btn-open">Open another client</a>
@@ -119,6 +119,9 @@
                                 </ul>
                                 <button type="button" id="callVideo" class="btn btn-success">
                                   <i class="fa fa-phone"></i>
+                                </button>
+                                <button type="button" id="recordedCallVideo" class="btn btn-success">
+                                  <i class="fa fa-dot-circle-o"></i>
                                 </button>
                                 <input id="hangup" class="btn red" type="button" disabled="true" value="Hangup" />
                                 <input type="text" id="number" class="form-control" placeholder="Username" aria-describedby="sizing-addon1">
@@ -161,6 +164,10 @@
                 </div>
                 <br>
                 <div class="row">
+                    <div id="recordedStreamList" style="display: none;"><h5>List of available media:</h5></div>
+                </div>
+                <br>
+                <div class="row">
                     <div id="remote" style="width:100%;"></div>
                     <div id="mini"></div>
                 </div>
@@ -197,7 +204,7 @@
         var session = null,
             webRTCClient = null,
             connectedUsersList = [],
-        
+
         //SELECT_MEDIA
             audioSelect = document.querySelector("select#audioSource"),
             videoSelect = document.querySelector("select#videoSource"),
@@ -212,8 +219,8 @@
             facingModeSelect.appendChild(optionElt);
         }
         setFacingModeOption("user", "user - Front Camera" );
-        setFacingModeOption("environment", "environment - Back Camera"); 
-        setFacingModeOption("deactivated", "deactivated - Default Camera" ); 
+        setFacingModeOption("environment", "environment - Back Camera");
+        setFacingModeOption("deactivated", "deactivated - Default Camera" );
 
         function selectMediaChange() {
 
@@ -277,19 +284,19 @@
                     select.removeChild(select.firstChild);
                 }
             });
-        
+
             if (sourceInfos !== null) {
-        
+
                 for (i = 0; i != sourceInfos.length; i += 1) {
-        
+
                     var sourceInfo = sourceInfos[i];
                     console.log('sourceInfo :', sourceInfo);
-        
+
                     var option = document.createElement("option");
                     option.value = sourceInfo.deviceId;
 
                     console.log('option.value :', option.value);
-        
+
         //ENUMERATE
                     if (sourceInfo.kind === 'audio' || sourceInfo.kind === 'audioinput') {
         //ENUMERATE
@@ -302,13 +309,13 @@
                         console.log('video');
                         option.text = sourceInfo.label || 'camera ' + (videoSelect.length);
                         videoSelect.appendChild(option);
-        
+
                     } else if (sourceInfo.kind === 'audiooutput') {
-        
+
                         console.log('audiooutput');
                         option.text = sourceInfo.label || 'speaker ' + (audioOutputDeviceSelect.length);
                         audioOutputDeviceSelect.appendChild(option);
-        
+
                     } else {
                         console.log('Some other kind of source: ', sourceInfo);
                     }
@@ -325,7 +332,7 @@
             } else {
                 console.log("Media detection is not supported by browser");
             }
-        
+
             if (audioDeviceFound) {
                 console.log("setting with localStorage audioSourceId value");
                 audioSelect.value = audioSourceIdInLocalStorage;
@@ -357,7 +364,7 @@
             }
         }
         //SELECT_MEDIA
-        
+
         function selectPhonebookItem(idItem) {
             $("#number").val(idItem);
             $("#addressBookDropDown").toggle();
@@ -402,7 +409,7 @@
                 mediaElt.style.borderRadius = "1px";
                 console.log('Patch for video display on Chrome 61 Android');
             }
-            
+
             divElement = document.getElementById(divId);
             divElement.appendChild(mediaElt);
 
@@ -415,10 +422,10 @@
 
         //Function to remove media stream element
         function removeElementFromDiv(divId, eltId) {
-        
+
             var element = null,
                 divElement = null;
-        
+
             element = document.getElementById(eltId);
             if (element !== null) {
                 console.log('Removing video element with Id : ' + eltId);
@@ -426,10 +433,10 @@
                 divElement.removeChild(element);
             }
         }
-        
+
         function initMediaElementState(callId) {
             //function that remove media element on hangup
-        
+
         //You can decide to manage your own stream display function or use the integrated one of ApiRTC
         /*
             removeElementFromDiv('mini', 'miniElt-' + callId)
@@ -438,35 +445,35 @@
             webRTCClient.removeElementFromDiv('mini', 'miniElt-' + callId);
             webRTCClient.removeElementFromDiv('remote', 'remoteElt-' + callId);
         }
-        
+
         function addHangupButton(callId) {
             var hangupButtons = document.getElementById("hangupButtons"),
                 input = document.createElement("input");
-        
+
             input.setAttribute("id", "hangup-" + callId);
             input.setAttribute("value", "hangup-" + callId);
             input.setAttribute("type", "button");
             input.setAttribute("onclick", "webRTCClient.hangUp(" + callId + " );");
             hangupButtons.appendChild(input);
         }
-        
+
         function removeHangupButton(callId) {
             var hangupButtonId = 'hangup-' + callId,
                 hangupButton = document.getElementById(hangupButtonId),
                 hangupButtons = null;
-        
+
             if (hangupButton !== null) {
                 console.log('Removing hangUpButton with Id : ' + hangupButtonId);
                 hangupButtons = document.getElementById("hangupButtons");
                 hangupButtons.removeChild(hangupButton);
             }
         }
-        
+
         function userMediaErrorHandler(e) {
             $("#call").attr("disabled", false).val("Call");
             $("#hangup").attr("disabled", false).val("Hangup");
         }
-        
+
         //UpdateMediaDeviceOnCall
         function userMediaStopHandler(e) {
             console.log('userMediaStopHandler :', e.detail);
@@ -477,38 +484,38 @@
             webRTCClient.removeElementFromDiv('remote', 'remoteElt-' + e.detail.callId);
         }
         //UpdateMediaDeviceOnCall
-        
+
         function hangupHandler(e) {
             console.log('hangupHandler :' + e.detail.callId);
-        
+
             if (e.detail.lastEstablishedCall === true) {
                 $("#call").attr("disabled", false).val("Call");
             }
             console.log(e.detail.reason);
-        
+
             initMediaElementState(e.detail.callId);
             removeHangupButton(e.detail.callId);
             callId = 0;
         }
-        
+
         function incomingCallHandler(e) {
             $("#hangup").attr("disabled", false).val("Hangup");
             addHangupButton(e.detail.callId);
             callId = e.detail.callId;
         }
-        
+
         function userMediaSuccessHandler(e) {
             console.log("userMediaSuccessHandler e.detail.callId :" + e.detail.callId);
             console.log("userMediaSuccessHandler e.detail.callType :" + e.detail.callType);
             console.log("userMediaSuccessHandler e.detail.remoteId :" + e.detail.remoteId);
-        
+
             //Adding local Stream in Div. Video is muted
-        
+
         //You can decide to manage your own stream display function or use the integrated one of ApiRTC
-        
+
             addStreamInDiv(e.detail.stream, e.detail.callType, "mini", 'miniElt-' + e.detail.callId,
                             {width : "160px", height : "120px"}, true);
-        
+
         /*
             webRTCClient.addStreamInDiv(e.detail.stream, e.detail.callType, "mini", 'miniElt-' + e.detail.callId,
                     {width: "128px", height: "96px"}, true);
@@ -528,16 +535,16 @@
                     });
             }
         }
-        
+
         function remoteStreamAddedHandler(e) {
             console.log("remoteStreamAddedHandler, e.detail.callId :" + e.detail.callId);
             console.log("remoteStreamAddedHandler, e.detail.callType :" + e.detail.callType);
             console.log("userMediaSuccessHandler e.detail.remoteId :" + e.detail.remoteId);
-        
+
             //Adding Remote Stream in Div. Video is not muted
-        
+
         //You can decide to manage your own stream display function or use the integrated one of ApiRTC
-        
+
             addStreamInDiv(e.detail.stream, e.detail.callType, "remote", 'remoteElt-' + e.detail.callId,
                             {width : "640px", height : "480px"}, false);
         /*
@@ -545,22 +552,22 @@
                     {width: "640px", height: "480px"}, false);
         */
         }
-        
+
         function updateAddressBook() {
             console.log("updateAddressBook");
             var length = connectedUsersList.length,
                 i = 0;
-        
+
             //Cleaning addressBook list
             $("#addressBookDropDown").empty();
-        
+
             for (i = 0; i < length; i += 1) {
-        
+
                 //Checking if connectedUser is not current user befire adding in addressBook list
                 if (connectedUsersList[i].userId !== apiRTC.session.apiCCId) {
-        
+
                     if (connectedUsersList[i].group !== undefined) {
-        
+
                         $("#addressBookDropDown").append('<li><a href="#" onclick="selectPhonebookItem(' + connectedUsersList[i].userId + ')">' + connectedUsersList[i].userId + ' - ' + connectedUsersList[i].group + '</a></li>');
                     } else {
                         $("#addressBookDropDown").append('<li><a href="#" onclick="selectPhonebookItem(' + connectedUsersList[i].userId + ')">' + connectedUsersList[i].userId + '</a></li>');
@@ -568,23 +575,23 @@
                 }
             }
         }
-        
+
         function connectedUsersListUpdateHandler(e) {
             console.log("connectedUsersListUpdateHandler, e.detail.group :" + e.detail.group);
-        
+
             //getting complete connectedUsersList
             //connectedUsersList = apiRTC.session.getConnectedUsersList();
-        
+
             //getting connectedUsersList of updated group
             //connectedUsersList = apiRTC.session.getConnectedUsersList(e.detail.group);
-        
+
             connectedUsersList = apiRTC.session.getConnectedUserIdsList();
             //console.log("connectedUsersList.length :" + connectedUsersList.length);
-        
+
             //Updating addressBook
             updateAddressBook();
         }
-        
+
         function mediaDeviceChangedHandler(e) {
             console.log("mediaDeviceChangedHandler");
             apiRTC.getMediaDevices()
@@ -597,13 +604,21 @@
                 });
         }
 
+    //Record
+        function MCURecordedStreamsAvailableHandler(e) {
+
+            $("#recordedStreamList").show();
+            $("#recordedStreamList").append('<li class="collection-item" id=' + e.detail.recordedFileName + '><div>' + 'File : ' + e.detail.recordedFileName + '<a href="' + e.detail.mediaURL + '" target="_blank" class="secondary-content">Play</a></div></li>');
+
+        }
+
         //sessionReadyHandler : apiRTC is now connected
         function sessionReadyHandler(e) {
-        
+
             console.log('sessionReadyHandler:' + apiRTC.session.apiCCId);
-        
+
             $("#call").attr("disabled", false).val("Call");   //Modification of Call button when phone is registered on Apizee
-        
+
             apiRTC.addEventListener("userMediaSuccess", userMediaSuccessHandler);
             apiRTC.addEventListener("incomingCall", incomingCallHandler);
             apiRTC.addEventListener("userMediaError", userMediaErrorHandler);
@@ -613,18 +628,21 @@
         //UpdateMediaDeviceOnCall
             apiRTC.addEventListener("hangup", hangupHandler);
             apiRTC.addEventListener("remoteStreamAdded", remoteStreamAddedHandler);
-        
+
         //connectedUsersList
             apiRTC.addEventListener("connectedUsersListUpdate", connectedUsersListUpdateHandler);
         //connectedUsersList
- 
+
             apiRTC.addEventListener("mediaDeviceChanged", mediaDeviceChangedHandler);
+
+        //Record
+            apiRTC.addEventListener("MCURecordedStreamsAvailable", MCURecordedStreamsAvailableHandler);
 
             //webRTC Client creation
             webRTCClient = apiRTC.session.createWebRTCClient({
                 status: "status" //Optionnal
             });
-        
+
         //SELECT_MEDIA
             //webRTCClient.getMediaDevices(gotSources);
             if ((apiRTC.browser === 'IE') && (apiRTC.browser_version > 8.0)) {
@@ -640,30 +658,54 @@
                     });
             }
         //SELECT_MEDIA
-        
+
+        //Force MCU (recorded call)
+            webRTCClient.setMCUConnector('mcu4.apizee.com');
+
         //Multi calls Activation
             webRTCClient.setAllowMultipleCalls(true);
-        
+
         //Bandwitdh limitation
             webRTCClient.setVideoBandwidth(300);
-        
+
         //Call establishment
             $("#callVideo").click(function () {
                 $("#hangup").attr("disabled", false).val("Hangup");
                 callId = webRTCClient.call($("#number").val());
-        
+
                 console.log("callId on call =" + callId);
                 if (callId != null) {
                     addHangupButton(callId);
                 }
             });
-        
+
+        //Call establishment (recorded call)
+            $("#recordedCallVideo").click(function () {
+                $("#hangup").attr("disabled", false).val("Hangup");
+
+                var data = {
+            //Optional convId
+                    //~ convId: 123456
+                };
+                var callConfiguration = {
+            //Activating record for call
+                    record: true
+                };
+
+                callId = webRTCClient.call($("#number").val(), data, callConfiguration);
+
+                console.log("callId on call =" + callId);
+                if (callId != null) {
+                    addHangupButton(callId);
+                }
+            });
+
         //Global hangup management : all established client calls will be hangup
             $("#hangup").click(function () {
                 $("#call").attr("disabled", false).val("Call");
                 webRTCClient.hangUp();
             });
-        
+
         //UpdateMediaDeviceOnCall
             $("#updateMediaDeviceOnCall").click(function () {
                 console.log("updateMediaDeviceOnCall");
@@ -671,11 +713,11 @@
             });
         //UpdateMediaDeviceOnCall
         }
-        
+
         $("#addressBook").on('click', function () {
             $("#addressBookDropDown").toggle();
         });
-        
+
         //apiRTC initialization
         apiRTC.init({
             apiKey: "myDemoApiKey",
