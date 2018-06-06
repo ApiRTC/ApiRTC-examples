@@ -80,17 +80,15 @@
 
         <main class="container grey lighten-5">
             <div class="container master grey lighten-5">
-                <h3><i class="fa fa-dot-circle-o"></i> Tutorial 15: ApiRTC - Group Video call with recording</h3>
+                <h3><i class="fa fa-dot-circle-o"></i> Tutorial 18: ApiRTC - RTMP Streaming</h3>
                 <p>
-                <a href="https://github.com/apizee/ApiRTC-examples/blob/master/Tutorials/Video_client_Material/apiRTC-Material-Client-MCU-Record.html" target="_blank"><i class="fa fa-github" style="vertical-align: middle;"></i> This sample is accessible on Github</a>
+                <a href="https://github.com/apizee/ApiRTC-examples/blob/master/Tutorials/Video_client_Material/apiRTC-Material-Client-MCU-RTMP-Streaming.html" target="_blank"><i class="fa fa-github" style="vertical-align: middle;"></i> This sample is accessible on Github</a>
                 </p>
                 <br>
                 <div class="row">
                     <div class="col s12 m8 l8">
                         This sample shows an apiRTC client build with Material design.
-                        This sample enables you to establish multiple simultaneous call with different client.
-                        This sample also shows you how to publish, unpublish, subscribe, unsubscribe video streams depending of your choice.
-                        Finally, you have the possibility to record the published stream and then to read the associated recorded file.
+                        This sample enables you to publish a video stream to an external RTMP server (e.g. YouTube).
                     </div>
                     <div class="col s12 m4 l4 valign-wrapper">
                         <a href="../Video_client_Material/apiRTC-Material-Client-MCU-Record.html" target="_blank" class="valign btn btn-large waves-effect waves-light btn-open">Open another client</a>
@@ -103,14 +101,17 @@
                         <div class="col s12 m12 l12">
                             <div class="input-field">
 
-                                <input type="text" id="number" class="form-control" placeholder="Room name" aria-describedby="sizing-addon1">
+                                <input type="text" id="number" class="form-control" placeholder="Room name" aria-describedby="sizing-addon1"/>
                                 <input id="joinMCUSession" class="btn green" type="button" value="join Video Group" />
                                 <input id="leaveMCUSession" class="btn green" type="button" value="leave" />
-                                <br>
-                                <input id="startRecording" class="btn green" type="button" disabled="true" value="Record Audio & Video" />
-                                <input id="startRecordingAudioOnly" class="btn green" type="button" disabled="true" value="Record Audio Only" />
-                                <input id="startRecordingVideoOnly" class="btn green" type="button" disabled="true" value="Record Video only" />
-                                <input id="stopRecording" class="btn green" type="button" disabled="true" value="stop Record" />
+                                <br/>
+
+                                <input type="text" id="streamingService" class="form-control" placeholder="Service" value="youtube"/>
+                                <input type="text" id="streamingServer" class="form-control" placeholder="Server" value="rtmp://a.rtmp.youtube.com/live2"/>
+                                <input type="text" id="streamingStreamKey" class="form-control" placeholder="Stream Key"/>
+
+                                <input id="startStreaming" class="btn green" type="button" disabled="true" value="Start Streaming" />
+                                <input id="stopStreaming" class="btn green" type="button" disabled="true" value="Stop Streaming" />
                             </div>
                         </div>
 
@@ -338,9 +339,8 @@
                 audioOnly = true;
                 $("#localStreamList").append('<li class="collection-item" id=publishAudio><div>' + 'My Stream :' + '<a onclick="publishStream(' + "'" + $("#number").val() + "','" + sessionId + "','" + token + "','" + audioOnly + "'" + ');" class="secondary-content"><i class="material-icons">Publish Audio Only</i></a></div></li>');
 
-                $("#startRecording").attr("disabled", true);
-                $("#startRecordingAudioOnly").attr("disabled", true);
-                $("#startRecordingVideoOnly").attr("disabled", true);
+                $("#startStreaming").attr("disabled", true);
+                $("#stopStreaming").attr("disabled", true);
             }
 
             function publishStream(roomId, sessionId, token, audioOnly) {
@@ -352,9 +352,7 @@
                 $("#publish").replaceWith( '<li class="collection-item" id=publish><div>' + 'My Stream :' + '<a onclick="unpublishStream(' + callId + ');" class="secondary-content"><i class="material-icons">Unpublish</i></a></div></li>');
                 $("#publishAudio").remove();
 
-                $("#startRecording").attr("disabled", false);
-                $("#startRecordingAudioOnly").attr("disabled", false);
-                $("#startRecordingVideoOnly").attr("disabled", false);
+                $("#startStreaming").attr("disabled", false);
             }
 
 //MCU
@@ -457,29 +455,16 @@
                 $("#" + e.detail.streamId).remove();
             }
 
-            function MCURecordedStreamsAvailableHandler(e) {
-                console.log("MCURecordedStreamsAvailableHandler :", e.detail);
-
-                if (e.detail.mediaURL !== undefined) {
-                    $("#recordedStreamList").append('<li class="collection-item" id=' + e.detail.recordedFileName + '><div>' + 'File : ' + e.detail.recordedFileName + '<a href="' + e.detail.mediaURL + '" target="_blank" class="secondary-content">Play File</a></div></li>');
-                } else {
-                    $("#recordedStreamList").append('<li class="collection-item" id=' + e.detail.recordedFileName + '><div>' + 'File : ' + e.detail.recordedFileName + '<a href="https://data2.apizee.com:10000/videoManager?action=play&recordedFileName=' + e.detail.recordedFileName + '" target="_blank" class="secondary-content">Play File</a></div></li>');
-                }
-
-                $("#startRecording").attr("disabled", false);
-                $("#startRecordingAudioOnly").attr("disabled", false);
-                $("#startRecordingVideoOnly").attr("disabled", false);
-
-                $("#stopRecording").attr("disabled", true);
+            function MCUStreamingStartedHandler(e) {
+                console.log("MCUStreamingStartedHandler:", e.detail);
+                $("#startStreaming").attr("disabled", true);
+                $("#stopStreaming").attr("disabled", false);
             }
 
-            function MCURecordingStartedHandler(e) {
-                console.log("MCURecordingStartedHandler :", e.detail);
-                $("#startRecording").attr("disabled", true);
-                $("#startRecordingAudioOnly").attr("disabled", false);
-                $("#startRecordingVideoOnly").attr("disabled", false);
-
-                $("#stopRecording").attr("disabled", false);
+            function MCUStreamingStoppedHandler(e) {
+                console.log("MCUStreamingStoppedHandler:", e.detail);
+                $("#startStreaming").attr("disabled", false);
+                $("#stopStreaming").attr("disabled", true);
             }
 
             function errorHandler(e) {
@@ -507,8 +492,8 @@
                 apiRTC.addEventListener("MCUAvailableStream", MCUAvailableStreamHandler);
                 apiRTC.addEventListener("MCURemoveStream", MCURemoveStreamHandler);
 
-                apiRTC.addEventListener("MCURecordingStarted", MCURecordingStartedHandler);
-                apiRTC.addEventListener("MCURecordedStreamsAvailable", MCURecordedStreamsAvailableHandler);
+                apiRTC.addEventListener("MCUStreamingStarted", MCUStreamingStartedHandler);
+                apiRTC.addEventListener("MCUStreamingStopped", MCUStreamingStoppedHandler);
                 apiRTC.addEventListener("error", errorHandler);
 //MCU
 
@@ -557,27 +542,18 @@
                     $("#streamsList").remove();
                 });
 
-                $("#startRecording").click(function () {
-                    console.log("startRecording");
-
-                    var customIdToAddOnFilename = "myCustomIdToAddOnFilename";
-                    webRTCClient.startRecording('AUDIO-VIDEO', customIdToAddOnFilename);
+                $("#startStreaming").click(function () {
+                    console.log("startStreaming");
+                    var streamingService = $("#streamingService").val();
+                    var streamingServer = $("#streamingServer").val();
+                    var streamingStreamKey = $("#streamingStreamKey").val();
+                    // Either service or server must be set.
+                    // Stream key is mandatory.
+                    webRTCClient.startStreaming(streamingService, streamingServer, streamingStreamKey);
                 });
-                $("#startRecordingAudioOnly").click(function () {
-                    console.log("startRecordingAudioOnly");
-
-                    var customIdToAddOnFilename = "myCustomIdToAddOnFilename";
-                    webRTCClient.startRecording('AUDIO-ONLY', customIdToAddOnFilename);
-                });
-                $("#startRecordingVideoOnly").click(function () {
-                    console.log("startRecordingVideoOnly");
-
-                    var customIdToAddOnFilename = "myCustomIdToAddOnFilename";
-                    webRTCClient.startRecording('VIDEO-ONLY', customIdToAddOnFilename);
-                });
-                $("#stopRecording").click(function () {
-                    console.log("stopRecording");
-                    webRTCClient.stopRecording();
+                $("#stopStreaming").click(function () {
+                    console.log("stopStreaming");
+                    webRTCClient.stopStreaming();
                 });
             }
             $("#addressBook").on('click', function() {
