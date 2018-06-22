@@ -56,7 +56,7 @@
                     </ul>
                 </div>
             </nav>
-    
+
             <main class="container grey lighten-5 master">
 
                 <h3>
@@ -88,7 +88,7 @@
                     <div class='col s12'>
                         <div class="row">
                             <div class="col s12">
-                                    <span id="status"></span>                        
+                                    <span id="status"></span>
                                 </div>
                             <div class="col s12">
                                 <input type="text" id="number" value="" placeholder="Enter Destination ID..."/>
@@ -98,10 +98,10 @@
                                 <input class="btn" id="createRoom" type="button" disabled="true" value="Registration Ongoing..." />
                                 <input class="btn" id="leaveRoom" type="button" value="leaveRoom" />
                                 <input class="btn" id="clearPaper" type="button" disabled="true" value="Registration Ongoing..." />
-                                <input class="btn" id="touchScreen" type="button" disabled="true" value="ENABLE/DISABLE TOUCHSCREEN (Mobile)" />                                
+                                <input class="btn" id="touchScreen" type="button" disabled="true" value="ENABLE/DISABLE TOUCHSCREEN (Mobile)" />
                                 <input class="btn" id="inviteButton" type="button" disabled="true" value="Registration Ongoing..." />
                             </div>
-                            
+
                             <div class='select col s6' >
                             <label for='audioSource'>Audio source: </label><select id='audioSource' style="display: block"></select>
                             </div>
@@ -137,6 +137,15 @@
                                 <option>green</option>
                                 <option>rgba(255,0,0,0.5)</option>
                             </select>
+                            </div>
+                            <div class='select col s4'>
+                                    <label for='UndoRedo'>Undo / Redo: </label>
+                                <div class="row">
+                                    <div class="col s12">
+                                        <button id="undo" class="btn">Undo</button>
+                                        <button id="redo" class="btn">Redo</button>
+                                    </div>
+                                </div>
                             </div>
                             <div class='select col s12'>
                                 <div class="row">
@@ -193,14 +202,14 @@
 <!--
         <img id="photo" style="position: absolute; width:360px; height:240px;"/>
 -->
-    
+
         </div><!-- /.row -->
         <hgroup id="instructions">
                 <h1>Start Drawing !</h1>
                 <h2>Enter the userId of the user you want to join, then start the whiteboard by creating a room : "createRoom". it will invite your contact</h2>
                 <h2>You will then be able to work together on your drawing</h2>
                 <input class="btn" onclick="document.getElementById('instructions').style.display='none'; " value="START !" />
-                <input class="btn orange" onclick="startOfflineWhiteboard()" value="START OFFLINE !" />           
+                <input class="btn orange" onclick="startOfflineWhiteboard()" value="START OFFLINE !" />
             </hgroup>
     </main>
     <footer class="page-footer grey darken-3">
@@ -364,7 +373,7 @@
 
             //whiteBoardClient = apiCC.session.createWhiteBoard('paper', 'cursors', 'instructions', 6000);
             whiteBoardClient = apiCC.createWhiteBoard('paper', 'cursors', 'instructions', 6000);
-            
+
             //whiteBoardClient = apiCC.session.createWhiteBoard(null, null, 'instructions', 6000);
 
             //whiteBoardClient.getContext().lineWidth = 15;
@@ -427,6 +436,14 @@
             });
             $('#textInputButton').click(function(){
                 whiteBoardClient.printSharedText($('#textInputX').val(), $('#textInputY').val(), $('#textInput').val(), 20);
+            });
+            $('#undo').click(function(){
+                console.log('undo');
+                whiteBoardClient.undo();
+            });
+            $('#redo').click(function(){
+                console.log('redo');
+                whiteBoardClient.redo();
             });
         });
 
