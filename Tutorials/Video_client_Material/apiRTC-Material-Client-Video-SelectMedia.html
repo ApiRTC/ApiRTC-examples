@@ -66,7 +66,7 @@
             background: #d6d6d6;
         }
         </style>
-        <script src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.debug.js"></script>
+        <script src="https://cloud.apizee.com/apiRTC/v4.1/apiRTC-latest.min.js"></script>
     </head>
 
     <body>
@@ -605,11 +605,15 @@
         }
 
     //Record
-        function MCURecordedStreamsAvailableHandler(e) {
 
+        function MCURecordingStartedHandler(e) {
+            console.log("MCURecordingStartedHandler :", e.detail);
+            console.log("MCURecordingStartedHandler mediaURL :", e.detail.mediaURL);
+        }
+
+        function MCURecordedStreamsAvailableHandler(e) {
             $("#recordedStreamList").show();
             $("#recordedStreamList").append('<li class="collection-item" id=' + e.detail.recordedFileName + '><div>' + 'File : ' + e.detail.recordedFileName + '<a href="' + e.detail.mediaURL + '" target="_blank" class="secondary-content">Play</a></div></li>');
-
         }
 
         //sessionReadyHandler : apiRTC is now connected
@@ -636,6 +640,7 @@
             apiRTC.addEventListener("mediaDeviceChanged", mediaDeviceChangedHandler);
 
         //Record
+            apiRTC.addEventListener("MCURecordingStarted", MCURecordingStartedHandler);
             apiRTC.addEventListener("MCURecordedStreamsAvailable", MCURecordedStreamsAvailableHandler);
 
             //webRTC Client creation
