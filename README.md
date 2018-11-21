@@ -1,5 +1,5 @@
 
-[![][ApiRTCImage]][ApiRTC]
+[![][ApiRTCImage] | width=260][ApiRTC]
 
 [ApiRTC]: https://www.apirtc.com
 [ApiRTCImage]: https://apirtc.com/wp-content/uploads/2018/09/ApiRTC_relook_branding_v01.png
