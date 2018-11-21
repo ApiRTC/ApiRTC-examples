@@ -74,7 +74,7 @@
             <div class="nav-wrapper">
                 <a class="brand-logo" href="../."><img src="../images/apirtc-logo.png" alt="" style="height:50px;margin:8px 40px;"></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="https://github.com/apizee/ApiRTC-examples/tree/master/Tutorials" target="_blank"><i class="fa fa-github" style="vertical-align: middle;"></i> Source code on Github</a></li>
+                    <li><a href="https://github.com/apizee/ApiRTC-examples/tree/master/Sample_apiRTC_V3/Tutorials" target="_blank"><i class="fa fa-github" style="vertical-align: middle;"></i> Source code on Github</a></li>
                 </ul>
             </div>
         </nav>
@@ -83,7 +83,7 @@
             <div class="container master grey lighten-5">
                 <h3><i class="fa fa-dot-circle-o"></i> Tutorial 16: Video client compatible with Safari v11  - macOS and iOS v11</h3>
                 <p>
-                <a href="https://github.com/apizee/ApiRTC-examples/blob/master/Tutorials/Video_client_Material/apiRTC-Material-Client-Video-Safari11.html" target="_blank"><i class="fa fa-github" style="vertical-align: middle;"></i> This sample is accessible on Github</a>
+                <a href="https://github.com/apizee/ApiRTC-examples/blob/master/Sample_apiRTC_V3/Tutorials/Video_client_Material/apiRTC-Material-Client-Video-Safari11.html" target="_blank"><i class="fa fa-github" style="vertical-align: middle;"></i> This sample is accessible on Github</a>
                 </p>
                 <br>
                 <div class="row">
@@ -139,7 +139,7 @@
 
         <!-- Modal Trigger -->
         <a class="waves-effect waves-light btn modal-trigger" href="#modal1">iOS user information modal</a>
-        
+
         <!-- Modal Structure -->
         <div id="modal1" class="modal">
             <div class="modal-content">
@@ -348,7 +348,7 @@
                 console.log("userMediaSuccessHandler e.detail.callType :" + e.detail.callType);
                 console.log("userMediaSuccessHandler e.detail.remoteId :" + e.detail.remoteId);
 
-                //Adding local Stream in Div. Video is muted        
+                //Adding local Stream in Div. Video is muted
                 addStreamInDiv(e.detail.stream, e.detail.callType, "mini", 'miniElt-' + e.detail.callId,
                                {width : "160px", height : "120px"}, true);
             }
@@ -358,7 +358,7 @@
                 console.log("remoteStreamAddedHandler, e.detail.callType :" + e.detail.callType);
                 console.log("userMediaSuccessHandler e.detail.remoteId :" + e.detail.remoteId);
 
-                //Adding Remote Stream in Div. Video is not muted         
+                //Adding Remote Stream in Div. Video is not muted
                 addStreamInDiv(e.detail.stream, e.detail.callType, "remote", 'remoteElt-' + e.detail.callId,
                                {width : "640px", height : "480px"}, false);
             }
@@ -404,7 +404,7 @@
 
             function errorHandler(e) {
                 console.error('errorHandler :', e.detail);
-//Enable to catch IOS_AUTOPLAY_PREVENTED error when using 
+//Enable to catch IOS_AUTOPLAY_PREVENTED error when using
             }
 
             //sessionReadyHandler : apiRTC is now connected

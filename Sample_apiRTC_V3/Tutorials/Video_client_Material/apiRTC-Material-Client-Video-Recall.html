@@ -74,7 +74,7 @@
             <div class="nav-wrapper">
                 <a class="brand-logo" href="../."><img src="../images/apirtc-logo.png" alt="" style="height:50px;margin:8px 40px;"></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="https://github.com/apizee/ApiRTC-examples/tree/master/Tutorials" target="_blank"><i class="fa fa-github" style="vertical-align: middle;"></i> Source code on Github</a></li>
+                    <li><a href="https://github.com/apizee/ApiRTC-examples/tree/master/Sample_apiRTC_V3/Tutorials" target="_blank"><i class="fa fa-github" style="vertical-align: middle;"></i> Source code on Github</a></li>
                 </ul>
             </div>
         </nav>
@@ -83,7 +83,7 @@
             <div class="container master grey lighten-5">
                 <h3><i class="fa fa-dot-circle-o"></i> Tutorial 13: Recall - DEPRECATED : Check tuto 8 with updateMediaOnCall() </h3>
                 <p>
-                <a href="https://github.com/apizee/ApiRTC-examples/blob/master/Tutorials/Video_client_Material/apiRTC-Material-Client-Video-Recall.html" target="_blank"><i class="fa fa-github" style="vertical-align: middle;"></i> This sample is accessible on Github</a>
+                <a href="https://github.com/apizee/ApiRTC-examples/blob/master/Sample_apiRTC_V3/Tutorials/Video_client_Material/apiRTC-Material-Client-Video-Recall.html" target="_blank"><i class="fa fa-github" style="vertical-align: middle;"></i> This sample is accessible on Github</a>
                 </p>
                 <br>
                 <div class="row">
@@ -122,7 +122,7 @@
                                   <i class="fa fa-phone"></i>
                                 </button>
                                 <input id="hangup" class="btn red" type="button" disabled="true" value="Hangup" />
-                               
+
                                 <input type="text" id="number" class="form-control" placeholder="Username" aria-describedby="sizing-addon1">
                             </div>
                         </div>
@@ -201,7 +201,7 @@
                 // Recall button event
                 if (dataClient) {
                     reCalling = true;
-                    //sendData to prevent corresponding user recalling call is comming 
+                    //sendData to prevent corresponding user recalling call is comming
                     dataClient.sendData(callingUser, {
                         event: 'autoAcceptRecall'
                     }, function() {
@@ -475,7 +475,7 @@
                 updateAddressBook();
             }
 
-            // receiveData from sendData 
+            // receiveData from sendData
 //RECALL
             function receiveData(e) {
                 switch (e.detail.data.event) {
@@ -553,7 +553,7 @@
                     $("#call").attr("disabled", false).val("Call");
                     webRTCClient.hangUp();
                 });
-                
+
             }
 
 //

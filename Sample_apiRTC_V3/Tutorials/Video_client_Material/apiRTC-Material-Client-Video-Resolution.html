@@ -76,7 +76,7 @@
             <div class="nav-wrapper">
                 <a class="brand-logo" href="../."><img src="../images/apirtc-logo.png" alt="" style="height:50px;margin:8px 40px;"></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="https://github.com/apizee/ApiRTC-examples/tree/master/Tutorials" target="_blank"><i class="fa fa-github" style="vertical-align: middle;"></i> Source code on Github</a></li>
+                    <li><a href="https://github.com/apizee/ApiRTC-examples/tree/master/Sample_apiRTC_V3/Tutorials" target="_blank"><i class="fa fa-github" style="vertical-align: middle;"></i> Source code on Github</a></li>
                 </ul>
             </div>
         </nav>
@@ -85,7 +85,7 @@
             <div class="container master grey lighten-5">
                 <h3><i class="fa fa-dot-circle-o"></i> Tutorial 9: Select Video Resolution</h3>
                 <p>
-                <a href="https://github.com/apizee/ApiRTC-examples/blob/master/Tutorials/Video_client_Material/apiRTC-Material-Client-Video-Resolution.html" target="_blank"><i class="fa fa-github" style="vertical-align: middle;"></i> This sample is accessible on Github</a>
+                <a href="https://github.com/apizee/ApiRTC-examples/blob/master/Sample_apiRTC_V3/Tutorials/Video_client_Material/apiRTC-Material-Client-Video-Resolution.html" target="_blank"><i class="fa fa-github" style="vertical-align: middle;"></i> This sample is accessible on Github</a>
                 </p>
                 <br>
                 <div class="row">
@@ -448,7 +448,7 @@
                 $("#resolution").html('QVGA');
 
                 var constraint ={};
-                
+
                 constraint.video = {width: {exact: 320}, height: {exact: 240}};
                 constraint.audio = {};
 
@@ -472,7 +472,7 @@
 
                 $("#resolution").html('HD');
                 var constraint = {};
-                
+
                 constraint.video = {width: {exact: 1280}, height: {exact: 720}};
                 constraint.audio = {};
 
@@ -484,7 +484,7 @@
 
                 $("#resolution").html('FULLHD');
                 var constraint = {};
-                
+
                 constraint.video = {width: {exact: 1920}, height: {exact: 1080}};
                 constraint.audio = {};
 
@@ -496,10 +496,10 @@
 
                 $("#resolution").html('4K');
                 var constraint = {};
-                
+
                 constraint.video = {width: {exact: 4096}, height: {exact: 2160}};
                 constraint.audio = {};
-                
+
                 webRTCClient.setGetUserMediaConfig(constraint);
             });
 //RESOLUTION
