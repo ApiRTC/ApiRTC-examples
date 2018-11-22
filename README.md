@@ -16,3 +16,14 @@ Browsers compatibility description is available on our [developer center](https:
 
 ## Contributions
 Contributions and bugfixes are welcomed.
+
+## Demo description
+### Conversation
+#### Conferencing
+Create a conversation to establish multi-party conference : audio, video.
+#### Conferencing_chat
+Exchange chat messages between all users in a Conversation.
+#### Conferencing_QoSInfoDisplay
+Learn how to add QoS Monitoring and active speaker detection on your video conference.
+#### Conferencing_select_media
+Create a conversation to establish multi-party conference : audio, video and select your media devices.
