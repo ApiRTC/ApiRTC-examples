@@ -1,0 +1,163 @@
+#conference-title {
+	width: calc(100% - 275px);
+	display: block;
+	position: absolute;
+	left: 235px;
+	color: white;
+	top: 20px;
+	font-size: 25px;
+	font-family: Roboto;
+}
+#container {
+	width: 100%;
+	min-height: calc(100% - 12px);
+	text-align: center;
+	position: relative;
+	float: left;
+
+	h2 {
+		margin: 60px 0;
+		color: white;
+		font-family: Roboto;
+		font-weight: 300;
+		font-size: 40px;
+	}
+
+	#create {
+		display: inline-block;
+
+		[type="text"] {
+			border: none;
+			height: 30px;
+			width: 220px;
+			padding: 4px 40px 4px 20px;
+			font-size: 14px;
+			font-family: Roboto;
+			-webkit-border-radius: 20px;
+			-moz-border-radius: 20px;
+			border-radius: 20px;
+			outline: none;
+		}
+
+		button {
+			background: #1797de;
+			border: 3px solid rgba(30, 30, 30, 1);
+			height: 38px;
+			padding: 4px 30px;
+			margin-left: -30px;
+			color: #ffffff;
+			font-size: 14px;
+			font-family: Roboto;
+			text-transform: uppercase;
+			-webkit-border-radius: 20px;
+			-moz-border-radius: 20px;
+			border-radius: 20px;
+			-webkit-transition: background 0.1s linear;
+			-moz-transition: background 0.1s linear;
+			transition: background 0.1s linear;
+			cursor: pointer;
+			outline: none;
+
+			&:hover {
+				background: #1581c8;
+			}
+		}
+	}
+
+	#conference {
+		display: none;
+		margin-bottom: 0px;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		.qos-logo {
+			vertical-align: middle;
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			z-index: 20;
+			img {
+				width: 40px;
+				height: 40px;
+			}
+		}
+		.qos-infos {
+			position: absolute;
+			min-width: 160px;
+			padding: 2px 8px;
+			border-radius: 7px;
+			background: rgba(0, 0, 0, 0.7);
+			color: white;
+			text-align: left;
+			display: none;
+			font-size: 14px;
+			line-height: 8px;
+			top: 40px;
+			margin-left: 24px;
+			z-index: 20;
+			&:after {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 25px;
+				width: 0;
+				height: 0;
+				border: 15px solid transparent;
+				border-bottom-color: rgba(0, 0, 0, 0.7);
+				border-top: 0;
+				border-left: 0;
+				margin-left: -15px;
+				margin-top: -15px;
+			}
+		}
+		#local-container {
+			text-align: right;
+			position: absolute;
+			top: auto;
+			right: 0px;
+			bottom: 0px;
+			video {
+				height: 150px;
+			}
+		}
+
+		#remote-container {
+			position: absolute;
+			height: calc(100% - 150px);
+			width: 100%;
+			.remote-elt {
+				float: left;
+				height: 300px;
+				width: 300px;
+				video {
+					width: 100%;
+				}
+			}
+        }
+        
+		@media screen and (min-width: 1276px) {
+			#remote-container {
+				max-width: calc(100% - 200px);
+				left: 100px;
+			}
+        }
+        @media screen and (min-width: 1400px) {
+			#remote-container {
+				max-width: calc(100% - 400px);
+				left: 200px;
+			}
+        }
+        @media screen and (min-width: 1600px) {
+			#remote-container {
+				max-width: calc(100% - 500px);
+				left: 250px;
+			}
+        }
+        @media screen and (min-width: 1800px) {
+			#remote-container {
+				max-width: calc(100% - 600px);
+				left: 300px;
+			}
+		}
+	}
+}
