@@ -11,14 +11,6 @@
   font-weight: 300;
   font-size: 40px;
 }
-#container #text {
-  width: 100%;
-  padding: 10px 0 0;
-  color: white;
-  font-family: Roboto;
-  text-align: center;
-  margin: 30px 0;
-}
 #container #create {
   display: inline-block;
 }
@@ -69,9 +61,5 @@
 #container #conference #remote-container video {
   height: 300px;
 }
-#container #select-device {
-  display: none;
-  color: #ffffff;
-}
 
-/*# sourceMappingURL=conference-basic.css.map */
+/*# sourceMappingURL=conference.css.map */
