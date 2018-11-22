@@ -21,9 +21,13 @@ Contributions and bugfixes are welcomed.
 ### Conversation
 #### Conferencing
 Create a conversation to establish multi-party conference : audio, video.
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf)
 #### Conferencing_chat
 Exchange chat messages between all users in a Conversation.
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/chat)
 #### Conferencing_QoSInfoDisplay
 Learn how to add QoS Monitoring and active speaker detection on your video conference.
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_qos)
 #### Conferencing_select_media
 Create a conversation to establish multi-party conference : audio, video and select your media devices.
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_select)
