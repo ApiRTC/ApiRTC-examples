@@ -111,6 +111,9 @@
                                 <button type="button" id="shareScreen" class="btn btn-success">
                                   <i class="fa fa-desktop"></i>
                                 </button>
+<!--
+                                <input id="videoMute" class="btn green" type="button" value="Mute Video" />
+-->
                             </div>
                         </div>
 
@@ -165,7 +168,10 @@
             var session = null,
                 webRTCClient = null,
                 connectedUsersList = [],
-                imClient = null;
+                imClient = null,
+                publishCallId = 0;
+
+            apiRTC.setLogLevel(10);
 
             function selectPhonebookItem(idItem) {
                 $("#number").val(idItem);
@@ -318,9 +324,14 @@
 //MCU
             function joinMCUSessionAnswerHandler(e) {
                 console.log("joinMCUSessionAnswerHandler :", e);
+
+                var callConfiguration = {
+                    //muted : "VIDEOONLY"
+                };
+
                 //We are now connected in the room
                 //Publishing our own stream in the room
-                webRTCClient.publish(e.detail.roomId, e.detail.sessionId, e.detail.token);
+                publishCallId = webRTCClient.publish(e.detail.roomId, e.detail.sessionId, e.detail.token, callConfiguration);
             }
 
             function MCUAvailableStreamHandler(e) {
@@ -386,6 +397,8 @@
             //Adding MCU selection
                 webRTCClient.setMCUConnector('mcu4.apizee.com');
 
+                //webRTCClient.enableMeshRoomMode(true);
+
                 imClient = apiCC.session.createIMClient();
 
             //Call establishment
@@ -438,6 +451,9 @@
                 console.log("click on addressBookDropDown");
 
                 $("#addressBookDropDown").toggle();
+            });
+            $("#videoMute").click(function () {
+                webRTCClient.toggleVideoMute(publishCallId);
             });
             //apiRTC initialization
             apiRTC.init({
