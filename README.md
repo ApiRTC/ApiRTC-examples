@@ -19,7 +19,7 @@ Contributions and bugfixes are welcomed.
 
 ## Demo description
 ### Conversation
-#### Conferencing
+- **Conferencing**
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Create a conversation to establish multi-party conference : audio, video.
 #### Conferencing_chat
