@@ -31,3 +31,6 @@ Learn how to add QoS Monitoring and active speaker detection on your video confe
 #### Conferencing_select_media
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_select)<br/>
 Create a conversation to establish multi-party conference : audio, video and select your media devices.
+#### Conferencing_whiteboard
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_whiteboard)<br/>
+Create a conversation to establish multi-party Whiteboard. Share drawings, annotation with users.
