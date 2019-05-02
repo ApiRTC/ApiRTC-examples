@@ -19,18 +19,18 @@ Contributions and bugfixes are welcomed.
 
 ## Demo description
 ### Conversation
-- **Conferencing**
+- **Conferencing** -
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Create a conversation to establish multi-party conference : audio, video.
-#### Conferencing_chat
+- **Conferencing_chat** -
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/chat)<br/>
 Exchange chat messages between all users in a Conversation.
-#### Conferencing_QoSInfoDisplay
+- **Conferencing_QoSInfoDisplay** -
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_qos)<br/>
 Learn how to add QoS Monitoring and active speaker detection on your video conference.
-#### Conferencing_select_media
+- **Conferencing_select_media** -
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_select)<br/>
 Create a conversation to establish multi-party conference : audio, video and select your media devices.
-#### Conferencing_whiteboard
+- **Conferencing_whiteboard** -
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_whiteboard)<br/>
 Create a conversation to establish multi-party Whiteboard. Share drawings, annotation with users.
