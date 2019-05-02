@@ -52,3 +52,14 @@ Learn how to do a file transfer between two users.
 - **Call with user acceptation / refuse** -
 [Access to demo](https://dev.apirtc.com/tutorials/peertopeer/accept_refuse)<br/>
 Establish a call with accept /refuse management from callee.
+
+### Stream
+- **Select Media** -
+[Access to demo](https://dev.apirtc.com/tutorials/streams/select_media)<br/>
+Select Media to user for the stream.
+- **ScreenSharing** -
+[Access to demo](https://dev.apirtc.com/tutorials/streams/screensharing)<br/>
+Start a stream from screen.
+- **Record** -
+[Access to demo](https://dev.apirtc.com/tutorials/streams/record)<br/>
+Learn how to locally record stream in a file.

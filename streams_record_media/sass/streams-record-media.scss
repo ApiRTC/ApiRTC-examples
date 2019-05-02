@@ -1,0 +1,183 @@
+#container {
+    width: 100%;
+    min-height: calc(100% - 44px);
+    margin-bottom: -28px;
+    text-align: center;
+
+    h2 {
+        margin: 60px 0;
+        color: white;
+        font-family: Roboto;
+        font-weight: 300;
+        font-size: 40px;
+    }
+
+    video {
+        background: black;
+    }
+
+    #start-call {
+        display: inline-block;
+
+        [type="text"] {
+            border: none;
+            height: 30px;
+            width: 220px;
+            padding: 4px 40px 4px 20px;
+            font-size: 14px;
+            font-family: Roboto;
+            -webkit-border-radius: 20px;
+            -moz-border-radius: 20px;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        button {
+            background: #1797DE;
+            border: 3px solid rgba(30, 30, 30, 1);
+            height: 38px;
+            padding: 4px 30px;
+            margin-left: -30px;
+            color: #ffffff;
+            font-size: 14px;
+            font-family: Roboto;
+            text-transform: uppercase;
+            -webkit-border-radius: 20px;
+            -moz-border-radius: 20px;
+            border-radius: 20px;
+            -webkit-transition: background 0.10s linear;
+            -moz-transition: background 0.10s linear;
+            transition: background 0.10s linear;
+            cursor: pointer;
+            outline: none;
+
+            &:hover {
+                background: #1581C8;
+            }
+        }
+
+        #my-number {
+            width: 100%;
+            padding: 10px 0 0;
+            color: white;
+            font-family: Roboto;
+            text-align: center;
+        }
+    }
+    #record-fct {
+        display: inline-block;
+
+        [type="text"] {
+            border: none;
+            height: 30px;
+            width: 220px;
+            padding: 4px 40px 4px 20px;
+            font-size: 14px;
+            font-family: Roboto;
+            -webkit-border-radius: 20px;
+            -moz-border-radius: 20px;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        button {
+            background: #1797DE;
+            border: 3px solid rgba(30, 30, 30, 1);
+            height: 38px;
+            padding: 4px 30px;
+            margin-left: -30px;
+            color: #ffffff;
+            font-size: 14px;
+            font-family: Roboto;
+            text-transform: uppercase;
+            -webkit-border-radius: 20px;
+            -moz-border-radius: 20px;
+            border-radius: 20px;
+            -webkit-transition: background 0.10s linear;
+            -moz-transition: background 0.10s linear;
+            transition: background 0.10s linear;
+            cursor: pointer;
+            outline: none;
+
+            &:hover {
+                background: #1581C8;
+            }
+        }
+    }
+    #select-device{
+        display: inline-block;
+        margin-top:50px;
+        width:100%;
+        float:left;
+        clear:both;
+        .center{
+            width:300px;
+            margin:0px auto;
+            .custom-select{
+                border: none;
+                height: 30px;
+                width: 300px;
+                padding: 4px 40px 4px 20px;
+                font-size: 14px;
+                font-family: Roboto;
+                -webkit-border-radius: 20px;
+                -moz-border-radius: 20px;
+                border-radius: 20px;
+                outline: none;
+            }
+            #my-mic,#my-camera {
+                width: 100%;
+                padding: 10px 0 0;
+                color: white;
+                font-family: Roboto;
+                text-align: center;
+            }
+        }
+    }
+    #call {
+        display:inline-block;
+        margin-bottom: 100px;
+        position: relative;
+        width: 100%;
+
+        #hangup {
+            display: none;
+            background: #E4371D;
+            border: none;
+            color: white;
+            margin-bottom: 15px;
+            padding: 5px 15px;
+            font-size: 14px;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            cursor: pointer;
+            outline: none;
+            -webkit-transition: all 0.10s linear;
+            -moz-transition: all 0.10s linear;
+            transition: all 0.10s linear;
+
+            &:hover {
+                background: #C9311a;
+            }
+        }
+        #error-device{
+            text-align:center;
+            color:red;
+            display:none;
+        }
+        #local-container {
+            text-align: right;
+            display: inline-block;
+            video {
+                height: 150px;
+            }
+        }
+
+        #remote-container {
+            video {
+                height: 300px;
+            }
+        }
+    }
+}

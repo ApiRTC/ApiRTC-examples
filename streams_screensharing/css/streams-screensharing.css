@@ -1,0 +1,71 @@
+#container {
+  width: 100%;
+  min-height: calc(100% - 44px);
+  margin-bottom: -28px;
+  text-align: center; }
+  #container h2 {
+    margin: 60px 0;
+    color: white;
+    font-family: Roboto;
+    font-weight: 300;
+    font-size: 40px; }
+  #container #download-link {
+    color: #DD2222; }
+    #container #download-link:hover {
+      color: #aa2222; }
+  #container #create {
+    display: inline-block; }
+    #container #create [type="text"] {
+      border: none;
+      height: 30px;
+      width: 220px;
+      padding: 4px 40px 4px 20px;
+      font-size: 14px;
+      font-family: Roboto;
+      -webkit-border-radius: 20px;
+      -moz-border-radius: 20px;
+      border-radius: 20px;
+      outline: none; }
+    #container #create button {
+      background: #1797DE;
+      border: 3px solid #1e1e1e;
+      height: 38px;
+      padding: 4px 30px;
+      margin-left: -30px;
+      color: #ffffff;
+      font-size: 14px;
+      font-family: Roboto;
+      text-transform: uppercase;
+      -webkit-border-radius: 20px;
+      -moz-border-radius: 20px;
+      border-radius: 20px;
+      -webkit-transition: background 0.10s linear;
+      -moz-transition: background 0.10s linear;
+      transition: background 0.10s linear;
+      cursor: pointer;
+      outline: none; }
+      #container #create button:hover {
+        background: #1581C8; }
+  #container #conference {
+    display: none;
+    margin-bottom: 100px; }
+    #container #conference #local-container {
+      text-align: right; }
+      #container #conference #local-container video {
+        height: 150px; }
+    #container #conference #remote-container video {
+      height: 300px; }
+    #container #conference #toggle-screensharing {
+      background: #44af1d;
+      border: none;
+      color: #ffffff;
+      margin-bottom: 15px;
+      padding: 5px 15px;
+      font-size: 14px;
+      border-radius: 4px;
+      outline: none;
+      cursor: pointer; }
+      #container #conference #toggle-screensharing:hover {
+        background: #228f1d; }
+
+/*# sourceMappingURL=conference-screensharing.css.map */
