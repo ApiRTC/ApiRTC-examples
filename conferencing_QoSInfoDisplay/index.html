@@ -17,7 +17,7 @@
     <div id="background"></div>
     <div id="header">
         <a href="/"><img class="logo" src="../main/images/ApiRTC_Logo_ondark_HD@2x.png" alt="ApiRTC logo"></a>
-        <a href="" class="open-client" target="_newclient">Open another client</a>
+        <a href="" class="open-client" target="_blank">Open another client</a>
         <a href="https://github.com/apizee/ApiRTC-examples/tree/master/Tutorials" target="apirtc_github" class="github-corner"
             title="View source on Github" aria-label="View source on Github"><svg width="70" height="70" viewBox="0 0 250 250"
                 style="fill:#FFF; color:#000; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
@@ -47,6 +47,13 @@
                 autocomplete="off">
             <button type="submit" id="create_conference">Join conference</button>
         </form>
+        <div id='callActions' style='display: none'>
+            <button type="submit" id='muteAudio'> Mute Audio</button>
+            <button type="submit" id='unMuteAudio'> Unmute Audio</button>
+            </br>
+            <button type="submit" id='muteVideo'> Mute Video</button>
+            <button type="submit" id='unMuteVideo'> Unmute Video</button>
+        </div>
         <div id="remote-qosInfo-container" style="position:right;"></div>
         <div id="conference">
             <div id="remote-container"></div>
@@ -67,7 +74,7 @@
     <!-- Scripts -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
         crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cloud.apizee.com/apiRTC/v4.1/apiRTC-latest.min.js"></script>
+    <script type="text/javascript" src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
     <script type="text/javascript" src="js/conference-qos.js"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
 </body>
