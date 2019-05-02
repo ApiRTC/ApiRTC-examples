@@ -1,0 +1,92 @@
+#container {
+  width: 100%;
+  min-height: calc(100% - 44px);
+  margin-bottom: -28px;
+  text-align: center; }
+  #container h2 {
+    margin: 60px 0;
+    color: white;
+    font-family: Roboto;
+    font-weight: 300;
+    font-size: 40px; }
+  #container #contact-selector {
+    display: inline-block; }
+    #container #contact-selector [type="text"] {
+      border: none;
+      height: 30px;
+      width: 220px;
+      padding: 4px 40px 4px 20px;
+      font-size: 14px;
+      font-family: Roboto;
+      -webkit-border-radius: 20px;
+      -moz-border-radius: 20px;
+      border-radius: 20px;
+      outline: none; }
+    #container #contact-selector button {
+      background: #1797DE;
+      border: 3px solid #1e1e1e;
+      height: 38px;
+      padding: 4px 30px;
+      margin-left: -30px;
+      color: #ffffff;
+      font-size: 14px;
+      font-family: Roboto;
+      text-transform: uppercase;
+      -webkit-border-radius: 20px;
+      -moz-border-radius: 20px;
+      border-radius: 20px;
+      -webkit-transition: background 0.10s linear;
+      -moz-transition: background 0.10s linear;
+      transition: background 0.10s linear;
+      cursor: pointer;
+      outline: none; }
+      #container #contact-selector button:hover {
+        background: #1581C8; }
+    #container #contact-selector #my-number-legend {
+      width: 100%;
+      padding: 10px 0 0;
+      color: white;
+      font-family: Roboto;
+      text-align: center; }
+  #container #chat {
+    display: none;
+    width: 600px;
+    margin: 0 auto 100px; }
+    #container #chat h3 {
+      margin: 20px 0;
+      color: white;
+      font-family: Roboto;
+      font-weight: 300;
+      font-size: 30px; }
+    #container #chat #chat-body {
+      height: 200px;
+      display: flex;
+      text-align: left;
+      font-family: Roboto;
+      width: 100%; }
+      #container #chat #chat-body #message-list {
+        list-style-type: none;
+        flex-basis: 80%;
+        padding-left: 15px;
+        margin: auto;
+        height: 100%;
+        background: #dddddd;
+        overflow-y: auto; }
+      #container #chat #chat-body #active-chats {
+        list-style-type: none;
+        flex-basis: 20%;
+        padding-left: 5px;
+        margin: auto;
+        height: 100%;
+        background: #bbbbbb; }
+        #container #chat #chat-body #active-chats .active-chat {
+          cursor: pointer; }
+    #container #chat #chat-footer {
+      width: 100%;
+      display: flex; }
+      #container #chat #chat-footer #typing-area {
+        flex-basis: 80%; }
+      #container #chat #chat-footer #send-message {
+        flex-basis: 20%; }
+
+/*# sourceMappingURL=peertopeer-chat.css.map */

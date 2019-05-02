@@ -38,3 +38,17 @@ Create a conversation to establish multi-party Whiteboard. Share drawings, annot
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_advanced_pubsub)<br/>
 ADVANCED - This demo exposes a video conference sample with the possibility to select streams you want to publish or subscribe.
 You are also able to choose the type of stream you want to use : audio only, video only or audio & video.
+
+### Peer to peer
+- **Call** -
+[Access to demo](https://dev.apirtc.com/tutorials/peertopeer/call)<br/>
+Create an audio, video call with a remote party.
+- **Chat** -
+[Access to demo](https://dev.apirtc.com/tutorials/peertopeer/chat)<br/>
+Exchange chat messages between two users.
+- **File Transfer** -
+[Access to demo](https://dev.apirtc.com/tutorials/peertopeer/sendFile)<br/>
+Learn how to do a file transfer between two users.
+- **Call with user acceptation / refuse** -
+[Access to demo](https://dev.apirtc.com/tutorials/peertopeer/accept_refuse)<br/>
+Establish a call with accept /refuse management from callee.

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/png" href="../main/images/favicon.png" />
+
+    <link href="../main/css/main.css" rel="stylesheet">
+    <link href="css/peertopeer-call-accept-refuse.css" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+    <title>ApiRTC Tutorials</title>
+  </head>
+  <body>
+
+    <!-- Header -->
+    <div id="background"></div>
+
+    <div id="header">
+        <a href="/"><img class="logo" src="../main/images/ApiRTC_Logo_ondark_HD@2x.png" alt="ApiRTC logo"></a>
+        <a href="" class="open-client" target="_blank">Open another client</a>
+        <a href="https://github.com/apizee/ApiRTC-examples/tree/master/" target="apirtc_github" class="github-corner" title="View source on Github" aria-label="View source on Github"><svg width="70" height="70" viewBox="0 0 250 250" style="fill:#FFF; color:#000; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+    </div>
+
+    <!-- Begin page content -->
+    <main role="main" class="container">
+
+        <h1 >ApiRTC Call demo - Accept / Refuse</h1>
+        <p class="lead">This client demonstrates how to establish an audio, video peer to peer call or a screensharing with your contact using apiRTC</p>
+        <p class="lead">User has to accept or decline calls before establishment</p>
+<!--
+        <p class="lead">Pin a fixed-height footer to the bottom of the viewport in desktop browsers with this custom HTML and CSS. A fixed navbar has been added with <code>padding-top: 60px;</code> on the <code>body &gt; .container</code>.</p>
+        <p>Back to <a href="../sticky-footer">the default sticky footer</a> minus the navbar.</p>
+-->
+        <div class="input-group">
+            <span class="input-group-btn">
+                <button type="button" id="addressBook" data-toggle="dropdown" class="btn btn-success dropdown-toggle">
+                <span class="fa fa-address-book" aria-hidden="true"></span>
+                </button>
+                <ul class="dropdown-menu" id="addressBookDropDown">
+                    <li><a id="client1" href="#">No other connected users</a></li>
+                </ul>
+            </span>
+            <input type="text" id="number" class="form-control" placeholder="Username" aria-describedby="sizing-addon1">
+            <span class="input-group-btn">
+                <button type="button" id="callAudio" class="btn btn-success">
+                    <span class="fa fa-phone" aria-hidden="true"></span>
+                </button>
+                <button type="button" id="callVideo" class="btn btn-success">
+                    <span class="fa fa-video-camera" aria-hidden="true"></span>
+                </button>
+                <button type="button" id="shareScreen" class="btn btn-success">
+                    <span class="fa fa-desktop" aria-hidden="true"></span>
+                </button>
+            </span>
+        </div>
+
+        <button type="button" id="accept" class="btn btn-success">Accept call</button>
+        <button type="button" id="decline" class="btn btn-danger">Decline call</button>
+
+        <div class="row" style="position:absolute;"></div>
+            <div id="hangupButtons">
+            </div>
+        </div>
+        <div class="row" style="position:absolute;"></div>
+            <div id="streamButtons">
+            </div>
+        </div>
+        <legend id="my-number"></legend>
+        <div class="row" style="position:absolute;">
+            <div id="remote-container" style="width:100%;">
+            </div>
+            <div id="local-container">
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="copy">
+                &copy; 2013-2018 <strong>ApiRTC</strong> by <a href="//apizee.com" title="Apizee" target="_apizee"><img src="../main/images/apizee_logo.png" alt="Apizee"></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
+    <script type="text/javascript" src="js/peertopeer-call-accept-refuse.js"></script>
+  </body>
+</html>
