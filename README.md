@@ -34,3 +34,7 @@ Create a conversation to establish multi-party conference : audio, video and sel
 - **Conferencing_whiteboard** -
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_whiteboard)<br/>
 Create a conversation to establish multi-party Whiteboard. Share drawings, annotation with users.
+- **Conferencing_Advanced Streams Publish-subscribe** -
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_advanced_pubsub)<br/>
+ADVANCED - This demo exposes a video conference sample with the possibility to select streams you want to publish or subscribe.
+You are also able to choose the type of stream you want to use : audio only, video only or audio & video.
