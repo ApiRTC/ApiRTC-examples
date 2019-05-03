@@ -17,7 +17,7 @@ Browsers compatibility description is available on our [developer center](https:
 ## Contributions
 Contributions and bugfixes are welcomed.
 
-## Demo description
+## Demos description
 ### Conversation
 - **Conferencing** -
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
@@ -63,3 +63,11 @@ Start a stream from screen.
 - **Record** -
 [Access to demo](https://dev.apirtc.com/tutorials/streams/record)<br/>
 Learn how to locally record stream in a file.
+
+### UserAgent
+- **User creation and registration - user defined in an external database** -
+[Access to demo](https://dev.apirtc.com/tutorials/useragent/externalregistration)<br/>
+User Agent registration with external users management.
+- **User creation and registration - user defined on Apizee Cloud** -
+[Access to demo](https://dev.apirtc.com/tutorials/useragent/apizeeregistration)<br/>
+User Agent registration with Apizee users management.
