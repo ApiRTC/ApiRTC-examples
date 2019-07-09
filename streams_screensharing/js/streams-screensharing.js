@@ -19,40 +19,14 @@ $(function() {
         var subscribedStreams = {};
 
         //==============================
-        // 1/ CREATE USER AGENT
+        // CREATE USER AGENT
         //==============================
         var ua = new apiRTC.UserAgent({
             uri: 'apzkey:myDemoApiKey'
         });
 
         //==============================
-        // 2/ CREATE LOCAL STREAM
-        //==============================
-        ua.createStream()
-            .then(function (stream) {
-                // Save local stream
-                localStream = stream;
-
-                // Get media container
-                var container = document.getElementById('local-container');
-
-                // Create media element
-                var mediaElement = document.createElement('video');
-                mediaElement.id = 'local-media';
-                mediaElement.autoplay = true;
-                mediaElement.muted = true;
-
-                // Add media element to media container
-                container.appendChild(mediaElement);
-
-                // Attach stream
-                localStream.attachToElement(mediaElement);
-            }).catch(function (err) {
-                console.error('create stream error', err);
-            });
-
-        //==============================
-        // 3/ REGISTER
+        // REGISTER
         //==============================
         ua.register({
             cloudUrl: cloudUrl
@@ -61,22 +35,50 @@ $(function() {
             connectedSession = session;
 
             //==============================
-            // 4/ CREATE CONVERSATION
+            // CREATE CONVERSATION
             //==============================
             connectedConversation = connectedSession.getConversation(name);
 
             //==============================
-            // 5/ JOIN CONVERSATION
+            // JOIN CONVERSATION
             //==============================
             connectedConversation.join()
                 .then(function(response) {
-                    //==============================
-                    // 6/ PUBLISH OWN STREAM
-                    //==============================
-                    connectedConversation.publish(localStream, null);
+
+                //==============================
+                // CREATE LOCAL STREAM
+                //==============================
+                ua.createStream()
+                    .then(function (stream) {
+                        // Save local stream
+                        localStream = stream;
+
+                        // Get media container
+                        var container = document.getElementById('local-container');
+
+                        // Create media element
+                        var mediaElement = document.createElement('video');
+                        mediaElement.id = 'local-media';
+                        mediaElement.autoplay = true;
+                        mediaElement.muted = true;
+
+                        // Add media element to media container
+                        container.appendChild(mediaElement);
+
+                        // Attach stream
+                        localStream.attachToElement(mediaElement);
+
+                        //==============================
+                        // PUBLISH OWN STREAM
+                        //==============================
+                        connectedConversation.publish(localStream, null);
+
+                    }).catch(function (err) {
+                        console.error('create stream error', err);
+                    });
 
                     //==========================================================
-                    // 7/ WHEN NEW STREAM IS AVAILABLE IN CONVERSATION
+                    // WHEN NEW STREAM IS AVAILABLE IN CONVERSATION
                     //==========================================================
                     connectedConversation.on('availableStreamsUpdated', function(streams) {
                         var keys = Object.keys(streams);
@@ -84,7 +86,7 @@ $(function() {
                         for (var i = 0, len = keys.length; i < len; i++) {
                             if (typeof subscribedStreams[keys[i]] === 'undefined') {
                                 //==============================
-                                // 8/ SUBSCRIBE TO STREAM
+                                // SUBSCRIBE TO STREAM
                                 //==============================
                                 subscribedStreams[keys[i]] = streams[keys[i]];
                                 connectedConversation.subscribeToMedia(keys[i]);
@@ -93,7 +95,7 @@ $(function() {
                     });
 
                     //==========================================================
-                    // 8/ WHEN NEW STREAM IS ADDED TO CONVERSATION
+                    // WHEN NEW STREAM IS ADDED TO CONVERSATION
                     //==========================================================
                     connectedConversation.on('streamAdded', function(stream) {
                         // Get remote media container
@@ -115,7 +117,7 @@ $(function() {
                 });
 
                 //=====================================================
-                // 9/ WHEN STREAM WAS REMOVED FROM THE CONVERSATION
+                // WHEN STREAM WAS REMOVED FROM THE CONVERSATION
                 //=====================================================
                 connectedConversation.on('streamRemoved', function(streamInfos) {
                     document.getElementById('remote-media-' + streamInfos.streamId).remove();
@@ -150,7 +152,8 @@ $(function() {
                 captureSourceType = "screen";
             } else {
                 //Chrome
-                captureSourceType = ["screen", "window", "tab", "audio"];
+                //captureSourceType = ["screen", "window", "tab", "audio"];
+                captureSourceType = ["screen"];
             }
 
             apiRTC.Stream.createScreensharingStream(captureSourceType)
