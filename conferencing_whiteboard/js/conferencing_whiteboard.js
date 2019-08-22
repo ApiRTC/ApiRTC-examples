@@ -16,24 +16,40 @@ ua = new apiRTC.UserAgent({
 });
 
 function showOfflineWhiteboardArea() {
-    document.getElementById('offlineWhiteboard').style.display = 'inline-block';
+    document.getElementById('offlineWhiteboard').style.display = 'block';
 }
 function hideOfflineWhiteboardArea() {
     document.getElementById('offlineWhiteboard').style.display = 'none';
 }
 function showOnlineWhiteboardArea() {
-    document.getElementById('onlineWhiteboard').style.display = 'inline-block';
+    document.getElementById('onlineWhiteboard').style.display = 'block';
 }
 function hideOnlineWhiteboardArea() {
     document.getElementById('onlineWhiteboard').style.display = 'none';
 }
 function showWhiteboardFctArea() {
-    document.getElementById('whiteboardFct').style.display = 'inline-block';
+    document.getElementById('whiteboardFct').style.display = 'block';
 }
 function hideWhiteboardFctArea() {
     document.getElementById('whiteboardFct').style.display = 'none';
 }
-
+function setSessionListeners(){
+     connectedSession.on("rawData",  function (e) {
+	    console.log('receiveData',e);
+            if(e.content && typeof e.content.event!=="undefined" && e.content.event){
+		switch(e.content.event){
+                    case 'conv_new_background':
+                        if(typeof e.content.value!=="undefined" && e.content.value){
+                            $("#paper").css('background','url('+e.content.value+') no-repeat');
+                        }
+                        break;
+	            default:
+                        console.log("receive event not catch :", e);
+		        break;
+	        }
+	   }
+        });
+}
 function setConversationListeners() {
 
     console.log("setConversationListeners");
@@ -51,7 +67,7 @@ function setConversationListeners() {
             console.log("whiteboardRoomMemberUpdate roomId :", e.roomId);
             console.log("whiteboardRoomMemberUpdate status :", e.status);
             console.log("whiteboardRoomMemberUpdate status :", e.contacts);
-        });
+        })
 }
 
 function joinConference(name) {
@@ -68,14 +84,14 @@ function joinConference(name) {
 
         // Save session
         connectedSession = session;
-
+	setSessionListeners();
         //==============================
         // 3/ CREATE CONVERSATION
         //==============================
         connectedConversation = connectedSession.getConversation(name);
 
         setConversationListeners();
-
+	
         //==============================
         // 6/ JOIN CONVERSATION
         //==============================
@@ -176,4 +192,16 @@ $('#undo').click(function(){
 $('#redo').click(function(){
     console.log('redo');
     whiteBoardClient.redo();
+});
+$('#changeBackground').click(function(){
+    if($('#backgroundImage').val()!==""){
+	connectedConversation.sendRawData({
+            event: 'conv_new_background',
+            value: $('#backgroundImage').val() ,
+        });
+	$("#paper").css('background','url('+$('#backgroundImage').val()+') no-repeat');
+
+   }else{
+	alert('No background set');
+  }
 });

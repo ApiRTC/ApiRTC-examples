@@ -52,81 +52,89 @@
                 <button type="button" id="stopOnlineWhiteboard">stop Whiteboard</button>
             </div>
 
-            <div id ="whiteboardFct" >
-                <div>
+            <div id ="whiteboardFct" class='row'>
+                <div class="col">
                     Whiteboard function :
                 </div>
                 <button type="button" id="clearPaper">clearPaper</button>
                 <button type="button" id="touchScreen">touchScreen</button>
-
-                <div class='select col s4' >
-                    <label for='drawingTool'>Drawing tool: </label>
-                    <select id='drawingTool' style="display: block">
-                        <option>pen</option>
-                        <option>erase</option>
-                        <option>arrow</option>
-                        <option>ellipse</option>
-                        <option>rectangle</option>
-                    </select>
-                </div>
-                <div class='select col s4'>
-                    <label for='brushSize'>Brush size: </label>
-                    <select id='brushSize'  style="display: block">
-                        <option>1</option>
-                        <option>3</option>
-                        <option>5</option>
-                        <option>10</option>
-                    </select>
-                </div>
-                <div class='select col s4' >
-                <label for='brushColor'>Brush color: </label>
-                <select id='brushColor' style="display: block">
-                    <option>black</option>
-                    <option>blue</option>
-                    <option>red</option>
-                    <option>green</option>
-                    <option>rgba(255,0,0,0.5)</option>
-                </select>
-                </div>
-                <div class='select col s12'>
+		<button type="button" id="undo">Undo</button>
+                <button type="button" id="redo">Redo</button>
+ 	        <div class="row border s12">
+ 		<div class="select col s12">
+			<h4>Drawing tools</h4>
+		        <div class='select col s3' >
+		            <label for='drawingTool'>Shape: </label>
+		            <select id='drawingTool' style="display: inline-block">
+		                <option>pen</option>
+		                <option>erase</option>
+		                <option>arrow</option>
+		                <option>ellipse</option>
+		                <option>rectangle</option>
+		            </select>
+		        </div>
+		        <div class='select col s3'>
+		            <label for='brushSize'>Brush size: </label>
+		            <select id='brushSize'  style="display:  inline-block">
+		                <option>1</option>
+		                <option>3</option>
+		                <option>5</option>
+		                <option>10</option>
+		            </select>
+		        </div>
+		        <div class='select col s3' >
+		        <label for='brushColor'>Brush color: </label>
+		        <select id='brushColor' style="display:  inline-block">
+		            <option>black</option>
+		            <option>blue</option>
+		            <option>red</option>
+		            <option>green</option>
+		            <option>rgba(255,0,0,0.5)</option>
+		        </select>
+		        </div>
+		</div>
+             </div>
+             <div class="row border s12">
+                <div class="select col s12">
+		    <h4>Text tools</h4>
                     <div class="row">
-                        <div class="col s12">
+                        <div class="col s4">
                             <label for='textInput'>Print text: </label>
                             <input id='textInput' type="text" />
                         </div>
-                        <div class="col s6">
+                        <div class="col s4">
                             <label for='textInputX'>x: </label>
                             <input id='textInputX' type="number" min=0 max=800 value=0 step=50 />
                         </div>
-                        <div class="col s6">
+                        <div class="col s4">
                             <label for='textInputY'>y: </label>
                             <input id='textInputY' type="number" min=0 max=800 value=0 step=50 />
                         </div>
-                        <div class="col s12">
+                        <div class="col s4">
                             <button id="textInputButton" class="btn">Print!</button>
                         </div>
                     </div>
                 </div>
+	       </div>
+            <div class="row border s12">
                 <div class='select col s12' style="display: block">
                     <div class="row">
-                        <div class="col s4">
+                        <div class="col s12">
                                 <label for='textInputScale'>Scale: </label>
                                 <input id='textInputScale' type="number" min=0 max=10 value=1 step='0.1' />
                         </div>
-                        <div class="col s4">
-                            <label for='textInputOffsetX'>Offsetx: </label>
-                            <input id='textInputOffsetX' type="number" min=0 max=2000 value=0 step=50 />
-                        </div>
-                        <div class="col s4">
-                            <label for='textInputOffsetY'>Offsety: </label>
-                            <input id='textInputOffsetY' type="number" min=0 max=2000 value=0 step=50 />
-                        </div>
                     </div>
                 </div>
-                <button type="button" id="undo">Undo</button>
-                <button type="button" id="redo">Redo</button>
+           </div>
+	   <div class="row border s12">
+		<div class='select col s12' style="display: block">
+	 		<div class="row">
+		           <input type="text" placeholder="background uri" id="backgroundImage"/>
+			   <button type="button" id="changeBackground">Change background</button>
+		        </div>
+                </div>
             </div>
-
+           </div>
             <div id="whiteboardContainer" >
                 <div id="cursors"></div>
                 <canvas id="paper" style="background-image:url('img/1227m.gif')" width="1900" height="1000">
@@ -141,7 +149,7 @@
         <!-- Footer -->
         <div id="footer">
             <div class="copy">
-                &copy; 2013-2018 <strong>ApiRTC</strong> by <a href="//apizee.com" title="Apizee" target="_apizee"><img src="../main/images/apizee_logo.png" alt="Apizee"></a>
+                &copy; 2013-2019 <strong>ApiRTC</strong> by <a href="//apizee.com" title="Apizee" target="_apizee"><img src="../main/images/apizee_logo.png" alt="Apizee"></a>
             </div>
         </div>
 
