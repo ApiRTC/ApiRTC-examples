@@ -5,7 +5,7 @@ $(function() {
     var qosStats = {};
 
     function joinConference(name) {
-        var cloudUrl = 'https://cloud-dev.apizee.com';
+        var cloudUrl = 'https://cloud.apizee.com';
         var connectedSession = null;
         var connectedConversation = null;
         var localStream = null;
