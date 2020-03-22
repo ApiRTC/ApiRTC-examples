@@ -193,6 +193,12 @@ function joinConference(name) {
             stream.removeFromDiv('remote-container', 'remote-media-' + stream.streamId);
         });
 
+        connectedConversation.on('error', function(errorInfo) {
+            console.error("connectedConversation error streamInfo :", errorInfo.streamInfo);
+            console.error("connectedConversation error errorCode :", errorInfo.errorCode);
+            console.error("connectedConversation error errorInfo :", errorInfo.errorInfo);
+        });
+
         //==============================
         // CREATE LOCAL STREAM
         //==============================
@@ -298,21 +304,28 @@ $('#unMuteVideo').on('click', function () {
 //==============================
 $('#toggle-screensharing').on('click', function() {
     if (screensharingStream === null) {
-        var captureSourceType = [];
-        if (apiRTC.browser === 'Firefox') {
-            captureSourceType = "screen";
-        } else {
-            //Chrome
-            captureSourceType = ["screen", "window", "tab", "audio"];
-        }
 
-        apiRTC.Stream.createScreensharingStream(captureSourceType)
+        const displayMediaStreamConstraints = {
+            video: {
+                cursor: "always"
+            },
+            audio: {
+                echoCancellation: true,
+                noiseSuppression: true,
+                sampleRate: 44100
+            }
+        };
+
+        apiRTC.Stream.createDisplayMediaStream(displayMediaStreamConstraints, false)
             .then(function(stream) {
 
                 stream.on('stopped', function() {
                     //Used to detect when user stop the screenSharing with Chrome DesktopCapture UI
                     console.log("stopped event on stream");
-                    $('#local-screensharing').remove();
+                    var elem = document.getElementById('local-screensharing');
+                    if (elem !== null) {
+                        elem.remove();
+                    }
                     screensharingStream = null;
                 });
 
@@ -341,6 +354,9 @@ $('#toggle-screensharing').on('click', function() {
         connectedConversation.unpublish(screensharingStream);
         screensharingStream.release();
         screensharingStream = null;
-        $('#local-screensharing').remove();
+        var elem = document.getElementById('local-screensharing');
+        if (elem !== null) {
+            elem.remove();
+        }
     }
 });
