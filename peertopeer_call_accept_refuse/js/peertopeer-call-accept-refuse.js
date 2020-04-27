@@ -174,11 +174,22 @@ function callInvitationProcess(invitation) {
         //==============================
         // ACCEPT CALL INVITATION
         //==============================
-        invitation.accept()
-            .then(function(call) {
+        if(invitation.getCallType()=='audio'){ //When receiving an audio call 
+            var answerOptions = {
+                mediaTypeForIncomingCall : 'AUDIO' //Answering with audio only.
+            }
+            invitation.accept(null, answerOptions)
+                .then(function (call) {
+                    setCallListeners(call);
+                    addHangupButton(call.getId());
+                });
+        } else { 
+            invitation.accept() //Answering with audio and video.
+            .then(function (call) {
                 setCallListeners(call);
                 addHangupButton(call.getId());
             });
+        }
         // Hide accept/decline buttons
         hideAcceptDeclineButtons();
     });
@@ -262,7 +273,10 @@ function addReleaseStreamButton(streamId) {
 //Audio Call establishment
 $("#callAudio").click(function () {
     var contact = connectedSession.getOrCreateContact($("#number").val());
-    var call = contact.call(null, {audioOnly: true});
+    var callOptions = {
+        mediaTypeForOutgoingCall : 'AUDIO'
+    };
+    var call = contact.call(null, callOptions);
     if (call !== null) {
         setCallListeners(call);
         addHangupButton(call.getId());
@@ -288,11 +302,14 @@ $("#shareScreen").click(function () {
     console.log('MAIN - Click screenCall');
     var contact = connectedSession.getOrCreateContact($("#number").val());
     var callConfiguration = {};
+
+    if (apiRTC.browser === 'Firefox') {
+        callConfiguration.captureSourceType = "screen";
+    } else {
+        //Chrome
         callConfiguration.captureSourceType = ["screen", "window", "tab", "audio"];
+    }
 
-        //callConfiguration.turnServerAddress = 'mp2.apizee.com';
-
-        //callConfiguration.captureSourceType = ["screen"];
     var call = contact.shareScreen(callConfiguration);
     if (call !== null) {
         setCallListeners(call);
