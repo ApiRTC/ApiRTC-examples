@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Demos - Conference</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/png" href="../main/images/favicon.png" />
+
+        <!-- Styles -->
+        <link href="../main/css/main.css" rel="stylesheet">
+        <link href="css/whiteboard.css" rel="stylesheet">
+    </head>
+    <body>
+        <!-- Header -->
+        <div id="background"></div>
+        <div id="header">
+            <a href="/"><img class="logo" src="../main/images/ApiRTC_Logo_ondark_HD@2x.png" alt="ApiRTC logo"></a>
+            <a href="" class="open-client" target="_blank">Open another client</a>
+            <a href="https://github.com/apizee/ApiRTC-examples/tree/master/" target="apirtc_github" class="github-corner" title="View source on Github" aria-label="View source on Github"><svg width="70" height="70" viewBox="0 0 250 250" style="fill:#FFF; color:#000; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+        </div>
+
+        <!-- Demo -->
+        <div id="container">
+            <h2 id="title">Whiteboard demo</h2>
+            <div>
+                <input type="text" name="apiCCId" id="apiCCId" placeholder="Enter your user Id" autocomplete="off">
+                <input type="text" name="conversationSpace" id="conversationSpace" placeholder="Enter your ConversationSpace" autocomplete="off">
+
+                <button type="button" id="register">Register</button>
+                <button type="button" id="unregister">UnRegister</button>
+                <legend id="my-number"></legend>
+            </div>
+
+            <div id="status"></div>
+
+            <div id="call">
+                <button type="button" id="hangup">Hangup</button>
+                <div id="remote-container"></div>
+                <div id="local-container"></div>
+            </div>
+            <div id ="offlineWhiteboard" >
+                Offline whiteboard :</br>
+                <button type="button" id="startOfflineWhiteboard">Start Offline Whiteboard</button>
+                <button type="button" id="stopOfflineWhiteboard">Stop Whiteboard</button>
+            </div>
+
+            <div class='row'>
+                <ul id='contactList' class='collection with-header'>
+                </ul>
+            </div>
+
+            <div id ="onlineWhiteboard" >
+                Conversation whiteboard :</br>
+                <button type="button" id="startOnlineWhiteboard">start Whiteboard</button>
+                <button type="button" id="stopOnlineWhiteboard">stop Whiteboard</button>
+            </div>
+
+            <div id ="whiteboardFct" >
+                <div>
+                    Whiteboard function :
+                </div>
+                <button type="button" id="clearPaper">clearPaper</button>
+                <button type="button" id="touchScreen">touchScreen</button>
+
+                <div class='select col s4' >
+                    <label for='drawingTool'>Drawing tool: </label>
+                    <select id='drawingTool' style="display: block">
+                        <option>pen</option>
+                        <option>erase</option>
+                        <option>arrow</option>
+                        <option>ellipse</option>
+                        <option>rectangle</option>
+                    </select>
+                </div>
+                <div class='select col s4'>
+                    <label for='brushSize'>Brush size: </label>
+                    <select id='brushSize'  style="display: block">
+                        <option>1</option>
+                        <option>3</option>
+                        <option>5</option>
+                        <option>10</option>
+                    </select>
+                </div>
+                <div class='select col s4' >
+                <label for='brushColor'>Brush color: </label>
+                <select id='brushColor' style="display: block">
+                    <option>black</option>
+                    <option>blue</option>
+                    <option>red</option>
+                    <option>green</option>
+                    <option>rgba(255,0,0,0.5)</option>
+                </select>
+                </div>
+                <div class='select col s12'>
+                    <div class="row">
+                        <div class="col s12">
+                            <label for='textInput'>Print text: </label>
+                            <input id='textInput' type="text" />
+                        </div>
+                        <div class="col s6">
+                            <label for='textInputX'>x: </label>
+                            <input id='textInputX' type="number" min=0 max=800 value=0 step=50 />
+                        </div>
+                        <div class="col s6">
+                            <label for='textInputY'>y: </label>
+                            <input id='textInputY' type="number" min=0 max=800 value=0 step=50 />
+                        </div>
+                        <div class="col s12">
+                            <button id="textInputButton" class="btn">Print!</button>
+                        </div>
+                    </div>
+                </div>
+                <div class='select col s12' style="display: block">
+                    <div class="row">
+                        <div class="col s4">
+                                <label for='textInputScale'>Scale: </label>
+                                <input id='textInputScale' type="number" min=0 max=10 value=1 step='0.1' />
+                        </div>
+                        <div class="col s4">
+                            <label for='textInputOffsetX'>Offsetx: </label>
+                            <input id='textInputOffsetX' type="number" min=0 max=2000 value=0 step=50 />
+                        </div>
+                        <div class="col s4">
+                            <label for='textInputOffsetY'>Offsety: </label>
+                            <input id='textInputOffsetY' type="number" min=0 max=2000 value=0 step=50 />
+                        </div>
+                    </div>
+                </div>
+                <button type="button" id="undo">Undo</button>
+                <button type="button" id="redo">Redo</button>
+            </div>
+
+            <div id="whiteboardContainer" >
+                <div id="cursors"></div>
+                <canvas id="paper" style="background-image:url('img/1227m.gif')" width="1900" height="1000">
+                    Your browser needs to support canvas for this to work!
+                </canvas>
+            </div>
+        </div>
+        <div id='invitationDialog' title='New invitation'>
+            <p>You just received a conversation invitation from <span id='invitationSender'></span></p>
+        </div>
+
+        <!-- Footer -->
+        <div id="footer">
+            <div class="copy">
+                &copy; 2013-2018 <strong>ApiRTC</strong> by <a href="//apizee.com" title="Apizee" target="_apizee"><img src="../main/images/apizee_logo.png" alt="Apizee"></a>
+            </div>
+        </div>
+
+        <!-- Scripts -->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+        <script src='lib/jquery-ui.min.js'></script>
+
+        <script type="text/javascript" src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
+        <script type="text/javascript" src="js/whiteboard.js"></script>
+    </body>
+</html>
