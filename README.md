@@ -41,6 +41,10 @@ Create a conversation to establish multi-party Whiteboard. Share drawings, annot
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_advanced_pubsub)<br/>
 ADVANCED - This demo exposes a video conference sample with the possibility to select streams you want to publish or subscribe.
 You are also able to choose the type of stream you want to use : audio only, video only or audio & video.
+- **Conferencing_video_file Video file Publish-subscribe** -
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_pub_video)<br/>
+This demo exposes a video conference sample with the possibility to publish a video file.
+You are also able to control the publishing of the video (pause / mute)
 
 ### Peer to peer
 - **Call** -

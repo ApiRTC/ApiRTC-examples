@@ -1,0 +1,95 @@
+#container {
+  width: 100%;
+  min-height: 100%;
+  text-align: center;
+}
+#container h2 {
+  margin: 60px 0;
+  color: white;
+  font-family: Roboto;
+  font-weight: 300;
+  font-size: 40px;
+}
+#container h3 {
+  margin: 20px 0;
+  color: white;
+  font-family: Roboto;
+  font-weight: 300;
+  font-size: 30px;
+}
+#container #text {
+  width: 800px;
+  padding: 10px 0 0;
+  color: white;
+  font-family: Roboto;
+  text-align: left;
+  margin: auto;
+}
+#container #create {
+  display: inline-block;
+}
+#container #create [type="text"] {
+  border: none;
+  height: 30px;
+  width: 220px;
+  padding: 4px 40px 4px 20px;
+  font-size: 14px;
+  font-family: Roboto;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  outline: none;
+}
+#container #create button {
+  background: #1797de;
+  border: 3px solid #1e1e1e;
+  height: 38px;
+  padding: 4px 30px;
+  margin-left: -30px;
+  color: #ffffff;
+  font-size: 14px;
+  font-family: Roboto;
+  text-transform: uppercase;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  -webkit-transition: background 0.1s linear;
+  -moz-transition: background 0.1s linear;
+  transition: background 0.1s linear;
+  cursor: pointer;
+  outline: none;
+}
+#container #create button:hover {
+  background: #1581c8;
+}
+#container #conference {
+  display: none;
+  margin-bottom: 30px;
+}
+#container #conference #local-container {
+  text-align: right;
+}
+#container #conference #local-container video {
+  height: 150px;
+}
+#container #conference #remote-container video {
+  height: 300px;
+}
+#container #publishing-video {
+    display: none;
+}
+#container #publish-video {
+    margin-top: 40px;
+}
+#container #publish-video input {
+    color: #ccc;
+}
+#container #player {
+    margin-top: 40px;
+    color: #999;
+    font-size: 12px;
+    font-family: Roboto;
+}
+#container #player video {
+    background: #333;
+}
