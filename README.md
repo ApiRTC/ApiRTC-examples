@@ -22,6 +22,9 @@ Contributions and bugfixes are welcomed.
 - **Conferencing** -
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Create a conversation to establish multi-party conference : audio, video.
+- **Conferencing_ble** -
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_ble)<br/>
+Exchange datas from a bluetooth device between users in a Conversation.
 - **Conferencing_chat** -
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/chat)<br/>
 Exchange chat messages between all users in a Conversation.
