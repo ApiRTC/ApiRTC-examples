@@ -3,12 +3,14 @@ $(function() {
 
     apiRTC.setLogLevel(10);
     var qosStats = {};
+    var localStream = null;
+
 
     function joinConference(name) {
         var cloudUrl = 'https://cloud.apizee.com';
         var connectedSession = null;
         var connectedConversation = null;
-        var localStream = null;
+        //var localStream = null;
 
         //==============================
         // CREATE USER AGENT
@@ -91,8 +93,8 @@ $(function() {
                     // Create statistics vector for each added stream
                     if (!qosStats[stream.callId]) {
                         qosStats[stream.callId] = {
-                            'mosRV': 0,             // Received video quality
-                            'mosRS': 0,             // Received audio quality
+                            'mosRV': "NoStream",             // Received video quality
+                            'mosRS': "NoStream",             // Received audio quality
                             'videoRBR': 0,          // Received video bit rate
                             'audioRBR': 0,          // Received audio bit rate
                             'videoRFR': 0,          // Received video frame rate
@@ -120,7 +122,18 @@ $(function() {
             //==========================================================
             connectedConversation.on('callStatsUpdate', function(callStats) {
 
+
+                //console.debug('callStats :', callStats);
+
                         //reception QoS statistics
+
+                if (qosStats[callStats.callId] === undefined) {
+                    qosStats[callStats.callId] = {};
+                }
+                if (qosStats[0] === undefined) {
+                    qosStats[0] = {};
+                }
+
                 if (callStats.stats.videoReceived || callStats.stats.audioReceived ){
                     if (callStats.stats.videoReceived){
                         qosStats[callStats.callId].videoRBR = Math.round(callStats.stats.videoReceived.bitsReceivedPerSecond /1000) ; //Kbps
@@ -128,14 +141,13 @@ $(function() {
                         qosStats[callStats.callId].videoRPL = callStats.stats.videoReceived.packetsLostRatio;
                         qosStats[callStats.callId].videoRHeight = callStats.stats.videoReceived.height;
                         qosStats[callStats.callId].videoRWidth = callStats.stats.videoReceived.width;
-                        qosStats[callStats.callId].mosRV = callStats.stats.quality.mosV;
-
                     }
                     if (callStats.stats.audioReceived) {
                         qosStats[callStats.callId].audioRBR = Math.round(callStats.stats.audioReceived.bitsReceivedPerSecond /1000) ; //Kbps
                         qosStats[callStats.callId].audioRPL = callStats.stats.audioReceived.packetsLostRatio;
-                        qosStats[callStats.callId].mosRS = callStats.stats.quality.mosS;
                     }
+                    qosStats[callStats.callId].mosRV = callStats.stats.quality.mosV;
+                    qosStats[callStats.callId].mosRS = callStats.stats.quality.mosS;
                     displayRemoteQosStats(callStats.callId);
                 }
                 //send QoS statistics
@@ -146,14 +158,13 @@ $(function() {
                         qosStats[0].videoSPL = callStats.stats.videoSent.packetLossRatio;
                         qosStats[0].videoSHeight = callStats.stats.videoSent.height;
                         qosStats[0].videoSWidth = callStats.stats.videoSent.width;
-                        qosStats[0].mosSV = callStats.stats.quality.mosSV;
-
                     }
                     if (callStats.stats.audioSent) {
                         qosStats[0].audioSBR = Math.round(callStats.stats.audioSent.bitsSentPerSecond /1000);
                         qosStats[0].audioSPL = callStats.stats.audioSent.packetLossRatio;
-                        qosStats[0].mosSS = callStats.stats.quality.mosSS;
                     }
+                    qosStats[0].mosSV = callStats.stats.quality.mosSV;
+                    qosStats[0].mosSS = callStats.stats.quality.mosSS;
                     displayLocalQosStats(0);
                 }
             });
@@ -190,7 +201,7 @@ $(function() {
             ua.createStream(createStreamOptions)
                 .then(function (stream) {
 
-                    console.log('createStream :', stream);
+                    console.debug('createStream :', stream);
 
                     // Save local stream
                     localStream = stream;
@@ -207,8 +218,8 @@ $(function() {
                     // Create statistics vector for the local stream
                     if (!qosStats[0]) {
                         qosStats[0] = {
-                            'mosSV': 0,             // Sent video quality
-                            'mosSS': 0,             // Sent audio quality
+                            'mosSV': "NoStream",             // Sent video quality
+                            'mosSS': "NoStream",             // Sent audio quality
                             'videoSBR': 0,          // Sent video bit rate
                             'audioSBR': 0,          // Sent audio bit rate
                             'videoSPL': 0,          // Sent video packet loss rate
@@ -227,7 +238,14 @@ $(function() {
                             //==============================
                             // PUBLISH OWN STREAM
                             //==============================
-                            connectedConversation.publish(localStream, null);
+
+                            connectedConversation.publish(localStream, null)
+                                .then(function() {
+                                    console.debug('publish ok');
+                                }).catch(function (err) {
+                                    console.error('publish error :', err);
+                                });
+
                         }).catch(function (err) {
                             console.error('join conversation error', err);
                         });
@@ -304,7 +322,11 @@ $(function() {
         var id= 'local-qosInfo-' + callId;
         var qosDiv = d3.select('#'+id).append("div");
         var statsDiv = qosDiv.append('div');
-        if (qosStats[callId].videoSBR != 0) {
+        if (qosStats[callId].mosSV === "Muted"){
+            statsDiv.append('p').append('em').text('Video stream Muted');
+        } else if (qosStats[callId].mosSV === "NoStream") {
+            statsDiv.append('p').append('em').text('No video stream');
+        } else {
             if (qosStats[callId].mosSV >= 4 ){
                 statsDiv.append('p').append('em').text('Video quality: Excellent  ');
             } else if (qosStats[callId].mosSV >= 3 ){
@@ -318,11 +340,12 @@ $(function() {
             statsDiv.append('p').append('em').text('Frame rate:  ' + qosStats[callId].videoSFR  );
             statsDiv.append('p').append('em').text('Video packet loss:  ' + qosStats[callId].videoSPL.toFixed(2)  + '%' );
             statsDiv.append('p').append('em').text('Resolution:  ' + qosStats[callId].videoSWidth + '×' + qosStats[callId].videoSHeight );
-
-        } else {
-            statsDiv.append('p').append('em').text('No video stream sent');
         }
-        if (qosStats[callId].audioSBR != 0){
+        if (qosStats[callId].mosSS === "Muted"){
+            statsDiv.append('p').append('em').text('Audio stream muted');
+        } else if (qosStats[callId].mosSS === "NoStream"){
+            statsDiv.append('p').append('em').text('No audio stream');
+        } else  {
             if (qosStats[callId].mosSS >= 4 ){
                 statsDiv.append('p').append('em').text('Audio quality: Excellent  ');
             } else if (qosStats[callId].mosSS >= 3 ){
@@ -334,8 +357,6 @@ $(function() {
             }
             statsDiv.append('p').append('em').text('Audio bit rate:  ' + qosStats[callId].audioSBR + ' Kbps' );
             statsDiv.append('p').append('em').text('Audio packet loss:  ' + qosStats[callId].audioSPL.toFixed(2)  + '%' );
-        }else {
-            statsDiv.append('p').append('em').text('No audio stream sent');
         }
     }
 
@@ -361,7 +382,11 @@ $(function() {
         var qosDiv = d3.select('#' + id).append("div");
         var statsDiv = qosDiv.append('div');
          // Video stream is received
-        if (qosStats[callId].videoRBR != 0){
+        if (qosStats[callId].mosRV === "Muted"){
+            statsDiv.append('p').append('em').text('Video stream muted');
+        } else if(qosStats[callId].mosRV === "NoStream"){
+            statsDiv.append('p').append('em').text('No video stream');
+        } else {
             // Video Statistics
             if (qosStats[callId].mosRV >= 4 ){
                 statsDiv.append('p').append('em').text('Video quality: Excellent  ');
@@ -374,14 +399,19 @@ $(function() {
             }
             statsDiv.append('p').append('em').text('Video bit rate:  ' + qosStats[callId].videoRBR + ' Kbps' );
             statsDiv.append('p').append('em').text('Frame rate:  ' + qosStats[callId].videoRFR  );
-            statsDiv.append('p').append('em').text('Video packet loss:  ' + qosStats[callId].videoRPL.toFixed(2) + ' %' );
+
+            if (qosStats[callId].videoRPL !== undefined) {
+                statsDiv.append('p').append('em').text('Video packet loss:  ' + qosStats[callId].videoRPL.toFixed(2) + ' %' );
+            }
             statsDiv.append('p').append('em').text('Resolution:  ' + qosStats[callId].videoRWidth + '×' + qosStats[callId].videoRHeight );
-        } else {
-            statsDiv.append('p').append('em').text('No video stream received');
         }
 
         // Audio stream is received
-        if (qosStats[callId].audioRBR != 0){
+        if (qosStats[callId].mosRS === "Muted") {
+            statsDiv.append('p').append('em').text('Audio stream muted');
+        } else if (qosStats[callId].mosRS === "NoStream"){
+            statsDiv.append('p').append('em').text('No audio stream');
+        }else {
             if (qosStats[callId].mosRS >= 4 ){
                 statsDiv.append('p').append('em').text('Audio quality: Excellent  ');
             } else if (qosStats[callId].mosRS >= 3 ){
@@ -392,10 +422,11 @@ $(function() {
                 statsDiv.append('p').append('em').text('Audio quality: Inadequate  ');
             }
             statsDiv.append('p').append('em').text('Audio bit rate:  ' + qosStats[callId].audioRBR + ' Kbps' );
-            statsDiv.append('p').append('em').text('Audio packet loss:  ' + qosStats[callId].audioRPL.toFixed(2) + ' %' );
+
+            if (qosStats[callId].audioRPL !== undefined) {
+                statsDiv.append('p').append('em').text('Audio packet loss:  ' + qosStats[callId].audioRPL.toFixed(2) + ' %' );
+            }
             statsDiv.append('p').append('em').text('Transport type:  ' + qosStats[callId].transportType );
-        } else {
-            statsDiv.append('p').append('em').text('No audio stream received');
         }
     }
 
@@ -403,7 +434,6 @@ $(function() {
         var qosInfosDiv = logoDivElt.parentNode.getElementsByClassName('qos-infos');
         var qosInfo = qosInfosDiv[0];
         qosInfo.style.display = 'block';
-
     }
 
     function removeQosInfo (logoDivElt) {
@@ -426,7 +456,33 @@ $(function() {
         document.getElementById('title').style.display = 'none';
         document.getElementById('conference-title').innerHTML = 'You are in conference: ' + conferenceName;
 
+        document.getElementById('callActions').style.display = 'block';
+
         // Join conference
         joinConference(conferenceName);
+    });
+
+    //==============================
+    // CALL ACTIONS
+    //==============================
+    //muteAudio from call
+    $('#muteAudio').on('click', function () {
+        console.log('MAIN - Click muteAudio');
+        localStream.muteAudio();
+    });
+    //unMuteAudio from call
+    $('#unMuteAudio').on('click', function () {
+        console.log('MAIN - Click unMuteAudio');
+        localStream.unmuteAudio();
+    });
+    //muteVideo from call
+    $('#muteVideo').on('click', function () {
+        console.log('MAIN - Click muteVideo');
+        localStream.muteVideo();
+    });
+    //unMuteVideo from call
+    $('#unMuteVideo').on('click', function () {
+        console.log('MAIN - Click unMuteVideo');
+        localStream.unmuteVideo();
     });
 });

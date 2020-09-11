@@ -111,6 +111,15 @@ $(function() {
         var createStreamOptions = {};
         createStreamOptions.audioInputId = selectMic.value;
         createStreamOptions.videoInputId = selectCamera.value;
+/*
+        console.debug(apiRTC.osName);
+
+        if (apiRTC.osName === "iOS" || apiRTC.osName === "Android") {
+            createStreamOptions.facingMode = 'environment';
+        } else {
+            createStreamOptions.videoInputId = selectCamera.value;
+        }
+*/
 
         let callbacks = {};
         callbacks.getStream = () => {
@@ -134,7 +143,13 @@ $(function() {
 
         if (call !== null) {
             //Switch the camera if call is ongoing
-            return call.replacePublishedStream(null, callbacks);
+            return call.replacePublishedStream(null, callbacks)
+                .then(function (stream) {
+                    console.error('replacePublishedStream OK');
+                })
+                .catch(function (err) {
+                    console.error('replacePublishedStream NOK');
+                });
         } else {
             return callbacks.getStream();
         }
