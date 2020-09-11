@@ -10,7 +10,7 @@ $(function() {
     var ua = new apiRTC.UserAgent({
         uri: 'apzkey:myDemoApiKey'
     });
- 
+
     $('#register').on('click', function() {
         console.log('register');
         //==============================
@@ -27,13 +27,10 @@ $(function() {
         registerInformation.id = userId;
         registerInformation.cloudFetchRetries = 3;
         registerInformation.cloudFetchRetryDelay = 2000;
-            //registerInformation.ccs = "testfred.apizee.com";
-        //}
 
         ua.register(registerInformation).then(function(session) {
             // Save session
             connectedSession = session;
-
             // Display user number
             document.getElementById('my-number').innerHTML = 'Your number is ' + connectedSession.id;
         }).catch(function(error) {
