@@ -27,24 +27,39 @@ Create a conversation to establish multi-party conference : audio, video.
 Exchange datas from a bluetooth device between users in a Conversation.
 - **Conferencing_chat** -
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/chat)<br/>
-Exchange chat messages between all users in a Conversation.
+Exchange group chat messages between all users in a Conversation.
+- **Conferencing_chat_file_transfer** -
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_chat_file)<br/>
+Exposes the video conference with the chat and file transfer options.
+- **Conferencing_join-leave** -
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_join-leave)<br/>
+Focus on the possibility to join and leave a conference.
+- **Conferencing_moderation** -
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_moderation)<br/>
+Learn how to moderate private conference: accept / decline users. (ADVANCED FEATURE)
+- **Conferencing_mute-screen** -
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_mute_screen)<br/>
+Learn how to mute stream on confrence and publish a screensharing.
+- **Conferencing_mute_screen_advanced-PUB-SUB** -
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_advanced_pubsub)<br/>
+ADVANCED - This demo exposes a video conference sample with the possibility to select streams you want to publish or subscribe.
+You are also able to choose the type of stream you want to use : audio only, video only or audio & video.
+- **Conferencing_publish_video** -
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_pub_video)<br/>
+This demo exposes a video conference sample with the possibility to publish a video file.
+You are also able to control the publishing of the video (pause / mute)
 - **Conferencing_QoSInfoDisplay** -
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_qos)<br/>
 Learn how to add QoS Monitoring and active speaker detection on your video conference.
+- **Conferencing_recording** -
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_record)<br/>
+Record a conversation : Recording will be a composite of all the stream published in conference.
 - **Conferencing_select_media** -
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_select)<br/>
 Create a conversation to establish multi-party conference : audio, video and select your media devices.
 - **Conferencing_whiteboard** -
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_whiteboard)<br/>
 Create a conversation to establish multi-party Whiteboard. Share drawings, annotation with users.
-- **Conferencing_Advanced Streams Publish-subscribe** -
-[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_advanced_pubsub)<br/>
-ADVANCED - This demo exposes a video conference sample with the possibility to select streams you want to publish or subscribe.
-You are also able to choose the type of stream you want to use : audio only, video only or audio & video.
-- **Conferencing_video_file Video file Publish-subscribe** -
-[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_pub_video)<br/>
-This demo exposes a video conference sample with the possibility to publish a video file.
-You are also able to control the publishing of the video (pause / mute)
 
 ### Peer to peer
 - **Call** -
