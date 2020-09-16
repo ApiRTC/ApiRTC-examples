@@ -60,6 +60,9 @@ Create a conversation to establish multi-party conference : audio, video and sel
 - **Conferencing_whiteboard** -
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_whiteboard)<br/>
 Create a conversation to establish multi-party Whiteboard. Share drawings, annotation with users.
+- **Conferencing_whiteboard_invitation** -
+[Access to demo](https://dev.apirtc.com/tutorials/whiteboard/invitation)<br/>
+Invite user to a conversation and then create a Whiteboard. Share drawings, annotation with users.
 
 ### Peer to peer
 - **Call** -
