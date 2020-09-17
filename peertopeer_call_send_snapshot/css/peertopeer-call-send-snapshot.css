@@ -1,0 +1,120 @@
+#container {
+    width: 100%;
+    min-height: calc(100% - 44px);
+    margin-bottom: -28px;
+    text-align: center;
+}
+
+#container h2 {
+    margin: 60px 0;
+    color: white;
+    font-family: Roboto;
+    font-weight: 300;
+    font-size: 40px;
+}
+
+#container [type="text"] {
+    border: none;
+    height: 30px;
+    width: 220px;
+    padding: 4px 40px 4px 20px;
+    font-size: 14px;
+    font-family: Roboto;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    outline: none;
+}
+
+#container button {
+    background: #1797DE;
+    border: 3px solid #1e1e1e;
+    height: 38px;
+    padding: 4px 30px;
+    color: #ffffff;
+    font-size: 14px;
+    font-family: Roboto;
+    text-transform: uppercase;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    -webkit-transition: background 0.10s linear;
+    -moz-transition: background 0.10s linear;
+    transition: background 0.10s linear;
+    cursor: pointer;
+    outline: none;
+}
+
+#container button:hover {
+    background: #1581C8;
+}
+
+p {
+    font-family: Roboto;
+    color: white;
+
+}
+
+#connectingLabel {
+    display: none;
+    font-weight: bold;
+}
+
+#yourIdLabel {
+    display: none;
+    font-weight: bold;
+}
+
+#callForm {
+    display: none;
+}
+
+#callButton {
+    margin-left: -30px;
+}
+
+#streams {
+    display: none;
+    width: 500px;
+    margin: 0 auto;
+}
+
+#localStream {
+    display: inline-block;
+    width: 230px;
+    height: 150px;
+}
+
+#localStream video {
+    height: 150px;
+}
+
+#remoteStream {
+    display: inline-block;
+    width: 230px;
+    height: 150px;
+}
+
+#remoteStream video {
+    height: 150px;
+}
+
+#hangUpButton {
+    display: none;
+}
+
+#snapshot {
+    display: none;
+}
+
+#snapshotProgress {
+    color: #ccc;
+    font-family: Roboto;
+    font-size: 12px;
+    margin: 20px auto;
+}
+
+.separator {
+    display: block;
+    margin: 20px auto;
+}

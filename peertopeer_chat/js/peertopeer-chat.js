@@ -39,7 +39,7 @@ $(function() {
         //==============================
         // GET CONTACT OBJECT
         //==============================
-        activeContact = connectedSession.getContact(contactId);
+        activeContact = connectedSession.getOrCreateContact(contactId);
         //Restore previous chat messsages
         $('#message-list').empty();
         for (var i = 0; i < activeChats[activeContact.getId()].length; i++) {
