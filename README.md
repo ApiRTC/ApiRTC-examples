@@ -77,6 +77,12 @@ Learn how to do a file transfer between two users.
 - **Call with user acceptation / refuse** -
 [Access to demo](https://dev.apirtc.com/tutorials/peertopeer/accept_refuse)<br/>
 Establish a call with accept /refuse management from callee.
+- **Call with possibility to send file** -
+[Access to demo](https://dev.apirtc.com/tutorials/peertopeer/call_sendfile)<br/>
+Establish a call and exchange file with callee.
+- **Call with possibility to send a snapshot** -
+[Access to demo](https://dev.apirtc.com/tutorials/peertopeer/dataChannel)<br/>
+Establish a call and exchange snapshot with callee.
 
 ### Stream
 - **Select Media** -
