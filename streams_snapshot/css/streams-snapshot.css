@@ -134,7 +134,7 @@
 #timeline{
   width:100%;overflow:auto;white-space: nowrap; font-size: 0;}
 #timeline img{
-  height:100px;display: inline-block; }
+  height:200px;display: inline-block; }
 #timeline a{
   display: inline-block;}
 

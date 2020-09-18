@@ -142,6 +142,16 @@ $(function () {
         createStreamOptions.audioInputId = selectMic.value;
         createStreamOptions.videoInputId = selectCamera.value;
 
+/*
+        createStreamOptions.constraints = {
+            audio: true,
+            video: {
+                deviceId: selectCamera.value,
+                height: { min: 240, ideal: 480, max: 480 },
+                width: { ideal: 640, max: 640, min: 320},
+            }
+        };
+*/
 
         let callbacks = {};
         callbacks.getStream = () => {
@@ -165,6 +175,13 @@ $(function () {
                     document.getElementById('error-device').style.display = "none";
                     // Attach stream
                     localStream.attachToElement(mediaElement);
+
+                    stream.on('trackStopped', function (trackInfo) {
+                        console.debug('trackStopped :', trackInfo);
+                    })
+                    .on('stopped', function () {
+                        console.debug('stream stopped');
+                    });
 
                     return resolve(stream);
                 })

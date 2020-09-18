@@ -97,6 +97,9 @@ Learn how to locally record stream in a file.
 - **Snapshot** -
 [Access to demo](https://dev.apirtc.com/tutorials/streams/snapshot)<br/>
 Learn how to create a snapshot image from a video stream.
+- **Video resolution** -
+[Access to demo](https://dev.apirtc.com/tutorials/streams/video_resolution)<br/>
+Learn how to choose the resolution of the video stream.
 
 ### UserAgent
 - **User creation and registration - user defined in an external database** -

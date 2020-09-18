@@ -193,7 +193,7 @@ $(function () {
         localStream.takeSnapshot(snapshotOptions)
             .then(function (snapshot) {
                 console.log("takeSnapshot OK :", snapshot);
-                $('#timeline').append('<a href="' + snapshot + '" target="_blank"><img src="' + snapshot + '" /></a>');
+                $('#timeline').append('<a><img src="' + snapshot + '" /></a>');
             }).catch(function (error) {
                 // error
                 console.error('takeSnapshot error :', error);
