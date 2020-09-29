@@ -57,7 +57,7 @@ Record a conversation : Recording will be a composite of all the stream publishe
 - **Conferencing_select_media** -
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_select)<br/>
 Create a conversation to establish multi-party conference : audio, video and select your media devices.
-- **Conferencing_select_media** -
+- **Conferencing_select_media_background_substraction** -
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_select_back)<br/>
 This demo shows how to add background substraction possibility on video stream in a conversation.
 - **Conferencing_whiteboard** -
