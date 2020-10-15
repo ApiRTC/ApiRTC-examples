@@ -122,9 +122,9 @@ $(function () {
         }
     }
 
-    ua.on('mediaDeviceChanged', function (invitation) {
+    ua.on('mediaDeviceChanged', function (event) {
         //Listen for mediaDeviceChanged event to update devices list
-        console.log('mediaDeviceChanged');
+        console.log('mediaDeviceChanged :', event);
         var res = ua.getUserMediaDevices();
         updateDeviceList (res);
     });
@@ -222,7 +222,7 @@ $(function () {
                 //==============================
                 // ACCEPT CALL INVITATION
                 //==============================
-                invitation.accept()
+                invitation.accept(localStream)
                     .then(function (inCall) {
                         call = inCall;
                         setCallListeners();
