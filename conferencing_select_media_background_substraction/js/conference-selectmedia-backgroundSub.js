@@ -10,13 +10,13 @@ $(function() {
         connectedSession = null,
         selectCamera = document.getElementById("select-camera"),
         selectMic = document.getElementById("select-mic"),
-//BACKGROUND_SUBSTRACTION
+        //BACKGROUND_SUBSTRACTION
         checkboxbackgroundSub = document.getElementById("backgroundSub"),
-//BACKGROUND_SUBSTRACTION
+        //BACKGROUND_SUBSTRACTION
         selectedAudioInputId = null,
         selectedVideoInputId = null;
 
-//BACKGROUND_SUBSTRACTION IMAGE
+    //BACKGROUND_SUBSTRACTION IMAGE
     var imageData = null;
 
     const image = new Image();
@@ -28,26 +28,26 @@ $(function() {
         var context = canvas.getContext('2d');
         canvas.width = image.width;
         canvas.height = image.height;
-        context.drawImage(image, 0, 0 );
+        context.drawImage(image, 0, 0);
         imageData = context.getImageData(0, 0, 640, 480);
         console.debug("image is loaded");
     };
-//BACKGROUND_SUBSTRACTION IMAGE
+    //BACKGROUND_SUBSTRACTION IMAGE
 
-    selectCamera.onchange = function (e) {
+    selectCamera.onchange = function(e) {
         console.debug("selectCamera onchange :", e);
         createStream();
     };
-    selectMic.onchange = function (e) {
+    selectMic.onchange = function(e) {
         console.debug("selectMic onchange :", e);
         createStream();
     };
-//BACKGROUND_SUBSTRACTION
-    checkboxbackgroundSub.onchange = function (e) {
+    //BACKGROUND_SUBSTRACTION
+    checkboxbackgroundSub.onchange = function(e) {
         console.debug("checkboxbackgroundSub onchange :", e);
         createStream();
     };
-//BACKGROUND_SUBSTRACTION
+    //BACKGROUND_SUBSTRACTION
 
     function showSelectDevicesArea() {
         document.getElementById('select-device').style.display = 'inline-block';
@@ -65,7 +65,7 @@ $(function() {
             v = 0;
 
         //Cleaning selectors
-        selectors.forEach(function (select) {
+        selectors.forEach(function(select) {
             while (select.firstChild) {
                 select.removeChild(select.firstChild);
             }
@@ -108,12 +108,12 @@ $(function() {
         console.log("manageMediaDevices :", mediaDevices);
         updateDeviceList(mediaDevices);
     }
-//SELECT_MEDIA
+    //SELECT_MEDIA
 
     //==============================
     // CREATE LOCAL STREAM
     //==============================
-    var createStream = function () {
+    var createStream = function() {
         // Release old stream if it exists
 
         if (localStream !== null) {
@@ -125,16 +125,16 @@ $(function() {
         createStreamOptions.audioInputId = selectMic.value;
         createStreamOptions.videoInputId = selectCamera.value;
 
-//BACKGROUND_SUBSTRACTION
+        //BACKGROUND_SUBSTRACTION
         console.debug("checkboxbackgroundSub.value:", checkboxbackgroundSub.value);
         switch (checkboxbackgroundSub.value) {
             case 'nofilter':
-              break;
+                break;
             case 'blur':
                 createStreamOptions.filters = [
                     { type: 'backgroundSubtraction', options: { backgroundMode: 'blur' } },
                 ];
-              break;
+                break;
             case 'transparent':
                 createStreamOptions.filters = [
                     { type: 'backgroundSubtraction', options: { backgroundMode: 'transparent' } },
@@ -144,39 +144,39 @@ $(function() {
                 createStreamOptions.filters = [
                     { type: 'backgroundSubtraction', options: { backgroundMode: 'image', image: imageData } },
                 ];
-              break;
+                break;
             default:
-              console.log(`Sorry, not a good filter value`);
+                console.log(`Sorry, not a good filter value`);
         }
-//BACKGROUND_SUBSTRACTION
+        //BACKGROUND_SUBSTRACTION
 
         let callbacks = {};
         callbacks.getStream = () => {
             return new Promise((resolve, reject) => {
                 ua.createStream(createStreamOptions)
-                .then(function (stream) {
-                    // Save local stream
-                    localStream = stream;
-                    stream.removeFromDiv('local-container', 'local-media');
-                    stream.addInDiv('local-container', 'local-media', {}, true);
-                    return resolve(stream);
-                })
-                .catch(function (err) {
-                    console.error('create stream error', err);
-                    document.getElementById('error-device').innerHTML = 'ERROR :' + err.error.message;
-                    document.getElementById('error-device').style.display = "block";
-                    reject()
-                });
+                    .then(function(stream) {
+                        // Save local stream
+                        localStream = stream;
+                        stream.removeFromDiv('local-container', 'local-media');
+                        stream.addInDiv('local-container', 'local-media', {}, true);
+                        return resolve(stream);
+                    })
+                    .catch(function(err) {
+                        console.error('create stream error', err);
+                        document.getElementById('error-device').innerHTML = 'ERROR :' + err.error.message;
+                        document.getElementById('error-device').style.display = "block";
+                        reject()
+                    });
             });
         };
 
         if (call !== null) {
             //Switch the camera if call is ongoing
             return call.replacePublishedStream(null, callbacks)
-                .then(function (stream) {
+                .then(function(stream) {
                     console.debug('replacePublishedStream OK');
                 })
-                .catch(function (err) {
+                .catch(function(err) {
                     console.error('replacePublishedStream NOK');
                 });
         } else {
@@ -194,12 +194,12 @@ $(function() {
             uri: 'apzkey:myDemoApiKey'
         });
 
-//SELECT_MEDIA
-        ua.on("mediaDeviceChanged", function (updatedContacts) {
+        //SELECT_MEDIA
+        ua.on("mediaDeviceChanged", function(updatedContacts) {
             console.debug("mediaDeviceChanged");
             manageMediaDevices();
         });
-//SELECT_MEDIA
+        //SELECT_MEDIA
 
         manageMediaDevices();
         showSelectDevicesArea();
@@ -214,7 +214,7 @@ $(function() {
             connectedSession = session;
 
             connectedSession
-                .on("contactListUpdate", function (updatedContacts) { //display a list of connected users
+                .on("contactListUpdate", function(updatedContacts) { //display a list of connected users
                     console.log("MAIN - contactListUpdate", updatedContacts);
                     if (connectedConversation !== null) {
                         let contactList = connectedConversation.getContacts();
@@ -238,9 +238,9 @@ $(function() {
                     if (streamInfo.isRemote === true) {
 
                         connectedConversation.subscribeToMedia(streamInfo.streamId)
-                            .then(function () {
+                            .then(function() {
                                 console.log('subscribeToMedia success');
-                            }).catch(function (err) {
+                            }).catch(function(err) {
                                 console.error('subscribeToMedia error', err);
                             });
                     }
@@ -248,7 +248,7 @@ $(function() {
             });
 
             //=====================================================
-            // BIS/ ADD EVENT LISTENER : WHEN STREAM WAS REMOVED FROM THE CONVERSATION
+            // BIS/ ADD EVENT LISTENER : WHEN STREAM IS ADDED/REMOVED TO/FROM THE CONVERSATION
             //=====================================================
             connectedConversation
                 .on('streamAdded', function(stream) {
@@ -268,20 +268,20 @@ $(function() {
                 video: true
             };
             createStream()
-                .then(function (stream) {
+                .then(function(stream) {
                     console.log('createStream return OK');
 
                     connectedConversation.join()
-                    .then(function(response) {
+                        .then(function(response) {
 
-                        var options = {};
-                        //options.qos.videoForbidInactive = true;
-                        //options.qos.videoMinQuality = 'medium';
+                            var options = {};
+                            //options.qos.videoForbidInactive = true;
+                            //options.qos.videoMinQuality = 'medium';
 
-                        connectedConversation.publish(stream, options);
-                    });
+                            connectedConversation.publish(stream, options);
+                        });
 
-                }).catch(function (err) {
+                }).catch(function(err) {
                     console.error('create stream error', err);
                 });
         });

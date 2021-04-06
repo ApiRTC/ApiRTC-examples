@@ -69,7 +69,7 @@ $(function() {
             });
 
             //=====================================================
-            // BIS/ ADD EVENT LISTENER : WHEN STREAM WAS REMOVED FROM THE CONVERSATION
+            // BIS/ ADD EVENT LISTENER : WHEN STREAM IS ADDED/REMOVED TO/FROM THE CONVERSATION
             //=====================================================
             connectedConversation
                 .on('streamAdded', function(stream) {

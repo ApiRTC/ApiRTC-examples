@@ -13,20 +13,21 @@ $(function() {
         selectedAudioInputId = null,
         selectedVideoInputId = null;
 
-    selectCamera.onchange = function (e) {
+    selectCamera.onchange = function(e) {
         console.error("selectCamera onchange :", e);
         createStream();
-//        localStorage.setItem("videoSourceId_" + connectedSession.getId(), selectCamera.value);
+        //        localStorage.setItem("videoSourceId_" + connectedSession.getId(), selectCamera.value);
     };
-    selectMic.onchange = function (e) {
+    selectMic.onchange = function(e) {
         console.error("selectMic onchange :", e);
         createStream();
-//        localStorage.setItem("audioSourceId_" + connectedSession.getId(), selectMic.value);
+        //        localStorage.setItem("audioSourceId_" + connectedSession.getId(), selectMic.value);
     };
 
     function showSelectDevicesArea() {
         document.getElementById('select-device').style.display = 'inline-block';
     }
+
     function hideSelectDevicesArea() {
         document.getElementById('select-device').style.display = 'none';
     }
@@ -43,13 +44,13 @@ $(function() {
             v = 0;
 
         //Cleaning selectors
-        selectors.forEach(function (select) {
+        selectors.forEach(function(select) {
             while (select.firstChild) {
                 select.removeChild(select.firstChild);
             }
         });
 
-//        selectedVideoInputId = localStorage.getItem("videoSourceId_" + connectedSession.getId());
+        //        selectedVideoInputId = localStorage.getItem("videoSourceId_" + connectedSession.getId());
 
         for (i = 0; i < Object.values(res.videoinput).length; i++) {
             v = Object.values(res.videoinput)[i];
@@ -66,7 +67,7 @@ $(function() {
             }
         }
 
-//       selectedAudioInputId = localStorage.getItem("audioSourceId_" + connectedSession.getId());
+        //       selectedAudioInputId = localStorage.getItem("audioSourceId_" + connectedSession.getId());
         for (i = 0; i < Object.values(res.audioinput).length; i++) {
             v = Object.values(res.audioinput)[i];
             console.log('getMicrophones', v);
@@ -83,8 +84,8 @@ $(function() {
         }
         console.log('getDevices', cameras, microphones);
 
-//        localStorage.setItem("videoSourceId_" + connectedSession.getId(), selectCamera.value);
-//        localStorage.setItem("audioSourceId_" + connectedSession.getId(), selectMic.value);
+        //        localStorage.setItem("videoSourceId_" + connectedSession.getId(), selectCamera.value);
+        //        localStorage.setItem("audioSourceId_" + connectedSession.getId(), selectMic.value);
     }
 
     function manageMediaDevices() {
@@ -94,12 +95,12 @@ $(function() {
         console.log("manageMediaDevices :", mediaDevices);
         updateDeviceList(mediaDevices);
     }
-//SELECT_MEDIA
+    //SELECT_MEDIA
 
     //==============================
     // CREATE LOCAL STREAM
     //==============================
-    var createStream = function () {
+    var createStream = function() {
         // Release old stream if it exists
 
         if (localStream !== null) {
@@ -111,43 +112,43 @@ $(function() {
         var createStreamOptions = {};
         createStreamOptions.audioInputId = selectMic.value;
         createStreamOptions.videoInputId = selectCamera.value;
-/*
-        console.debug(apiRTC.osName);
+        /*
+                console.debug(apiRTC.osName);
 
-        if (apiRTC.osName === "iOS" || apiRTC.osName === "Android") {
-            createStreamOptions.facingMode = 'environment';
-        } else {
-            createStreamOptions.videoInputId = selectCamera.value;
-        }
-*/
+                if (apiRTC.osName === "iOS" || apiRTC.osName === "Android") {
+                    createStreamOptions.facingMode = 'environment';
+                } else {
+                    createStreamOptions.videoInputId = selectCamera.value;
+                }
+        */
 
         let callbacks = {};
         callbacks.getStream = () => {
             return new Promise((resolve, reject) => {
                 ua.createStream(createStreamOptions)
-                .then(function (stream) {
-                    // Save local stream
-                    localStream = stream;
-                    stream.removeFromDiv('local-container', 'local-media');
-                    stream.addInDiv('local-container', 'local-media', {}, true);
-                    return resolve(stream);
-                })
-                .catch(function (err) {
-                    console.error('create stream error', err);
-                    document.getElementById('error-device').innerHTML = 'ERROR :' + err.error.message;
-                    document.getElementById('error-device').style.display = "block";
-                    reject()
-                 });
+                    .then(function(stream) {
+                        // Save local stream
+                        localStream = stream;
+                        stream.removeFromDiv('local-container', 'local-media');
+                        stream.addInDiv('local-container', 'local-media', {}, true);
+                        return resolve(stream);
+                    })
+                    .catch(function(err) {
+                        console.error('create stream error', err);
+                        document.getElementById('error-device').innerHTML = 'ERROR :' + err.error.message;
+                        document.getElementById('error-device').style.display = "block";
+                        reject()
+                    });
             });
         };
 
         if (call !== null) {
             //Switch the camera if call is ongoing
             return call.replacePublishedStream(null, callbacks)
-                .then(function (stream) {
+                .then(function(stream) {
                     console.error('replacePublishedStream OK');
                 })
-                .catch(function (err) {
+                .catch(function(err) {
                     console.error('replacePublishedStream NOK');
                 });
         } else {
@@ -165,12 +166,12 @@ $(function() {
             uri: 'apzkey:myDemoApiKey'
         });
 
-//SELECT_MEDIA
-        ua.on("mediaDeviceChanged", function (updatedContacts) {
+        //SELECT_MEDIA
+        ua.on("mediaDeviceChanged", function(updatedContacts) {
             console.error("mediaDeviceChanged");
             manageMediaDevices();
         });
-//SELECT_MEDIA
+        //SELECT_MEDIA
 
         manageMediaDevices();
         showSelectDevicesArea();
@@ -185,7 +186,7 @@ $(function() {
             connectedSession = session;
 
             connectedSession
-                .on("contactListUpdate", function (updatedContacts) { //display a list of connected users
+                .on("contactListUpdate", function(updatedContacts) { //display a list of connected users
                     console.log("MAIN - contactListUpdate", updatedContacts);
                     if (connectedConversation !== null) {
                         let contactList = connectedConversation.getContacts();
@@ -209,9 +210,9 @@ $(function() {
                     if (streamInfo.isRemote === true) {
 
                         connectedConversation.subscribeToMedia(streamInfo.streamId)
-                            .then(function () {
+                            .then(function() {
                                 console.log('subscribeToMedia success');
-                            }).catch(function (err) {
+                            }).catch(function(err) {
                                 console.error('subscribeToMedia error', err);
                             });
                     }
@@ -219,7 +220,7 @@ $(function() {
             });
 
             //=====================================================
-            // BIS/ ADD EVENT LISTENER : WHEN STREAM WAS REMOVED FROM THE CONVERSATION
+            // BIS/ ADD EVENT LISTENER : WHEN STREAM IS ADDED/REMOVED TO/FROM THE CONVERSATION
             //=====================================================
             connectedConversation
                 .on('streamAdded', function(stream) {
@@ -239,20 +240,20 @@ $(function() {
                 video: true
             };
             createStream()
-                .then(function (stream) {
+                .then(function(stream) {
                     console.log('createStream return OK');
 
                     connectedConversation.join()
-                    .then(function(response) {
+                        .then(function(response) {
 
-                        var options = {};
-                        //options.qos.videoForbidInactive = true;
-                        //options.qos.videoMinQuality = 'medium';
+                            var options = {};
+                            //options.qos.videoForbidInactive = true;
+                            //options.qos.videoMinQuality = 'medium';
 
-                        connectedConversation.publish(stream, options);
-                    });
+                            connectedConversation.publish(stream, options);
+                        });
 
-                }).catch(function (err) {
+                }).catch(function(err) {
                     console.error('create stream error', err);
                 });
         });

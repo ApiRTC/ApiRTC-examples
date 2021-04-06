@@ -184,7 +184,7 @@ function joinConference(name) {
             }
         });
         //=====================================================
-        // ADD EVENT LISTENER : WHEN STREAM WAS REMOVED FROM THE CONVERSATION
+        // ADD EVENT LISTENER : WHEN STREAM IS ADDED/REMOVED TO/FROM THE CONVERSATION
         //=====================================================
         connectedConversation.on('streamAdded', function(stream) {
             stream.addInDiv('remote-container', 'remote-media-' + stream.streamId, {}, false);
