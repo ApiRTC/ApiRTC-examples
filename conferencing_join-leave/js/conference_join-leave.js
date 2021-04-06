@@ -134,18 +134,17 @@ $(function() {
         document.getElementById('conference').style.display = 'none';
         document.getElementById('title').innerHTML = 'Conference demo - join / leave';
 
-        //Leave Conversation
+        // Leave Conversation
         if (connectedConversation !== null) {
-            //Leaving actual conversation
-
-            connectedConversation.destroy();
+            // Leaving actual conversation
             connectedConversation.leave()
                 .then(function() {
                     console.debug('Conversation leave OK');
+                    connectedConversation.destroy();
+                    connectedConversation = null;
                 }).catch(function(err) {
                     console.error('Conversation leave error', err);
                 });
-            connectedConversation = null;
             $('#remote-container').empty();
         }
 
