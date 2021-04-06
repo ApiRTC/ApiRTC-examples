@@ -31,7 +31,7 @@ $(function() {
     function joinConference(name) {
 
         connectedSession
-            .on("contactListUpdate", function (updatedContacts) { //display a list of connected users
+            .on("contactListUpdate", function(updatedContacts) { //display a list of connected users
                 console.log("MAIN - contactListUpdate", updatedContacts);
                 if (connectedConversation !== null) {
                     let contactList = connectedConversation.getContacts();
@@ -55,9 +55,9 @@ $(function() {
                 if (streamInfo.isRemote === true) {
 
                     connectedConversation.subscribeToMedia(streamInfo.streamId)
-                        .then(function (stream) {
+                        .then(function(stream) {
                             console.log('subscribeToMedia success');
-                        }).catch(function (err) {
+                        }).catch(function(err) {
                             console.error('subscribeToMedia error', err);
                         });
                 }
@@ -82,7 +82,7 @@ $(function() {
         };
 
         ua.createStream(createStreamOptions)
-            .then(function (stream) {
+            .then(function(stream) {
 
                 console.log('createStream :', stream);
 
@@ -99,12 +99,12 @@ $(function() {
                         //==============================
                         // 7/ PUBLISH OWN STREAM
                         //==============================
-                        connectedConversation.publish(localStream, null);
-                    }).catch(function (err) {
+                        connectedConversation.publish(localStream);
+                    }).catch(function(err) {
                         console.error('Conversation join error', err);
                     });
 
-            }).catch(function (err) {
+            }).catch(function(err) {
                 console.error('create stream error', err);
             });
     }
@@ -127,7 +127,7 @@ $(function() {
     });
 
     // Click on leaveConference button
-    $('#leaveConference').on('click', function () {
+    $('#leaveConference').on('click', function() {
         console.log("leaveConference");
 
         document.getElementById('create').style.display = 'inline-block';
@@ -142,7 +142,7 @@ $(function() {
             connectedConversation.leave()
                 .then(function() {
                     console.debug('Conversation leave OK');
-                }).catch(function (err) {
+                }).catch(function(err) {
                     console.error('Conversation leave error', err);
                 });
             connectedConversation = null;

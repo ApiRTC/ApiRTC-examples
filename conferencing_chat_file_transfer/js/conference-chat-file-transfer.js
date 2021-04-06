@@ -118,7 +118,7 @@ $(() => {
                             //==============================
                             // 7/ PUBLISH OWN STREAM
                             //==============================
-                            connectedConversation.publish(localStream, null);
+                            connectedConversation.publish(localStream);
 
                             renderUserList();
                             updateUIState('conference');
@@ -154,7 +154,7 @@ $(() => {
 
     function updateUIState(state) {
         console.log('Update UI state', state);
-        switch(state) {
+        switch (state) {
             case 'initial':
                 document.querySelector('#chat').style.display = 'none';
                 document.querySelector('#file-transfer').style.display = 'none';
@@ -212,7 +212,7 @@ $(() => {
             return;
         }
 
-        connectedConversation.pushData({'file': file})
+        connectedConversation.pushData({ 'file': file })
             .then((cloudMediaInfo) => {
                 console.log('File uploaded :', cloudMediaInfo);
                 // Send file link message to the chat

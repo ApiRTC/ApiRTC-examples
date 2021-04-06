@@ -27,7 +27,7 @@ let $1 = $(function() {
             connectedSession = session;
 
             connectedSession
-                .on("contactListUpdate", function (updatedContacts) { //display a list of connected users
+                .on("contactListUpdate", function(updatedContacts) { //display a list of connected users
                     console.log("MAIN - contactListUpdate", updatedContacts);
                     if (connectedConversation !== null) {
                         let contactList = connectedConversation.getContacts();
@@ -53,11 +53,11 @@ let $1 = $(function() {
                     if (streamInfo.isRemote === true) {
 
                         connectedConversation.subscribeToMedia(streamInfo.streamId)
-                            .then(function (stream) {
+                            .then(function(stream) {
                                 console.log('subscribeToMedia success');
-                            }).catch(function (err) {
-                            console.error('subscribeToMedia error', err);
-                        });
+                            }).catch(function(err) {
+                                console.error('subscribeToMedia error', err);
+                            });
                     }
                 }
             });
@@ -74,7 +74,7 @@ let $1 = $(function() {
             }).on('recordingAvailable', function(recordingInfo) {
                 console.log('recordingInfo :', recordingInfo);
                 console.log('recordingInfo.mediaURL :', recordingInfo.mediaURL);
-                $("#"+ recordingInfo.mediaId).replaceWith('<li id=' + recordingInfo.mediaId + '>Your recording is available <a target="_blank" href=' + recordingInfo.mediaURL + '> here </a></li>');  //CLICKABLE RECORDING LINK//
+                $("#" + recordingInfo.mediaId).replaceWith('<li id=' + recordingInfo.mediaId + '>Your recording is available <a target="_blank" href=' + recordingInfo.mediaURL + '> here </a></li>'); //CLICKABLE RECORDING LINK//
             });
 
             //==============================
@@ -88,7 +88,7 @@ let $1 = $(function() {
             };
 
             ua.createStream(createStreamOptions)
-                .then(function (stream) {
+                .then(function(stream) {
 
                     console.log('createStream :', stream);
 
@@ -106,14 +106,14 @@ let $1 = $(function() {
                             //==============================
                             // 7/ PUBLISH OWN STREAM
                             //==============================
-                            connectedConversation.publish(localStream, null);
-                        }).catch(function (err) {
-                        console.error('Conversation join error', err);
-                    });
+                            connectedConversation.publish(localStream);
+                        }).catch(function(err) {
+                            console.error('Conversation join error', err);
+                        });
 
-                }).catch(function (err) {
-                console.error('create stream error', err);
-            });
+                }).catch(function(err) {
+                    console.error('create stream error', err);
+                });
         });
     }
 
@@ -146,14 +146,14 @@ let $1 = $(function() {
         console.log("startCompositeRecording");
 
         connectedConversation.startRecording()
-            .then(function (recordingInfo) {
+            .then(function(recordingInfo) {
                 console.info('startRecording', recordingInfo);
                 console.info('startRecording mediaURL', recordingInfo.mediaURL);
-                $("#recordingInfo").append('<li id=' + recordingInfo.mediaId + '>When ready, your recording will be available <a target="_blank" href=' + recordingInfo.mediaURL + '> here </a></li>');  //CLICKABLE RECORDING LINK//
+                $("#recordingInfo").append('<li id=' + recordingInfo.mediaId + '>When ready, your recording will be available <a target="_blank" href=' + recordingInfo.mediaURL + '> here </a></li>'); //CLICKABLE RECORDING LINK//
                 document.getElementById('recordStart').style.display = 'none';
                 document.getElementById('recordStop').style.display = 'inline-block';
             })
-            .catch(function (err) {
+            .catch(function(err) {
                 console.error('startRecording', err);
             });
     });
@@ -164,13 +164,13 @@ let $1 = $(function() {
         console.log("stopCompositeRecording");
 
         connectedConversation.stopRecording()
-            .then(function (recordingInfo) {
-                    console.info('stopRecording', recordingInfo);
-                    document.getElementById('recordStart').style.display = 'inline-block';
-                    document.getElementById('recordStop').style.display = 'none';
-                })
-                .catch(function (err) {
-                    console.error('stopRecording', err);
-                });
+            .then(function(recordingInfo) {
+                console.info('stopRecording', recordingInfo);
+                document.getElementById('recordStart').style.display = 'inline-block';
+                document.getElementById('recordStop').style.display = 'none';
+            })
+            .catch(function(err) {
+                console.error('stopRecording', err);
+            });
     });
 });
