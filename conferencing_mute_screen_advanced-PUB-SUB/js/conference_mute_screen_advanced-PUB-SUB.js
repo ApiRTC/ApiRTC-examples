@@ -1,4 +1,3 @@
-
 'use strict';
 
 apiRTC.setLogLevel(10);
@@ -13,14 +12,14 @@ function subscribeToUserStream(userId, streamId, mediaType) {
     console.log("subscribeToUserStream :", mediaType);
 
     var subscribeOptions = {
-        audioOnly : mediaType === 'AUDIOONLY' ? true : false,
-        videoOnly : mediaType === 'VIDEOONLY' ? true : false
+        audioOnly: mediaType === 'AUDIOONLY' ? true : false,
+        videoOnly: mediaType === 'VIDEOONLY' ? true : false
     }
 
     connectedConversation.subscribeToStream(streamId, subscribeOptions)
-        .then(function (stream) {
+        .then(function(stream) {
             console.log('subscribeToStream success');
-        }).catch(function (err) {
+        }).catch(function(err) {
             console.error('subscribeToStream error', err);
         });
 
@@ -28,7 +27,7 @@ function subscribeToUserStream(userId, streamId, mediaType) {
     $("#" + streamId + '_audio').remove();
     $("#" + streamId + '_videoonly').remove();
 
-    $( "#stream_" + streamId ).append( '<li class="collection-item" id=' + streamId + '><div>' + 'Stream for userId:' + userId + '<button type="submit" onclick="unsubscribeStream(' + userId + ',' + streamId + ')" class="secondary-content"><i class="material-icons">Unsubscribe</i></button></div></li>');
+    $("#stream_" + streamId).append('<li class="collection-item" id=' + streamId + '><div>' + 'Stream for userId:' + userId + '<button type="submit" onclick="unsubscribeStream(' + userId + ',' + streamId + ')" class="secondary-content"><i class="material-icons">Unsubscribe</i></button></div></li>');
 }
 
 function unsubscribeStream(userId, streamId) {
@@ -40,30 +39,30 @@ function unsubscribeStream(userId, streamId) {
     var mediaType = 'VIDEO',
         streamInfo = connectedConversation.getStreamInfo(streamId);
 
-    console.log("connectedConversation.getStreamInfo :",streamInfo);
+    console.log("connectedConversation.getStreamInfo :", streamInfo);
 
     if (streamInfo !== undefined) {
 
         $("#" + streamId).remove();
 
         if (streamInfo.hasAudio && streamInfo.hasVideo) {
-            $("#stream_" + streamInfo.streamId).append('<li class="collection-item" id=' + streamInfo.streamId + '><div>' + 'Stream for userId:' + streamInfo.contact.getId() + '<button type="submit" onclick="subscribeToUserStream(' + streamInfo.contact.getId() + ','  + streamInfo.streamId + ',' + "'" + mediaType + "'" + ')" class="secondary-content"><i class="material-icons">Subscribe</i></button></div></li>');
+            $("#stream_" + streamInfo.streamId).append('<li class="collection-item" id=' + streamInfo.streamId + '><div>' + 'Stream for userId:' + streamInfo.contact.getId() + '<button type="submit" onclick="subscribeToUserStream(' + streamInfo.contact.getId() + ',' + streamInfo.streamId + ',' + "'" + mediaType + "'" + ')" class="secondary-content"><i class="material-icons">Subscribe</i></button></div></li>');
         }
         if (streamInfo.hasAudio) {
             mediaType = 'AUDIOONLY';
-            $("#stream_" + streamInfo.streamId).append('<li class="collection-item" id=' + streamInfo.streamId + '_audio' + '><div>' + 'Stream for userId:' + streamInfo.contact.getId() + '<button type="submit" onclick="subscribeToUserStream(' + streamInfo.contact.getId() + ','  + streamInfo.streamId + ',' + "'" + mediaType + "'" + ')" class="secondary-content"><i class="material-icons">Subscribe Audio Only</i></button></div></li>');
+            $("#stream_" + streamInfo.streamId).append('<li class="collection-item" id=' + streamInfo.streamId + '_audio' + '><div>' + 'Stream for userId:' + streamInfo.contact.getId() + '<button type="submit" onclick="subscribeToUserStream(' + streamInfo.contact.getId() + ',' + streamInfo.streamId + ',' + "'" + mediaType + "'" + ')" class="secondary-content"><i class="material-icons">Subscribe Audio Only</i></button></div></li>');
         }
         if (streamInfo.hasVideo) {
             mediaType = 'VIDEOONLY';
-            $("#stream_" + streamInfo.streamId).append('<li class="collection-item" id=' + streamInfo.streamId + '_videoonly' + '><div>' + 'Stream for userId:' + streamInfo.contact.getId() + '<button type="submit" onclick="subscribeToUserStream(' + streamInfo.contact.getId() + ','  + streamInfo.streamId + ',' + "'" + mediaType + "'" + ')" class="secondary-content"><i class="material-icons">Subscribe Video Only</i></button></div></li>');
+            $("#stream_" + streamInfo.streamId).append('<li class="collection-item" id=' + streamInfo.streamId + '_videoonly' + '><div>' + 'Stream for userId:' + streamInfo.contact.getId() + '<button type="submit" onclick="subscribeToUserStream(' + streamInfo.contact.getId() + ',' + streamInfo.streamId + ',' + "'" + mediaType + "'" + ')" class="secondary-content"><i class="material-icons">Subscribe Video Only</i></button></div></li>');
         }
     }
 }
 
 function unpublishStream() {
-    console.log("unpublishStream" );
+    console.log("unpublishStream");
 
-    connectedConversation.unpublish(publishedStream, null);
+    connectedConversation.unpublish(publishedStreams);
     publishedStream = null;
 
     var audioOnly = false,
@@ -71,7 +70,7 @@ function unpublishStream() {
 
     $("#publishStatus").replaceWith('<div class="collection-header" id=publishStatus>Status : Your stream is not published</div>');
 
-    $("#publish").replaceWith( '<li class="collection-item" id=publish><div>' + 'My Stream :' + '<button type="submit" onclick="publishStream(' + audioOnly + ');" class="secondary-content"><i class="material-icons">Publish</i></button></div></li>');
+    $("#publish").replaceWith('<li class="collection-item" id=publish><div>' + 'My Stream :' + '<button type="submit" onclick="publishStream(' + audioOnly + ');" class="secondary-content"><i class="material-icons">Publish</i></button></div></li>');
     audioOnly = true;
     $("#streamPub").append('<li class="collection-item" id=publishAudio><div>' + 'My Stream :' + '<button type="submit" onclick="publishStream(' + audioOnly + ');" class="secondary-content"><i class="material-icons">Publish Audio Only</i></button></div></li>');
     audioOnly = false;
@@ -90,8 +89,8 @@ function publishStream(audioOnly, videoOnly) {
     }
 
     var publishOptions = {
-        audioOnly : audioOnly,
-        videoOnly : videoOnly
+        audioOnly: audioOnly,
+        videoOnly: videoOnly
     }
 
     connectedConversation.publish(localStream, publishOptions)
@@ -100,12 +99,12 @@ function publishStream(audioOnly, videoOnly) {
             publishedStream = stream;
             console.log("publish success:" + stream);
 
-            $("#publish").replaceWith( '<li class="collection-item" id=publish><div>' + 'My Stream :' + '<button type="submit" onclick="unpublishStream(' + stream.getId() + ');" class="secondary-content"><i class="material-icons">Unpublish</i></button></div></li>');
+            $("#publish").replaceWith('<li class="collection-item" id=publish><div>' + 'My Stream :' + '<button type="submit" onclick="unpublishStream(' + stream.getId() + ');" class="secondary-content"><i class="material-icons">Unpublish</i></button></div></li>');
             $("#publishAudio").remove();
             $("#publishVideoOnly").remove();
             $("#publishStatus").replaceWith('<div class="collection-header" id=publishStatus>Status : Your stream is published. AudioOnly : ' + audioOnly + ' , VideoOnly :' + videoOnly + '</div>');
 
-        }).catch(function (err) {
+        }).catch(function(err) {
             console.error('Conversation publish error', err);
         });
 }
@@ -133,7 +132,7 @@ function joinConference(name) {
         connectedSession = session;
 
         connectedSession
-            .on("contactListUpdate", function (updatedContacts) { //display a list of connected users
+            .on("contactListUpdate", function(updatedContacts) { //display a list of connected users
                 console.log("MAIN - contactListUpdate", updatedContacts);
                 if (connectedConversation !== null) {
                     let contactList = connectedConversation.getContacts();
@@ -165,27 +164,27 @@ function joinConference(name) {
 
                 $("#stream_" + streamInfo.streamId).append('<div class="collection-item" id=streamStatus' + streamInfo.streamId + '><div>  This stream has Audio : ' + streamInfo.hasAudio + ' , has Video : ' + streamInfo.hasVideo + ' , is screenSharing : ' + streamInfo.isScreensharing + '</div></div>');
                 if (streamInfo.hasAudio && streamInfo.hasVideo) {
-                    $("#stream_" + streamInfo.streamId).append('<li class="collection-item" id=' + streamInfo.streamId + '><div>' + 'Stream for userId:' + streamInfo.contact.getId() + '<button type="submit" onclick="subscribeToUserStream(' + streamInfo.contact.getId() + ','  + streamInfo.streamId + ',' + "'" + mediaType + "'" + ')" class="secondary-content"><i class="material-icons">Subscribe</i></button></div></li>');
+                    $("#stream_" + streamInfo.streamId).append('<li class="collection-item" id=' + streamInfo.streamId + '><div>' + 'Stream for userId:' + streamInfo.contact.getId() + '<button type="submit" onclick="subscribeToUserStream(' + streamInfo.contact.getId() + ',' + streamInfo.streamId + ',' + "'" + mediaType + "'" + ')" class="secondary-content"><i class="material-icons">Subscribe</i></button></div></li>');
                 }
                 if (streamInfo.hasAudio) {
                     mediaType = 'AUDIOONLY';
-                    $("#stream_" + streamInfo.streamId).append('<li class="collection-item" id=' + streamInfo.streamId + '_audio' + '><div>' + 'Stream for userId:' + streamInfo.contact.getId() + '<button type="submit" onclick="subscribeToUserStream(' + streamInfo.contact.getId() + ','  + streamInfo.streamId + ',' + "'" + mediaType + "'" + ')" class="secondary-content"><i class="material-icons">Subscribe Audio Only</i></button></div></li>');
+                    $("#stream_" + streamInfo.streamId).append('<li class="collection-item" id=' + streamInfo.streamId + '_audio' + '><div>' + 'Stream for userId:' + streamInfo.contact.getId() + '<button type="submit" onclick="subscribeToUserStream(' + streamInfo.contact.getId() + ',' + streamInfo.streamId + ',' + "'" + mediaType + "'" + ')" class="secondary-content"><i class="material-icons">Subscribe Audio Only</i></button></div></li>');
                 }
                 if (streamInfo.hasVideo) {
                     mediaType = 'VIDEOONLY';
-                    $("#stream_" + streamInfo.streamId).append('<li class="collection-item" id=' + streamInfo.streamId + '_videoonly' + '><div>' + 'Stream for userId:' + streamInfo.contact.getId() + '<button type="submit" onclick="subscribeToUserStream(' + streamInfo.contact.getId() + ','  + streamInfo.streamId + ',' + "'" + mediaType + "'" + ')" class="secondary-content"><i class="material-icons">Subscribe Video Only</i></button></div></li>');
+                    $("#stream_" + streamInfo.streamId).append('<li class="collection-item" id=' + streamInfo.streamId + '_videoonly' + '><div>' + 'Stream for userId:' + streamInfo.contact.getId() + '<button type="submit" onclick="subscribeToUserStream(' + streamInfo.contact.getId() + ',' + streamInfo.streamId + ',' + "'" + mediaType + "'" + ')" class="secondary-content"><i class="material-icons">Subscribe Video Only</i></button></div></li>');
                 }
 
             } else if (streamInfo.listEventType === 'removed') {
 
-                $("#streamStatus" + streamInfo.streamId ).remove();
-                $("#" + streamInfo.streamId ).remove();
+                $("#streamStatus" + streamInfo.streamId).remove();
+                $("#" + streamInfo.streamId).remove();
                 $("#" + streamInfo.streamId + '_audio').remove();
                 $("#" + streamInfo.streamId + '_videoonly').remove();
             }
         });
         //=====================================================
-        // ADD EVENT LISTENER : WHEN STREAM WAS REMOVED FROM THE CONVERSATION
+        // ADD EVENT LISTENER : WHEN STREAM IS ADDED/REMOVED TO/FROM THE CONVERSATION
         //=====================================================
         connectedConversation.on('streamAdded', function(stream) {
             stream.addInDiv('remote-container', 'remote-media-' + stream.streamId, {}, false);
@@ -209,7 +208,7 @@ function joinConference(name) {
         };
 
         ua.createStream(createStreamOptions)
-            .then(function (stream) {
+            .then(function(stream) {
 
                 console.log('createStream :', stream);
 
@@ -248,11 +247,11 @@ function joinConference(name) {
                         console.log("videoOnly in joinMCUSessionAnswerHandler:", videoOnly);
                         $("#streamPub").append('<li class="collection-item" id=publishVideoOnly><div>' + 'My Stream :' + '<button type="submit" onclick="publishStream(' + audioOnly + ',' + videoOnly + ');" class="secondary-content"><i class="material-icons">Publish Video Only</i></button></div></li>');
 
-                    }).catch(function (err) {
+                    }).catch(function(err) {
                         console.error('Conversation join error', err);
                     });
 
-            }).catch(function (err) {
+            }).catch(function(err) {
                 console.error('create stream error', err);
             });
     });
@@ -279,22 +278,22 @@ $('#create').on('submit', function(e) {
 // LOCAL STREAM ACTIONS
 //==============================
 //muteAudio from call
-$('#muteAudio').on('click', function () {
+$('#muteAudio').on('click', function() {
     console.log('MAIN - Click muteAudio');
     localStream.muteAudio();
 });
 //unMuteAudio from call
-$('#unMuteAudio').on('click', function () {
+$('#unMuteAudio').on('click', function() {
     console.log('MAIN - Click unMuteAudio');
     localStream.unmuteAudio();
 });
 //muteVideo from call
-$('#muteVideo').on('click', function () {
+$('#muteVideo').on('click', function() {
     console.log('MAIN - Click muteVideo');
     localStream.muteVideo();
 });
 //unMuteVideo from call
-$('#unMuteVideo').on('click', function () {
+$('#unMuteVideo').on('click', function() {
     console.log('MAIN - Click unMuteVideo');
     localStream.unmuteVideo();
 });

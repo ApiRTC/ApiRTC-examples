@@ -89,7 +89,7 @@ $(() => {
                             //==============================
                             // 7/ PUBLISH OWN STREAM
                             //==============================
-                            connectedConversation.publish(localStream, null);
+                            connectedConversation.publish(localStream);
 
                             updateUIState('conference');
 
@@ -105,7 +105,7 @@ $(() => {
 
     function updateUIState(state) {
         console.log('Update UI state', state);
-        switch(state) {
+        switch (state) {
             case 'initial':
                 document.querySelector('#publishing-video').style.display = 'none';
                 break;
@@ -156,7 +156,7 @@ $(() => {
             ua.createStreamFromMediaStream(mediaStream)
                 .then((stream) => {
                     videoStream = stream;
-                    connectedConversation.publish(stream, null);
+                    connectedConversation.publish(stream);
                 })
                 .catch((err) => {
                     console.error('Create stream error', err);
@@ -175,6 +175,6 @@ $(() => {
 
     $('#unpublishing-video').on('click', (e) => {
         console.debug("unpublishing-video");
-        connectedConversation.unpublish(videoStream, null);
+        connectedConversation.unpublish(videoStream);
     });
 });

@@ -26,7 +26,7 @@ $(function() {
             connectedSession = session;
 
             connectedSession
-                .on("contactListUpdate", function (updatedContacts) { //display a list of connected users
+                .on("contactListUpdate", function(updatedContacts) { //display a list of connected users
                     console.log("MAIN - contactListUpdate", updatedContacts);
                     if (connectedConversation !== null) {
                         let contactList = connectedConversation.getContacts();
@@ -50,38 +50,38 @@ $(function() {
                     if (streamInfo.isRemote === true) {
 
                         connectedConversation.subscribeToMedia(streamInfo.streamId)
-                            .then(function (stream) {
+                            .then(function(stream) {
                                 console.log('subscribeToMedia success');
-                            }).catch(function (err) {
+                            }).catch(function(err) {
                                 console.error('subscribeToMedia error', err);
                             });
                     }
                 }
             });
             //=====================================================
-            // 4 BIS/ ADD EVENT LISTENER : WHEN STREAM WAS REMOVED FROM THE CONVERSATION
+            // 4 BIS/ ADD EVENT LISTENER : WHEN STREAM IS ADDED/REMOVED TO/FROM THE CONVERSATION
             //=====================================================
             connectedConversation.on('streamAdded', function(stream) {
                 stream.addInDiv('remote-container', 'remote-media-' + stream.streamId, {}, false);
-/*
-                // Subscribed Stream is available for display
-                // Get remote media container
-                var container = document.getElementById('remote-container');
-                // Create media element
-                var mediaElement = document.createElement('video');
-                mediaElement.id = 'remote-media-' + stream.streamId;
-                mediaElement.autoplay = true;
-                mediaElement.muted = false;
-                // Add media element to media container
-                container.appendChild(mediaElement);
-                // Attach stream
-                stream.attachToElement(mediaElement);
-*/
+                /*
+                                // Subscribed Stream is available for display
+                                // Get remote media container
+                                var container = document.getElementById('remote-container');
+                                // Create media element
+                                var mediaElement = document.createElement('video');
+                                mediaElement.id = 'remote-media-' + stream.streamId;
+                                mediaElement.autoplay = true;
+                                mediaElement.muted = false;
+                                // Add media element to media container
+                                container.appendChild(mediaElement);
+                                // Attach stream
+                                stream.attachToElement(mediaElement);
+                */
             }).on('streamRemoved', function(stream) {
                 stream.removeFromDiv('remote-container', 'remote-media-' + stream.streamId);
-/*
-                document.getElementById('remote-media-' + stream.streamId).remove();
-*/
+                /*
+                                document.getElementById('remote-media-' + stream.streamId).remove();
+                */
             });
 
             //==============================
@@ -94,7 +94,7 @@ $(function() {
             };
 
             ua.createStream(createStreamOptions)
-                .then(function (stream) {
+                .then(function(stream) {
 
                     console.log('createStream :', stream);
 
@@ -102,22 +102,22 @@ $(function() {
                     localStream = stream;
                     stream.removeFromDiv('local-container', 'local-media');
                     stream.addInDiv('local-container', 'local-media', {}, true);
-/*
-                    // Get media container
-                    var container = document.getElementById('local-container');
+                    /*
+                                        // Get media container
+                                        var container = document.getElementById('local-container');
 
-                    // Create media element
-                    var mediaElement = document.createElement('video');
-                    mediaElement.id = 'local-media';
-                    mediaElement.autoplay = true;
-                    mediaElement.muted = true;
+                                        // Create media element
+                                        var mediaElement = document.createElement('video');
+                                        mediaElement.id = 'local-media';
+                                        mediaElement.autoplay = true;
+                                        mediaElement.muted = true;
 
-                    // Add media element to media container
-                    container.appendChild(mediaElement);
+                                        // Add media element to media container
+                                        container.appendChild(mediaElement);
 
-                    // Attach stream
-                    localStream.attachToElement(mediaElement);
-*/
+                                        // Attach stream
+                                        localStream.attachToElement(mediaElement);
+                    */
 
                     //==============================
                     // 6/ JOIN CONVERSATION
@@ -127,12 +127,12 @@ $(function() {
                             //==============================
                             // 7/ PUBLISH OWN STREAM
                             //==============================
-                            connectedConversation.publish(localStream, null);
-                        }).catch(function (err) {
+                            connectedConversation.publish(localStream);
+                        }).catch(function(err) {
                             console.error('Conversation join error', err);
                         });
 
-                }).catch(function (err) {
+                }).catch(function(err) {
                     console.error('create stream error', err);
                 });
         });

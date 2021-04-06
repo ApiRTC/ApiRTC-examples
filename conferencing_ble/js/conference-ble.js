@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
     'use strict';
 
     apiRTC.setLogLevel(10);
@@ -23,12 +23,12 @@ $(function () {
         //==============================
         ua.register({
             cloudUrl: cloudUrl
-        }).then(function (session) {
+        }).then(function(session) {
             // Save session
             connectedSession = session;
 
             connectedSession
-                .on("contactListUpdate", function (updatedContacts) { //display a list of connected users
+                .on("contactListUpdate", function(updatedContacts) { //display a list of connected users
                     console.log("MAIN - contactListUpdate", updatedContacts);
                     if (connectedConversation !== null) {
                         let contactList = connectedConversation.getContacts();
@@ -48,7 +48,7 @@ $(function () {
             //==========================================================
             // 4/ ADD EVENT LISTENER : WHEN NEW STREAM IS AVAILABLE IN CONVERSATION
             //==========================================================
-            connectedConversation.on('streamListChanged', function (streamInfo) {
+            connectedConversation.on('streamListChanged', function(streamInfo) {
 
                 console.log("streamListChanged :", streamInfo);
 
@@ -56,18 +56,18 @@ $(function () {
                     if (streamInfo.isRemote === true) {
 
                         connectedConversation.subscribeToMedia(streamInfo.streamId)
-                            .then(function (stream) {
+                            .then(function(stream) {
                                 console.log('subscribeToMedia success');
-                            }).catch(function (err) {
+                            }).catch(function(err) {
                                 console.error('subscribeToMedia error', err);
                             });
                     }
                 }
             });
             //=====================================================
-            // 4 BIS/ ADD EVENT LISTENER : WHEN STREAM WAS REMOVED FROM THE CONVERSATION
+            // 4 BIS/ ADD EVENT LISTENER : WHEN STREAM IS ADDED/REMOVED TO/FROM THE CONVERSATION
             //=====================================================
-            connectedConversation.on('streamAdded', function (stream) {
+            connectedConversation.on('streamAdded', function(stream) {
                 stream.addInDiv('remote-container', 'remote-media-' + stream.streamId, {}, false);
                 /*
                                 // Subscribed Stream is available for display
@@ -83,7 +83,7 @@ $(function () {
                                 // Attach stream
                                 stream.attachToElement(mediaElement);
                 */
-            }).on('streamRemoved', function (stream) {
+            }).on('streamRemoved', function(stream) {
                 stream.removeFromDiv('remote-container', 'remote-media-' + stream.streamId);
                 /*
                                 document.getElementById('remote-media-' + stream.streamId).remove();
@@ -100,7 +100,7 @@ $(function () {
             };
 
             ua.createStream(createStreamOptions)
-                .then(function (stream) {
+                .then(function(stream) {
 
                     console.log('createStream :', stream);
 
@@ -129,16 +129,16 @@ $(function () {
                     // 6/ JOIN CONVERSATION
                     //==============================
                     connectedConversation.join()
-                        .then(function (response) {
+                        .then(function(response) {
                             //==============================
                             // 7/ PUBLISH OWN STREAM
                             //==============================
-                            connectedConversation.publish(localStream, null);
-                        }).catch(function (err) {
+                            connectedConversation.publish(localStream);
+                        }).catch(function(err) {
                             console.error('Conversation join error', err);
                         });
 
-                }).catch(function (err) {
+                }).catch(function(err) {
                     console.error('create stream error', err);
                 });
         });
@@ -147,7 +147,7 @@ $(function () {
     //==============================
     // CREATE CONFERENCE
     //==============================
-    $('#create').on('submit', function (e) {
+    $('#create').on('submit', function(e) {
         e.preventDefault();
 
         // Get conference name

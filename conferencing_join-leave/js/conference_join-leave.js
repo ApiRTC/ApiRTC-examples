@@ -31,7 +31,7 @@ $(function() {
     function joinConference(name) {
 
         connectedSession
-            .on("contactListUpdate", function (updatedContacts) { //display a list of connected users
+            .on("contactListUpdate", function(updatedContacts) { //display a list of connected users
                 console.log("MAIN - contactListUpdate", updatedContacts);
                 if (connectedConversation !== null) {
                     let contactList = connectedConversation.getContacts();
@@ -55,16 +55,16 @@ $(function() {
                 if (streamInfo.isRemote === true) {
 
                     connectedConversation.subscribeToMedia(streamInfo.streamId)
-                        .then(function (stream) {
+                        .then(function(stream) {
                             console.log('subscribeToMedia success');
-                        }).catch(function (err) {
+                        }).catch(function(err) {
                             console.error('subscribeToMedia error', err);
                         });
                 }
             }
         });
         //=====================================================
-        // 4 BIS/ ADD EVENT LISTENER : WHEN STREAM WAS REMOVED FROM THE CONVERSATION
+        // 4 BIS/ ADD EVENT LISTENER : WHEN STREAM IS ADDED/REMOVED TO/FROM THE CONVERSATION
         //=====================================================
         connectedConversation.on('streamAdded', function(stream) {
             stream.addInDiv('remote-container', 'remote-media-' + stream.streamId, {}, false);
@@ -82,7 +82,7 @@ $(function() {
         };
 
         ua.createStream(createStreamOptions)
-            .then(function (stream) {
+            .then(function(stream) {
 
                 console.log('createStream :', stream);
 
@@ -99,12 +99,12 @@ $(function() {
                         //==============================
                         // 7/ PUBLISH OWN STREAM
                         //==============================
-                        connectedConversation.publish(localStream, null);
-                    }).catch(function (err) {
+                        connectedConversation.publish(localStream);
+                    }).catch(function(err) {
                         console.error('Conversation join error', err);
                     });
 
-            }).catch(function (err) {
+            }).catch(function(err) {
                 console.error('create stream error', err);
             });
     }
@@ -127,25 +127,24 @@ $(function() {
     });
 
     // Click on leaveConference button
-    $('#leaveConference').on('click', function () {
+    $('#leaveConference').on('click', function() {
         console.log("leaveConference");
 
         document.getElementById('create').style.display = 'inline-block';
         document.getElementById('conference').style.display = 'none';
         document.getElementById('title').innerHTML = 'Conference demo - join / leave';
 
-        //Leave Conversation
+        // Leave Conversation
         if (connectedConversation !== null) {
-            //Leaving actual conversation
-
-            connectedConversation.destroy();
+            // Leaving actual conversation
             connectedConversation.leave()
                 .then(function() {
                     console.debug('Conversation leave OK');
-                }).catch(function (err) {
+                    connectedConversation.destroy();
+                    connectedConversation = null;
+                }).catch(function(err) {
                     console.error('Conversation leave error', err);
                 });
-            connectedConversation = null;
             $('#remote-container').empty();
         }
 

@@ -45,37 +45,37 @@ $(function() {
             connectedConversation.join()
                 .then(function(response) {
 
-                //==============================
-                // CREATE LOCAL STREAM
-                //==============================
-                ua.createStream()
-                    .then(function (stream) {
-                        // Save local stream
-                        localStream = stream;
+                    //==============================
+                    // CREATE LOCAL STREAM
+                    //==============================
+                    ua.createStream()
+                        .then(function(stream) {
+                            // Save local stream
+                            localStream = stream;
 
-                        // Get media container
-                        var container = document.getElementById('local-container');
+                            // Get media container
+                            var container = document.getElementById('local-container');
 
-                        // Create media element
-                        var mediaElement = document.createElement('video');
-                        mediaElement.id = 'local-media';
-                        mediaElement.autoplay = true;
-                        mediaElement.muted = true;
+                            // Create media element
+                            var mediaElement = document.createElement('video');
+                            mediaElement.id = 'local-media';
+                            mediaElement.autoplay = true;
+                            mediaElement.muted = true;
 
-                        // Add media element to media container
-                        container.appendChild(mediaElement);
+                            // Add media element to media container
+                            container.appendChild(mediaElement);
 
-                        // Attach stream
-                        localStream.attachToElement(mediaElement);
+                            // Attach stream
+                            localStream.attachToElement(mediaElement);
 
-                        //==============================
-                        // PUBLISH OWN STREAM
-                        //==============================
-                        connectedConversation.publish(localStream, null);
+                            //==============================
+                            // PUBLISH OWN STREAM
+                            //==============================
+                            connectedConversation.publish(localStream);
 
-                    }).catch(function (err) {
-                        console.error('create stream error', err);
-                    });
+                        }).catch(function(err) {
+                            console.error('create stream error', err);
+                        });
 
                     //==========================================================
                     // WHEN NEW STREAM IS AVAILABLE IN CONVERSATION
@@ -116,12 +116,12 @@ $(function() {
 
                 });
 
-                //=====================================================
-                // WHEN STREAM WAS REMOVED FROM THE CONVERSATION
-                //=====================================================
-                connectedConversation.on('streamRemoved', function(streamInfos) {
-                    document.getElementById('remote-media-' + streamInfos.streamId).remove();
-                });
+            //=====================================================
+            // WHEN STREAM WAS REMOVED FROM THE CONVERSATION
+            //=====================================================
+            connectedConversation.on('streamRemoved', function(streamInfos) {
+                document.getElementById('remote-media-' + streamInfos.streamId).remove();
+            });
         });
     }
 
