@@ -123,16 +123,9 @@ $(function() {
             connectedConversation.on('callStatsUpdate', function(callStats) {
 
 
-                //console.debug('callStats :', callStats);
+                console.debug('callStats :', callStats);
 
                 //reception QoS statistics
-
-                if (qosStats[callStats.callId] === undefined) {
-                    qosStats[callStats.callId] = {};
-                }
-                if (qosStats[0] === undefined) {
-                    qosStats[0] = {};
-                }
 
                 if (callStats.stats.videoReceived || callStats.stats.audioReceived) {
                     if (callStats.stats.videoReceived) {
