@@ -60,6 +60,9 @@ Create a conversation to establish multi-party conference : audio, video and sel
 - **Conferencing_select_media_background_substraction** -
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_select_back)<br/>
 This demo shows how to add background substraction possibility on video stream in a conversation.
+- **Conferencing_select_media_control** -
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_media_control)<br/>
+This demo adds the usage of our Stream helpers to control your video device.
 - **Conferencing_whiteboard** -
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_whiteboard)<br/>
 Create a conversation to establish multi-party Whiteboard. Share drawings, annotation with users.
