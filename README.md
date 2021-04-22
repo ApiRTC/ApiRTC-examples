@@ -54,6 +54,9 @@ Learn how to add QoS Monitoring and active speaker detection on your video confe
 - **Conferencing_recording** -
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_record)<br/>
 Record a conversation : Recording will be a composite of all the stream published in conference.
+- **Conferencing_rtmp_streaming** -
+[Access to demo](https://dev.apirtc.com/tutorials/streams/conf_rtmp_streaming)<br/>
+This sample enables you to publish a video stream to an external RTMP server (e.g. YouTube).
 - **Conferencing_select_media** -
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_select)<br/>
 Create a conversation to establish multi-party conference : audio, video and select your media devices.
