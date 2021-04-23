@@ -20,57 +20,57 @@ Contributions and bugfixes are welcomed.
 ## Demos description
 ### Conversation
 - **Conferencing** -
-[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
+[Tutorial](https://dev.apirtc.com/tutorials/conferencing/conf) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Create a conversation to establish multi-party conference : audio, video.
 - **Conferencing_ble** -
-[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_ble)<br/>
+[Tutorial](https://dev.apirtc.com/tutorials/conferencing/conf_ble) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Exchange datas from a bluetooth device between users in a Conversation.
 - **Conferencing_chat** -
-[Access to demo](https://dev.apirtc.com/tutorials/conferencing/chat)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/chat) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Exchange group chat messages between all users in a Conversation.
 - **Conferencing_chat_file_transfer** -
-[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_chat_file)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_chat_file) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Exposes the video conference with the chat and file transfer options.
 - **Conferencing_join-leave** -
-[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_join-leave)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_join-leave) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Focus on the possibility to join and leave a conference.
 - **Conferencing_moderation** -
-[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_moderation)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_moderation) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Learn how to moderate private conference: accept / decline users. (ADVANCED FEATURE)
 - **Conferencing_mute-screen** -
-[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_mute_screen)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_mute_screen) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Learn how to mute stream on confrence and publish a screensharing.
 - **Conferencing_mute_screen_advanced-PUB-SUB** -
-[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_advanced_pubsub)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_advanced_pubsub) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 ADVANCED - This demo exposes a video conference sample with the possibility to select streams you want to publish or subscribe.
 You are also able to choose the type of stream you want to use : audio only, video only or audio & video.
 - **Conferencing_publish_video** -
-[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_pub_video)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_pub_video) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 This demo exposes a video conference sample with the possibility to publish a video file.
 You are also able to control the publishing of the video (pause / mute)
 - **Conferencing_QoSInfoDisplay** -
-[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_qos)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_qos) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Learn how to add QoS Monitoring and active speaker detection on your video conference.
 - **Conferencing_recording** -
-[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_record)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_record) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Record a conversation : Recording will be a composite of all the stream published in conference.
 - **Conferencing_rtmp_streaming** -
-[Access to demo](https://dev.apirtc.com/tutorials/streams/conf_rtmp_streaming)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/streams/conf_rtmp_streaming) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 This sample enables you to publish a video stream to an external RTMP server (e.g. YouTube).
 - **Conferencing_select_media** -
-[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_select)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_select) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Create a conversation to establish multi-party conference : audio, video and select your media devices.
 - **Conferencing_select_media_background_substraction** -
-[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_select_back)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_select_back) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 This demo shows how to add background substraction possibility on video stream in a conversation.
 - **Conferencing_select_media_control** -
-[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_media_control)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_media_control) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 This demo adds the usage of our Stream helpers to control your video device.
 - **Conferencing_whiteboard** -
-[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_whiteboard)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_whiteboard) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Create a conversation to establish multi-party Whiteboard. Share drawings, annotation with users.
 - **Conferencing_whiteboard_invitation** -
-[Access to demo](https://dev.apirtc.com/tutorials/whiteboard/invitation)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/whiteboard/invitation) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Invite user to a conversation and then create a Whiteboard. Share drawings, annotation with users.
 
 ### Peer to peer
