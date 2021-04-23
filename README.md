@@ -55,7 +55,7 @@ Learn how to add QoS Monitoring and active speaker detection on your video confe
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_record) - [Live demo](https://apizee.github.io/ApiRTC-examples/conferencing_recording/index.html)<br/>
 Record a conversation : Recording will be a composite of all the stream published in conference.
 - **Conferencing_rtmp_streaming** -
-[Access to demo](https://dev.apirtc.com/tutorials/streams/conf_rtmp_streaming) - [Live demo](https://apizee.github.io/ApiRTC-examples/conferencing_rtmp_streaming/index.html)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_rtmp_streaming) - [Live demo](https://apizee.github.io/ApiRTC-examples/conferencing_rtmp_streaming/index.html)<br/>
 This sample enables you to publish a video stream to an external RTMP server (e.g. YouTube).
 - **Conferencing_select_media** -
 [Access to demo](https://dev.apirtc.com/tutorials/conferencing/conf_select) - [Live demo](https://apizee.github.io/ApiRTC-examples/conferencing_select_media/index.html)<br/>
