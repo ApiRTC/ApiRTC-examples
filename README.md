@@ -75,45 +75,45 @@ Invite user to a conversation and then create a Whiteboard. Share drawings, anno
 
 ### Peer to peer
 - **Call** -
-[Access to demo](https://dev.apirtc.com/tutorials/peertopeer/call)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/peertopeer/call) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Create an audio, video call with a remote party.
 - **Chat** -
-[Access to demo](https://dev.apirtc.com/tutorials/peertopeer/chat)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/peertopeer/chat) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Exchange chat messages between two users.
 - **File Transfer** -
-[Access to demo](https://dev.apirtc.com/tutorials/peertopeer/sendFile)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/peertopeer/sendFile) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Learn how to do a file transfer between two users.
 - **Call with user acceptation / refuse** -
-[Access to demo](https://dev.apirtc.com/tutorials/peertopeer/accept_refuse)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/peertopeer/accept_refuse) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Establish a call with accept /refuse management from callee.
 - **Call with possibility to send file** -
-[Access to demo](https://dev.apirtc.com/tutorials/peertopeer/call_sendfile)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/peertopeer/call_sendfile) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Establish a call and exchange file with callee.
 - **Call with possibility to send a snapshot** -
-[Access to demo](https://dev.apirtc.com/tutorials/peertopeer/dataChannel)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/peertopeer/dataChannel) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Establish a call and exchange snapshot with callee.
 
 ### Stream
 - **Select Media** -
-[Access to demo](https://dev.apirtc.com/tutorials/streams/select_media)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/streams/select_media) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Select Media to user for the stream.
 - **ScreenSharing** -
-[Access to demo](https://dev.apirtc.com/tutorials/streams/screensharing)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/streams/screensharing) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Start a stream from screen.
 - **Record** -
-[Access to demo](https://dev.apirtc.com/tutorials/streams/record)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/streams/record) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Learn how to locally record stream in a file.
 - **Snapshot** -
-[Access to demo](https://dev.apirtc.com/tutorials/streams/snapshot)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/streams/snapshot) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Learn how to create a snapshot image from a video stream.
 - **Video resolution** -
-[Access to demo](https://dev.apirtc.com/tutorials/streams/video_resolution)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/streams/video_resolution) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 Learn how to choose the resolution of the video stream.
 
 ### UserAgent
 - **User creation and registration - user defined in an external database** -
-[Access to demo](https://dev.apirtc.com/tutorials/useragent/externalregistration)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/useragent/externalregistration) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 User Agent registration with external users management.
 - **User creation and registration - user defined on Apizee Cloud** -
-[Access to demo](https://dev.apirtc.com/tutorials/useragent/apizeeregistration)<br/>
+[Access to demo](https://dev.apirtc.com/tutorials/useragent/apizeeregistration) - [Live demo](https://dev.apirtc.com/tutorials/conferencing/conf)<br/>
 User Agent registration with Apizee users management.
