@@ -62,7 +62,7 @@ function unsubscribeStream(userId, streamId) {
 function unpublishStream() {
     console.log("unpublishStream");
 
-    connectedConversation.unpublish(publishedStreams);
+    connectedConversation.unpublish(publishedStream);
     publishedStream = null;
 
     var audioOnly = false,
