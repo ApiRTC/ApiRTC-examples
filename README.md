@@ -60,9 +60,9 @@ This sample enables you to publish a video stream to an external RTMP server (e.
 - **Conferencing_select_media** -
 [Live demo](https://apizee.github.io/ApiRTC-examples/conferencing_select_media/index.html)<br/>
 Create a conversation to establish multi-party conference : audio, video and select your media devices.
-- **Conferencing_select_media_background_substraction** -
-[Live demo](https://apizee.github.io/ApiRTC-examples/conferencing_select_media_background_substraction/index.html)<br/>
-This demo shows how to add background substraction possibility on video stream in a conversation.
+- **Conferencing_select_media_applyMediaFilter** -
+[Live demo](https://apizee.github.io/ApiRTC-examples/conferencing_select_media_applyMediaFilter/index.html)<br/>
+This demo shows how to add media filter on stream in a conversation (Blur - BackgroundImage - Noise reduction).
 - **Conferencing_select_media_control** -
 [Live demo](https://apizee.github.io/ApiRTC-examples/conferencing_select_media_control/index.html)<br/>
 This demo adds the usage of our Stream helpers to control your video device.
