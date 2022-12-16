@@ -8,7 +8,7 @@
 
         <!-- Styles -->
         <link href="../main/css/main.css" rel="stylesheet">
-        <link href="css/conference-selectmedia-backgroundSub.css" rel="stylesheet">
+        <link href="css/conference-selectmedia-applyMediaFilter.css" rel="stylesheet">
     </head>
     <body>
         <!-- Header -->
@@ -21,9 +21,9 @@
 
         <!-- Demo -->
         <div id="container">
-            <h2 id="title">Conference demo with media devices selection and background substraction</h2>
+            <h2 id="title">Conference demo with media devices selection, background substraction and noise reduction</h2>
             <div id="text" class='row'>
-                This demo shows how to add background substraction possibility on video stream
+                This demo shows how to use media filter on apiRTC : blur - background - noise Reduction 
             </div>
             <form id="create">
                 <input type="text" name="conference_name" id="conference-name" placeholder="Enter your Conference name" autocomplete="off">
@@ -45,25 +45,22 @@
                         </div>
                     </div>
 
-                    <p>Activate background substraction :</p>
-
                     <div class="col-8">
                         <div class="center">
-                            <select id='select-resolution' name="camera" class="custom-select">
-                                <option value="QVGA">QVGA : 320 x 240</option>
-                                <option value="VGA">VGA : 640 x 480</option>
-                                <option value="XGA">XGA : 1024 x 768</option>
-                                <option value="HD">HD : 1280 x 720</option>
-                                <option value="FullHD">Full HD : 1920 x 1080</option>
-                            </select>
-                            <legend id="my-background">Stream resolution</legend>
+                            <legend id="my-background">Background substraction</legend>
                             <select id='backgroundSub' name="backgroundSub" class="custom-select" placeholder="No background substraction" >
                                 <option value="nofilter">No background substraction</option>
                                 <option value="blur">blur</option>
-                                <option value="transparent">transparent</option>
-                                <option value="image">image</option>
+                                <option value="image_beach">Beach background</option>
+                                <option value="image_granite">Granite background</option>
+                                <option value="apiRTC_granite">ApiRTC Granite background</option>
+                                <option value="apiRTC_office">ApiRTC Office background</option>
                             </select>
-                            <legend id="my-background">Background substraction</legend>
+                            <legend id="my-background">Noise Reduction</legend>
+                            <select id='noiseRed' name="noiseRed" class="custom-select" placeholder="OFF" >
+                                <option value="nofilter">OFF</option>
+                                <option value="ON">ON</option>
+                            </select>
                         </div>
                     </div>
                 </form>
@@ -84,7 +81,7 @@
 
         <!-- Scripts -->
         <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-        <script type="text/javascript" src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
-        <script type="text/javascript" src="js/conference-selectmedia-backgroundSub.js"></script>
+        <script type="text/javascript" src="https://dev-cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
+        <script type="text/javascript" src="js/conference-selectmedia-applyMediaFilter.js"></script>
     </body>
 </html>

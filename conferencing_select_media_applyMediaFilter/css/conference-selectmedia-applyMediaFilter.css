@@ -64,10 +64,10 @@
   text-align: right;
 }
 #container #conference #local-container video {
-  height: 150px;
+  height: 200px;
 }
 #container #conference #remote-container video {
-  height: 300px;
+  height: 400px;
 }
 #container #select-device {
   display: none;

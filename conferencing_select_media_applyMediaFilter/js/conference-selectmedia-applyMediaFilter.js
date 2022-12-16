@@ -10,67 +10,10 @@ $(function() {
         connectedSession = null,
         selectCamera = document.getElementById("select-camera"),
         selectMic = document.getElementById("select-mic"),
-//BACKGROUND_SUBSTRACTION
         checkboxbackgroundSub = document.getElementById("backgroundSub"),
-        selectResolution = document.getElementById("select-resolution"),
-//BACKGROUND_SUBSTRACTION
+        checkboxnoiseRed = document.getElementById("noiseRed"),
         selectedAudioInputId = null,
-        selectedVideoInputId = null,
-        resArray = {
-            'QVGA': {
-                audio: true,
-                video: {
-                    width: {min: 320, ideal: 320, max: 640},
-                    height: {min: 240, ideal: 240, max: 480}
-                }
-            },
-            'VGA': {
-                audio: true,
-                video: {
-                    width: {min: 320, ideal: 640, max: 640},
-                    height: {min: 240, ideal: 480, max: 480}
-                }
-            },
-            'XGA': {
-                audio: true,
-                video: {
-                    width: {min: 320, ideal: 1024, max: 1024},
-                    height: {min: 240, ideal: 768, max: 768}
-                }
-            },
-            'HD': {
-                audio: true,
-                video: {
-                    width: {min: 320, ideal: 1280, max: 1280},
-                    height: {min: 240, ideal: 720, max: 720}
-                }
-            },
-            'FullHD': {
-                audio: true,
-                video: {
-                    width: {min: 320, ideal: 1920, max: 1920},
-                    height: {min: 240, ideal: 1080, max: 1080}
-                }
-            }
-        };
-
-//BACKGROUND_SUBSTRACTION IMAGE
-    var imageData = null;
-
-    const image = new Image();
-    //image.src = './img/background_apiRTC.jpg';
-    image.src = './img/background_apiRTC_2.jpg';
-
-    image.onload = () => {
-        var canvas = document.createElement('canvas');
-        var context = canvas.getContext('2d');
-        canvas.width = image.width;
-        canvas.height = image.height;
-        context.drawImage(image, 0, 0 );
-        imageData = context.getImageData(0, 0, 640, 480);
-        console.debug("image is loaded");
-    };
-//BACKGROUND_SUBSTRACTION IMAGE
+        selectedVideoInputId = null;
 
     selectCamera.onchange = function (e) {
         console.debug("selectCamera onchange :", e);
@@ -83,13 +26,120 @@ $(function() {
 //BACKGROUND_SUBSTRACTION
     checkboxbackgroundSub.onchange = function (e) {
         console.debug("checkboxbackgroundSub onchange :", e);
-        createStream();
+        videoFilterProcess();
     };
-    selectResolution.onchange = function (e) {
-        console.debug("selectResolution onchange :", e);
-        createStream();
-    };
+
+    function videoFilterProcess() {
+        console.error("videoFilterProcess");
+        console.error("checkboxbackgroundSub.value:", checkboxbackgroundSub.value);
+
+        let imgUrl = '';
+
+        console.debug("checkboxbackgroundSub.value:", checkboxbackgroundSub.value);
+        switch (checkboxbackgroundSub.value) {
+            case 'nofilter':
+                console.error("noiseReductionprocess nofilter");
+                applyVideoFilter('none');
+                break;
+            case 'blur':
+                console.error("noiseReductionprocess nofilter");
+                applyVideoFilter('blur');
+                break;
+            case 'image_beach':
+                imgUrl = 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e';
+                var videoProcessorOptions = {
+                    backgroundImageUrl : imgUrl,
+                }
+                applyVideoFilter('backgroundImage', videoProcessorOptions);
+                break;
+            case 'image_granite':
+                imgUrl = 'https://images.unsplash.com/photo-1559131463-f9386f12e2db';
+                var videoProcessorOptions = {
+                    backgroundImageUrl : imgUrl,
+                }
+                applyVideoFilter('backgroundImage', videoProcessorOptions);
+                break;
+            case 'apiRTC_granite':
+                imgUrl = './img/background_apiRTC_2.jpg';
+                var videoProcessorOptions = {
+                    backgroundImageUrl : imgUrl,
+                }
+                applyVideoFilter('backgroundImage', videoProcessorOptions);
+                break;
+            case 'apiRTC_office':
+                imgUrl = './img/background_apiRTC.jpg';
+                var videoProcessorOptions = {
+                    backgroundImageUrl : imgUrl,
+                }
+                applyVideoFilter('backgroundImage', videoProcessorOptions);
+                break;
+            default:
+                console.log(`Sorry, not a good filter value`);
+        }
+    }
+
+    function applyVideoFilter(filterType, videoProcessorOptions) {
+        localStream.applyVideoProcessor(filterType, videoProcessorOptions).then((streamWithEffect) => {
+            console.error('stream With Effect :', streamWithEffect);
+
+            let options = {};
+            connectedConversation.unpublish(localStream, options);
+            // Save local stream
+            localStream = streamWithEffect;
+            streamWithEffect.removeFromDiv('local-container', 'local-media');
+            streamWithEffect.addInDiv('local-container', 'local-media', {}, true);
+            connectedConversation.publish(localStream, options);
+
+        }).catch((error) => {
+            console.error('Catch on applyAudioProcessor message : ', error.message);
+            console.error('Catch on applyAudioProcessor appliedAudioProcessorType : ', error.appliedVideoProcessorType);
+            console.error('Catch on applyAudioProcessor stream : ', error.stream);
+        }); 
+    }
 //BACKGROUND_SUBSTRACTION
+
+//NOISE_REDUCTION
+    checkboxnoiseRed.onchange = function (e) {
+        console.debug("checkboxnoiseRed onchange :", e);
+        noiseReductionProcess();
+    };
+
+    function noiseReductionProcess() {
+        console.error("noiseReductionprocess");
+        console.error("checkboxnoiseRed.value:", checkboxnoiseRed.value);
+        switch (checkboxnoiseRed.value) {
+            case 'nofilter':
+                console.error("noiseReductionprocess nofilter");
+                applyNoiseFilter('none');
+                break;
+            case 'ON':
+                console.error("noiseReductionprocess ON");
+                applyNoiseFilter('noiseReduction');
+                break;
+            default:
+                console.log(`Sorry, not a good filter value`);
+        }
+    };
+
+    function applyNoiseFilter(filterType) {
+        localStream.applyAudioProcessor(filterType).then((streamWithEffect) => {
+            console.error('stream With Effect :', streamWithEffect);
+
+            let options = {};
+            connectedConversation.unpublish(localStream, options);
+            // Save local stream
+            localStream = streamWithEffect;
+            streamWithEffect.removeFromDiv('local-container', 'local-media');
+            streamWithEffect.addInDiv('local-container', 'local-media', {controls:true}, true);
+            connectedConversation.publish(localStream, options);
+
+        }).catch((error) => {
+            console.error('Catch on applyAudioProcessor message : ', error.message);
+            console.error('Catch on applyAudioProcessor appliedAudioProcessorType : ', error.appliedVideoProcessorType);
+            console.error('Catch on applyAudioProcessor stream : ', error.stream);
+        }); 
+    }
+//NOISE_REDUCTION
 
     function showSelectDevicesArea() {
         document.getElementById('select-device').style.display = 'inline-block';
@@ -156,52 +206,19 @@ $(function() {
     // CREATE LOCAL STREAM
     //==============================
     var createStream = function () {
-        // Release old stream if it exists
-
-        if (localStream !== null) {
-            call = connectedConversation.getConversationCall(localStream);
-            localStream.release();
-        }
 
         var createStreamOptions = {};
         createStreamOptions.audioInputId = selectMic.value;
         createStreamOptions.videoInputId = selectCamera.value;
+        return new Promise((resolve, reject) => {
 
-        createStreamOptions.constraints = resArray[selectResolution.value];
-//BACKGROUND_SUBSTRACTION
-        console.debug("checkboxbackgroundSub.value:", checkboxbackgroundSub.value);
-        switch (checkboxbackgroundSub.value) {
-            case 'nofilter':
-              break;
-            case 'blur':
-                createStreamOptions.filters = [
-                    { type: 'backgroundSubtraction', options: { backgroundMode: 'blur' } },
-                ];
-              break;
-            case 'transparent':
-                createStreamOptions.filters = [
-                    { type: 'backgroundSubtraction', options: { backgroundMode: 'transparent' } },
-                ];
-                break;
-            case 'image':
-                createStreamOptions.filters = [
-                    { type: 'backgroundSubtraction', options: { backgroundMode: 'image', image: imageData } },
-                ];
-                break;
-            default:
-                console.log(`Sorry, not a good filter value`);
-        }
-//BACKGROUND_SUBSTRACTION
-
-        let callbacks = {};
-        callbacks.getStream = () => {
-            return new Promise((resolve, reject) => {
-                ua.createStream(createStreamOptions)
+            ua.createStream(createStreamOptions)
                 .then(function (stream) {
+
                     // Save local stream
                     localStream = stream;
                     stream.removeFromDiv('local-container', 'local-media');
-                    stream.addInDiv('local-container', 'local-media', {}, true);
+                    stream.addInDiv('local-container', 'local-media', {controls:true}, true);
                     return resolve(stream);
                 })
                 .catch(function (err) {
@@ -210,31 +227,19 @@ $(function() {
                     document.getElementById('error-device').style.display = "block";
                     reject()
                 });
-            });
-        };
-
-        if (call !== null) {
-            //Switch the camera if call is ongoing
-            return call.replacePublishedStream(null, callbacks)
-                .then(function (stream) {
-                    console.debug('replacePublishedStream OK');
-                })
-                .catch(function (err) {
-                    console.error('replacePublishedStream NOK');
-                });
-        } else {
-            return callbacks.getStream();
-        }
+        });
     };
 
     function joinConference(name) {
-        var cloudUrl = 'https://cloud.apizee.com';
+
+        let cloudUrl = 'https://cloud.apizee.com';
+        let apiKey = 'myDemoApiKey';
 
         //==============================
         // CREATE USER AGENT
         //==============================
         ua = new apiRTC.UserAgent({
-            uri: 'apzkey:myDemoApiKey'
+            uri: 'apzkey:' + apiKey
         });
 
 //SELECT_MEDIA
@@ -268,7 +273,8 @@ $(function() {
             //==============================
             // CREATE CONVERSATION
             //==============================
-            connectedConversation = connectedSession.getConversation(name);
+            connectedConversation = connectedSession.getOrCreateConversation(name);
+  
 
             //==========================================================
             // ADD EVENT LISTENER : WHEN NEW STREAM IS AVAILABLE IN CONVERSATION
@@ -296,7 +302,10 @@ $(function() {
             connectedConversation
                 .on('streamAdded', function(stream) {
                     console.log('connectedConversation streamAdded');
-                    stream.addInDiv('remote-container', 'remote-media-' + stream.streamId, {}, false);
+
+                    console.error('connectedConversation streamAdded stream:', stream);
+
+                    stream.addInDiv('remote-container', 'remote-media-' + stream.streamId, {controls : true}, false);
                 }).on('streamRemoved', function(stream) {
                     console.log('connectedConversation streamRemoved');
                     stream.removeFromDiv('remote-container', 'remote-media-' + stream.streamId);
@@ -311,12 +320,10 @@ $(function() {
 
                     connectedConversation.join()
                     .then(function(response) {
-
                         var options = {};
-                        //options.qos.videoForbidInactive = true;
-                        //options.qos.videoMinQuality = 'medium';
-
                         connectedConversation.publish(stream, options);
+                    }).catch(function (err) {
+                        console.error('join error', err);
                     });
 
                 }).catch(function (err) {
