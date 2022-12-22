@@ -30,19 +30,19 @@ $(function() {
     };
 
     function videoFilterProcess() {
-        console.error("videoFilterProcess");
-        console.error("checkboxbackgroundSub.value:", checkboxbackgroundSub.value);
+        console.log("videoFilterProcess");
+        console.log("checkboxbackgroundSub.value:", checkboxbackgroundSub.value);
 
         let imgUrl = '';
 
         console.debug("checkboxbackgroundSub.value:", checkboxbackgroundSub.value);
         switch (checkboxbackgroundSub.value) {
             case 'nofilter':
-                console.error("noiseReductionprocess nofilter");
+                console.log("noiseReductionprocess nofilter");
                 applyVideoFilter('none');
                 break;
             case 'blur':
-                console.error("noiseReductionprocess nofilter");
+                console.log("noiseReductionprocess nofilter");
                 applyVideoFilter('blur');
                 break;
             case 'image_beach':
@@ -80,7 +80,7 @@ $(function() {
 
     function applyVideoFilter(filterType, videoProcessorOptions) {
         localStream.applyVideoProcessor(filterType, videoProcessorOptions).then((streamWithEffect) => {
-            console.error('stream With Effect :', streamWithEffect);
+            console.log('stream With Effect :', streamWithEffect);
 
             let options = {};
             connectedConversation.unpublish(localStream, options);
@@ -105,15 +105,15 @@ $(function() {
     };
 
     function noiseReductionProcess() {
-        console.error("noiseReductionprocess");
-        console.error("checkboxnoiseRed.value:", checkboxnoiseRed.value);
+        console.log("noiseReductionprocess");
+        console.log("checkboxnoiseRed.value:", checkboxnoiseRed.value);
         switch (checkboxnoiseRed.value) {
             case 'nofilter':
-                console.error("noiseReductionprocess nofilter");
+                console.log("noiseReductionprocess nofilter");
                 applyNoiseFilter('none');
                 break;
             case 'ON':
-                console.error("noiseReductionprocess ON");
+                console.log("noiseReductionprocess ON");
                 applyNoiseFilter('noiseReduction');
                 break;
             default:
@@ -123,7 +123,7 @@ $(function() {
 
     function applyNoiseFilter(filterType) {
         localStream.applyAudioProcessor(filterType).then((streamWithEffect) => {
-            console.error('stream With Effect :', streamWithEffect);
+            console.log('stream With Effect :', streamWithEffect);
 
             let options = {};
             connectedConversation.unpublish(localStream, options);
@@ -303,7 +303,7 @@ $(function() {
                 .on('streamAdded', function(stream) {
                     console.log('connectedConversation streamAdded');
 
-                    console.error('connectedConversation streamAdded stream:', stream);
+                    console.log('connectedConversation streamAdded stream:', stream);
 
                     stream.addInDiv('remote-container', 'remote-media-' + stream.streamId, {controls : true}, false);
                 }).on('streamRemoved', function(stream) {

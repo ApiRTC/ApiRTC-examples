@@ -176,7 +176,7 @@ $(function () {
         console.log('Clic on startNoiseReduction');
 
         localStream.applyAudioProcessor('noiseReduction').then((streamWithEffect) => {
-            console.error('noised reduction stream :', streamWithEffect);
+            console.log('noised reduction stream :', streamWithEffect);
 
             localStream.removeFromDiv('local-container', 'local-media');
             streamWithEffect.addInDiv('local-container', 'local-media', {}, false);
