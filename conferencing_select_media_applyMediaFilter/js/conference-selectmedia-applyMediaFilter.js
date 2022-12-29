@@ -233,7 +233,7 @@ $(function() {
     function joinConference(name) {
 
         let cloudUrl = 'https://cloud.apizee.com';
-        let apiKey = 'myDemoApiKey';
+        let apiKey = '#INSERT_YOUR_API_KEY_HERE#'; // -->  Get your API Key at https://cloud.apirtc.com/enterprise/api (free account required)
 
         //==============================
         // CREATE USER AGENT

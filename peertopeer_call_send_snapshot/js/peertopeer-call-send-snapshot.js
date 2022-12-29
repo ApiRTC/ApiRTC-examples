@@ -60,8 +60,9 @@ $(() => {
 
     function register() {
 
-        ua = new apiRTC.UserAgent({
-            uri: 'apiKey:myDemoApiKey'
+        apiKey = '#INSERT_YOUR_API_KEY_HERE#'; // -->  Get your API Key at https://cloud.apirtc.com/enterprise/api (free account required)
+        var ua = new apiRTC.UserAgent({
+            uri: 'apiKey:' + apiKey
         });
 
         ua.register({

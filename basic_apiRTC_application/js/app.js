@@ -1,6 +1,6 @@
-var API_KEY = 'myDemoApiKey';
+var apiKey = '#INSERT_YOUR_API_KEY_HERE#'; // -->  Get your API Key at https://cloud.apirtc.com/enterprise/api (free account required)
 
-var userAgent = new apiRTC.UserAgent({ uri: 'apiKey:' + API_KEY });
+var userAgent = new apiRTC.UserAgent({ uri: 'apiKey:' + apiKey });
 
 userAgent.register().then(function(session) {
     var conversation = session.getConversation('quickstart');

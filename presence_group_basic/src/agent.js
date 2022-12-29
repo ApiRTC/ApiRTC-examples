@@ -1,4 +1,4 @@
-var apiKey = "myDemoApiKey";
+var apiKey = '#INSERT_YOUR_API_KEY_HERE#'; // -->  Get your API Key at https://cloud.apirtc.com/enterprise/api (free account required)
 
 var connectedSession = undefined;
 
