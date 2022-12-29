@@ -1,6 +1,6 @@
 var API_KEY = 'myDemoApiKey';
 
-var userAgent = new apiRTC.UserAgent({ uri: 'apzkey:' + API_KEY });
+var userAgent = new apiRTC.UserAgent({ uri: 'apiKey:' + API_KEY });
 
 userAgent.register().then(function(session) {
     var conversation = session.getConversation('quickstart');

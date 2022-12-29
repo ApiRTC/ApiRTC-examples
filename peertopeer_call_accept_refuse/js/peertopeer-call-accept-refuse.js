@@ -206,7 +206,7 @@ function callInvitationProcess(invitation) {
 // CREATE USER AGENT
 //==============================
 var ua = new apiRTC.UserAgent({
-    uri: 'apzkey:myDemoApiKey'
+    uri: 'apiKey:myDemoApiKey'
 });
 
 //==============================

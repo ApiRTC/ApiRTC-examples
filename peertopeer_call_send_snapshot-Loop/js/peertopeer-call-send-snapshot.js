@@ -114,7 +114,7 @@ $(() => {
     function register() {
 
         ua = new apiRTC.UserAgent({
-            uri: 'apzkey:myDemoApiKey'
+            uri: 'apiKey:myDemoApiKey'
         });
 
         ua.register({

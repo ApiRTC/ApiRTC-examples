@@ -142,7 +142,7 @@ function renderUserList() {
 // CREATE USER AGENT
 //==============================
 var ua = new apiRTC.UserAgent({
-    uri: 'apzkey:myDemoApiKey'
+    uri: 'apiKey:myDemoApiKey'
 });
 
 console.log('register');

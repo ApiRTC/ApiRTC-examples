@@ -126,7 +126,7 @@ $(function() {
 
         // Create user agent
         ua = new apiRTC.UserAgent({
-            uri: 'apzkey:' + apiKey
+            uri: 'apiKey:' + apiKey
         });
 
         // Register user agent

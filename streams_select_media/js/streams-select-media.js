@@ -68,7 +68,7 @@ $(function () {
     // CREATE USER AGENT
     //==============================
     var ua = new apiRTC.UserAgent({
-        uri: 'apzkey:myDemoApiKey',
+        uri: 'apiKey:myDemoApiKey',
         //apiRTCMediaDeviceDetectionEnabled : true, //This option can be use on Chrome/Android or Safari as event ondevicechange is not supported on these browsers
         //apiRTCMediaDeviceDetectionDelay : 7000
     });

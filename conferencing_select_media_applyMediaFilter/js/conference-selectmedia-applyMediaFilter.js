@@ -239,7 +239,7 @@ $(function() {
         // CREATE USER AGENT
         //==============================
         ua = new apiRTC.UserAgent({
-            uri: 'apzkey:' + apiKey
+            uri: 'apiKey:' + apiKey
         });
 
 //SELECT_MEDIA

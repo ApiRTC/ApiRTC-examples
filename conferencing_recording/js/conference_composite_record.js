@@ -14,7 +14,7 @@ let $1 = $(function() {
         //==============================
 
         var ua = new apiRTC.UserAgent({
-            uri: 'apzkey:myDemoApiKey'
+            uri: 'apiKey:myDemoApiKey'
         });
 
         //==============================

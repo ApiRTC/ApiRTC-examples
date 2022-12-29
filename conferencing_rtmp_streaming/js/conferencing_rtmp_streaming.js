@@ -231,7 +231,7 @@ $(function() {
         // CREATE USER AGENT
         //==============================
         ua = new apiRTC.UserAgent({
-            uri: 'apzkey:myDemoApiKey'
+            uri: 'apiKey:myDemoApiKey'
         });
 
 //SELECT_MEDIA
