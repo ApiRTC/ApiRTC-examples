@@ -13,8 +13,9 @@ $(function() {
         //==============================
         // 1/ CREATE USER AGENT
         //==============================
-        ua = new var apiKey = '#INSERT_YOUR_API_KEY_HERE#'; // -->  Get your API Key at https://cloud.apirtc.com/enterprise/api (free account required)
-apiRTC.UserAgent({
+        var apiKey = '#INSERT_YOUR_APIKEY_HERE#'; // -->  Get your API Key at https://cloud.apirtc.com/enterprise/api (free account required)
+
+        ua = new apiRTC.UserAgent({
             uri: 'apiKey:' + apiKey
         });
 
