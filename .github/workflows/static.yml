@@ -31,11 +31,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Find and Replace
-        uses: jacobtomlinson/gha-find-replace@v2
-        with:
-          find: "#INSERT_YOUR_APIKEY_HERE#"
-          replace: "myDemoApiKey"
-          regex: false
+        run: |
+          find . -name "*.js" -exec sed -i "s/#INSERT_YOUR_APIKEY_HERE#/myDemoApiKey/g" {} +
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
