@@ -1,0 +1,39 @@
+body {
+    margin: 0;
+}
+
+#conference {
+    position: relative;
+    margin: 0;
+    overflow: scroll;
+    max-height: 100vh;
+}
+
+video {
+    border-radius: 10px;
+}
+
+#local {
+    position: absolute;
+    width: 20%;
+    min-width: 100px;
+    max-width: 200px;
+    bottom: 20px;
+    right: 20px;
+    z-index: 2;
+    transform: rotateY(180deg);
+    -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+    -moz-transform:rotateY(180deg); /* Firefox */
+}
+
+#remote {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#remote>video {
+    flex: 1;
+    max-height: 100vh;
+}
