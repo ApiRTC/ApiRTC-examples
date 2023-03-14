@@ -268,63 +268,96 @@ $(function() {
     }
 
     function initControllers(){
-        capabilities = localStream.getCapabilities();
-        console.log("capabilities : ", capabilities);
-        settings = localStream.getSettings();
-        console.log("settings : ", settings);
-        controllersDiv = document.getElementById('controllers');
-        
-        if(initialSettings){
-            defaultSettings = settings;
-            initialSettings = false;
-        }
-        
-        document.getElementById('controllers').style.display = "block";
+        localStream.getCapabilities()
+            .then(function (capa) {
+                console.error("capabilities : ", capa);
 
-        while (document.getElementById('tableBody').firstChild) {
-            document.getElementById('tableBody').removeChild(document.getElementById('tableBody').lastChild);
-        }
 
-        showCapabilitiesControllers();
+//TODO voir pour audio
+                capabilities = capa.video;
+
+
+
+                //console.log("capabilities : ", capabilities);
+                localStream.getSettings()
+                    .then(function (set) {
+                        console.error("settings : ", set);
+
+
+                        //console.log("settings : ", settings);
+                        controllersDiv = document.getElementById('controllers');
+
+//TODO voir pour audio
+                        settings = set.video;
+                        
+                        if(initialSettings){
+                            defaultSettings = set;
+                            initialSettings = false;
+                        }
+                        
+                        document.getElementById('controllers').style.display = "block";
+        
+                        while (document.getElementById('tableBody').firstChild) {
+                            document.getElementById('tableBody').removeChild(document.getElementById('tableBody').lastChild);
+                        }
+        
+                        showCapabilitiesControllers();
+
+                    }).catch(function (err) {
+                        console.error('getSettings error', err);
+                    });
+
+            }).catch(function (err) {
+                console.error('getCapabilities error', err);
+            });
     }
 
     function showCapabilitiesControllers(){
+
+        console.error('showCapabilitiesControllers capabilities =', capabilities);
+        console.error('showCapabilitiesControllers capabilities =', capabilities);
+
         if(capabilities !== undefined && capabilities !== null && typeof capabilities === "object"){
             Object.keys(capabilities).forEach(function(capability){
-                if(capability === "frameRate"){
+
+                console.error('capability =', capability);
+
+                if (capability === "frameRate"){
                     addTableRow("frameRate", capabilities[capability], settings[capability], setFrameRate);
-                }else if(capability === "height"){
+                } else if (capability === "height"){
                     addTableRow("height", capabilities[capability], settings[capability], setHeight);
-                }else if(capability === "width"){
+                } else if (capability === "width"){
                     addTableRow("width", capabilities[capability], settings[capability], setWidth);
-                }else if(capability === "resizeMode"){
+                } else if (capability === "resizeMode"){
                     addTableRow("resizeMode", capabilities[capability], settings[capability], setResizeMode);
-                }else if(capability === "aspectRatio"){
+                } else if (capability === "aspectRatio"){
                     addTableRow("aspectRatio", capabilities[capability], settings[capability], setAspectRatio);
-                }else if(capability === "zoom"){
+                } else if (capability === "zoom"){
                     addTableRow("zoom", capabilities[capability], settings[capability], setZoom);
-                }else if(capability === "iso"){
+                } else if (capability === "iso"){
                     addTableRow("iso", capabilities[capability], settings[capability], setIso);
-                }else if(capability === "focusDistance"){
+                } else if (capability === "focusDistance"){
                     addTableRow("focusDistance", capabilities[capability], settings[capability], setFocusDistance);
-                }else if(capability === "exposureTime"){
+                } else if (capability === "exposureTime"){
                     addTableRow("exposureTime", capabilities[capability], settings[capability], setExposureTime);
-                }else if(capability === "exposureCompensation"){
+                } else if (capability === "exposureCompensation"){
                     addTableRow("exposureCompensation", capabilities[capability], settings[capability], setExposureCompensation);
-                }else if(capability === "whiteBalanceMode"){
+                } else if (capability === "whiteBalanceMode"){
                     addTableRow("whiteBalanceMode", capabilities[capability], settings[capability], setWhiteBalanceMode);
-                }else if(capability === "focusMode"){
+                } else if (capability === "focusMode"){
                     addTableRow("focusMode", capabilities[capability], settings[capability], setFocusMode);
-                }else if(capability === "facingMode"){
+                } else if (capability === "facingMode"){
                     addTableRow("facingMode", capabilities[capability], settings[capability], setFacingMode);
-                }else if(capability === "exposureMode"){
+                } else if (capability === "exposureMode"){
                     addTableRow("exposureMode", capabilities[capability], settings[capability], setExposureMode);
-                }else if(capability === "colorTemperature"){
+                } else if (capability === "colorTemperature"){
                     addTableRow("colorTemperature", capabilities[capability], settings[capability], setColorTemperature);
-                }else{
-                    let p = document.createElement("p");
-                    p.innerHTML = "Your device is able to use the capability : ", capability, " but there is no helper for this capability. No helper does not mean no compatibility, you can use the setCapability or setCapabilities function to use this capability.";
-                    document.getElementById("controllers").appendChild(p);
+                } else if (capability === "deviceId"){
+                    console.error( "deviceId TODO");
+                } else if (capability === "groupId"){
+                    console.error( "groupId TODO");
+                } else {
+                    console.error( "Your device is able to use the capability : " + capability + ", but there is no helper for this capability. No helper does not mean no compatibility, you can use the setCapability or setCapabilities function to use this capability.")
                 }
             });
     
@@ -359,7 +392,7 @@ $(function() {
                 inputRange.step = 0.01;
             }
             inputRange.addEventListener("change", function(e){
-                func(e.target.value, true)
+                func(e.target.value, true, name)
             })
             tdFunc.appendChild(inputRange)
         }else if(typeof(actualValue) === "string"){
@@ -373,7 +406,7 @@ $(function() {
             })
             select.value = actualValue;
             select.addEventListener("change", function(e){
-                func(e.target.value, true)
+                func(e.target.value, true, name)
             })
             tdFunc.appendChild(select)
         }else if(name === "torch"){
@@ -383,22 +416,32 @@ $(function() {
             checkbox.checked = actualValue;
             checkbox.addEventListener("change", function(e){
                 let checked = document.getElementById(name).checked;
-                func(checked, true)
+                func(checked, true, name)
             })
             tdFunc.appendChild(checkbox)
         }else{
             console.log(name, typeof(actualValue))
         }
         
-
         tr.appendChild(tdName)
         tr.appendChild(tdActualValue)
         tr.appendChild(tdFunc)
         document.getElementById('tableBody').appendChild(tr);
     }
 
-    function setFrameRate(value, update){
-        localStream.setFrameRate(value).then(function(){
+    function setWidth(value, update){
+
+        let constraintToApply = {
+            audio: {},
+            video: {
+                width : value
+            },
+        }
+
+        localStream.applyConstraints(constraintToApply).then(function(){
+
+//TODO
+
             if(update){
                 updateSettings()
             }
@@ -408,17 +451,18 @@ $(function() {
     }
 
     function setHeight(value, update){
-        localStream.setHeight(value).then(function(){
-            if(update){
-                updateSettings()
-            }
-        }).catch(function(error){
-            console.log("Error : ", error);
-        })
-    }
 
-    function setWidth(value, update){
-        localStream.setWidth(value).then(function(){
+        let constraintToApply = {
+            audio: {},
+            video: {
+                height : value
+            },
+        }
+
+        localStream.applyConstraints(constraintToApply).then(function(){
+
+//TODO
+
             if(update){
                 updateSettings()
             }
@@ -428,7 +472,69 @@ $(function() {
     }
 
     function setAspectRatio(value, update){
-        localStream.setAspectRatio(value).then(function(){
+
+        let constraintToApply = {
+            audio: {},
+            video: {
+                aspectRatio : value
+            },
+        }
+
+        localStream.applyConstraints(constraintToApply).then(function(){
+
+//TODO
+
+            if(update){
+                updateSettings()
+            }
+        }).catch(function(error){
+            console.log("Error : ", error);
+        })
+    }
+
+    function setFrameRate(value, update, name){
+
+console.error("value :", value);
+console.error("update :", update);
+console.error("name :", name);
+
+        let constraintToApply = {
+            audio: {},
+            video: {
+                frameRate : value
+            },
+        }
+
+        localStream.applyConstraints(constraintToApply).then(function(){
+
+            console.error("then applyConstraints frameRate :", value);
+
+//TODO voir pour maj valeur settée sur interface
+
+
+            if(update){
+                updateSettings()
+            }
+        }).catch(function(error){
+            console.log("Error : ", error);
+        })
+        /*
+        localStream.applyConstraints(value).then(function(){
+            if(update){
+                updateSettings()
+            }
+        }).catch(function(error){
+            console.log("Error : ", error);
+        })
+        */
+    }
+
+    function setFacingMode(value, update){
+
+//TODO
+
+
+        localStream.setFacingMode(value).then(function(){
             if(update){
                 updateSettings()
             }
@@ -438,6 +544,10 @@ $(function() {
     }
 
     function setResizeMode(value, update){
+
+//TODO
+
+
         localStream.setResizeMode(value).then(function(){
             if(update){
                 updateSettings()
@@ -448,6 +558,10 @@ $(function() {
     }
 
     function setZoom(value, update){
+
+//TODO
+
+
         localStream.setZoom(value).then(function(){
             if(update){
                 updateSettings()
@@ -458,6 +572,10 @@ $(function() {
     }
 
     function setIso(value, update){
+
+//TODO
+
+
         localStream.setIso(value).then(function(){
             if(update){
                 updateSettings()
@@ -517,16 +635,6 @@ $(function() {
         })
     }
 
-    function setFacingMode(value, update){
-        localStream.setFacingMode(value).then(function(){
-            if(update){
-                updateSettings()
-            }
-        }).catch(function(error){
-            console.log("Error : ", error);
-        })
-    }
-
     function setExposureMode(value, update){
         localStream.setExposureMode(value).then(function(){
             if(update){
@@ -558,59 +666,86 @@ $(function() {
     }
 
     function updateSettings(){
-        settings = localStream.getSettings();
+
+        console.error("updateSettings ")
+
+        localStream.getSettings()
+
+        .then(function(result){
+
+            //TODO
+            console.error("settings :", result);
+
+//TODO voir pour audio
+            settings = result.video;
         
-        Object.keys(settings).forEach(function(set){
-            if(set === "frameRate"){
-                document.getElementById("frameRateValue").innerHTML = settings.frameRate;
-                document.getElementById("frameRate").value = settings.frameRate;
-            }else if(set === "height"){
-                document.getElementById("heightValue").innerHTML = settings.height;
-                document.getElementById("height").value = settings.height;
-            }else if(set === "width"){
-                document.getElementById("widthValue").innerHTML = settings.width;
-                document.getElementById("width").value = settings.width;
-            }else if(set === "resizeMode"){
-                document.getElementById("resizeModeValue").innerHTML = settings.resizeMode;
-                document.getElementById("resizeMode").value = settings.resizeMode;
-            }else if(set === "aspectRatio"){
-                document.getElementById("aspectRatioValue").innerHTML = settings.aspectRatio;
-                document.getElementById("aspectRatio").value = settings.aspectRatio;
-            }else if(set === "zoom"){
-                document.getElementById("zoomValue").innerHTML = settings.zoom;
-                document.getElementById("zoom").value = settings.zoom;
-            }else if(set === "iso"){
-                document.getElementById("isoValue").innerHTML = settings.iso;
-                document.getElementById("iso").value = settings.iso;
-            }else if(set === "focusDistance"){
-                document.getElementById("focusDistanceValue").innerHTML = settings.focusDistance;
-                document.getElementById("focusDistance").value = settings.focusDistance;
-            }else if(set === "exposureTime"){
-                document.getElementById("exposureTimeValue").innerHTML = settings.exposureTime;
-                document.getElementById("exposureTime").value = settings.exposureTime;
-            }else if(set === "exposureCompensation"){
-                document.getElementById("exposureCompensationValue").innerHTML = settings.exposureCompensation;
-                document.getElementById("exposureCompensation").value = settings.exposureCompensation;
-            }else if(set === "whiteBalanceMode"){
-                document.getElementById("whiteBalanceModeValue").innerHTML = settings.whiteBalanceMode;
-                document.getElementById("whiteBalanceMode").value = settings.whiteBalanceMode;
-            }else if(set === "focusMode"){
-                document.getElementById("focusModeValue").innerHTML = settings.focusMode;
-                document.getElementById("focusMode").value = settings.focusMode;
-            }else if(set === "facingMode"){
-                document.getElementById("facingModeValue").innerHTML = settings.facingMode;
-                document.getElementById("facingMode").value = settings.facingMode;
-            }else if(set === "exposureMode"){
-                document.getElementById("exposureModeValue").innerHTML = settings.exposureMode;
-                document.getElementById("exposureMode").value = settings.exposureMode;
-            }else if(set === "torch"){
-                document.getElementById("torchValue").innerHTML = settings.torch;
-                document.getElementById("torch").checked = settings.torch;
-            }else if(set === "colorTemperature"){
-                document.getElementById("colorTemperatureValue").innerHTML = settings.colorTemperature;
-                document.getElementById("colorTemperature").value = settings.colorTemperature;
-            }
+            Object.keys(settings).forEach(function(set){
+    
+                console.error("set :", set);
+    
+                if(set === "width"){
+    
+                    console.error("frameRate set ")
+                    document.getElementById("widthValue").innerHTML = settings.width;
+                    document.getElementById("width").value = settings.width;
+    
+                }else if(set === "frameRate"){
+    
+            console.error("frameRate set ")
+    
+                    document.getElementById("frameRateValue").innerHTML = settings.frameRate;
+                    document.getElementById("frameRate").value = settings.frameRate;
+                }else if(set === "height"){
+                    document.getElementById("heightValue").innerHTML = settings.height;
+                    document.getElementById("height").value = settings.height;
+                }else if(set === "resizeMode"){
+                    document.getElementById("resizeModeValue").innerHTML = settings.resizeMode;
+                    document.getElementById("resizeMode").value = settings.resizeMode;
+                }else if(set === "aspectRatio"){
+                    document.getElementById("aspectRatioValue").innerHTML = settings.aspectRatio;
+                    document.getElementById("aspectRatio").value = settings.aspectRatio;
+                }else if(set === "zoom"){
+                    document.getElementById("zoomValue").innerHTML = settings.zoom;
+                    document.getElementById("zoom").value = settings.zoom;
+                }else if(set === "iso"){
+                    document.getElementById("isoValue").innerHTML = settings.iso;
+                    document.getElementById("iso").value = settings.iso;
+                }else if(set === "focusDistance"){
+                    document.getElementById("focusDistanceValue").innerHTML = settings.focusDistance;
+                    document.getElementById("focusDistance").value = settings.focusDistance;
+                }else if(set === "exposureTime"){
+                    document.getElementById("exposureTimeValue").innerHTML = settings.exposureTime;
+                    document.getElementById("exposureTime").value = settings.exposureTime;
+                }else if(set === "exposureCompensation"){
+                    document.getElementById("exposureCompensationValue").innerHTML = settings.exposureCompensation;
+                    document.getElementById("exposureCompensation").value = settings.exposureCompensation;
+                }else if(set === "whiteBalanceMode"){
+                    document.getElementById("whiteBalanceModeValue").innerHTML = settings.whiteBalanceMode;
+                    document.getElementById("whiteBalanceMode").value = settings.whiteBalanceMode;
+                }else if(set === "focusMode"){
+                    document.getElementById("focusModeValue").innerHTML = settings.focusMode;
+                    document.getElementById("focusMode").value = settings.focusMode;
+                }else if(set === "facingMode"){
+                    document.getElementById("facingModeValue").innerHTML = settings.facingMode;
+                    document.getElementById("facingMode").value = settings.facingMode;
+                }else if(set === "exposureMode"){
+                    document.getElementById("exposureModeValue").innerHTML = settings.exposureMode;
+                    document.getElementById("exposureMode").value = settings.exposureMode;
+                }else if(set === "torch"){
+                    document.getElementById("torchValue").innerHTML = settings.torch;
+                    document.getElementById("torch").checked = settings.torch;
+                }else if(set === "colorTemperature"){
+                    document.getElementById("colorTemperatureValue").innerHTML = settings.colorTemperature;
+                    document.getElementById("colorTemperature").value = settings.colorTemperature;
+                }
+            })    
+
+        }).catch(function(error){
+            console.log("Error : ", error);
         })
+
+
+
     }
 
     function resetSettings(){

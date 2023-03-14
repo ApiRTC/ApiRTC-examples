@@ -19,6 +19,7 @@ $(function() {
 
         var registerInformation = {};
         registerInformation.cloudUrl = cloudUrl;
+        //registerInformation.ccs = '127.0.0.1:8001'
 
         //==============================
         // 2/ REGISTER

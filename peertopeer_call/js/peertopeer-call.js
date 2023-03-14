@@ -189,7 +189,7 @@ ua.register(registerInformation).then(function (session) {
             }
 
             // Display hangup button
-            document.getElementById('hangup').style.display = 'inline-block';
+            //document.getElementById('hangup').style.display = 'inline-block';
         })
         .on("incomingScreenSharingCall", function (call) { //When client receives an screenSharing call from another user
             console.log("screenSharing received from :", call.getContact().id);
@@ -260,7 +260,8 @@ $("#shareScreen").click(function () {
         callConfiguration.captureSourceType = "screen";
     } else {
         //Chrome
-        callConfiguration.captureSourceType = ["screen", "window", "tab", "audio"];
+        //callConfiguration.captureSourceType = ["screen", "window", "tab", "audio"];
+        callConfiguration.captureSourceType = ["screen", "window", "tab"];
     }
 
     var call = contact.shareScreen(callConfiguration);
