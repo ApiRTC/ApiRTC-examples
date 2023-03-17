@@ -70,13 +70,14 @@
 }
 #container #tableControllers {
   margin: auto;
+  color: white;
+  text-align: center;
 }
-#container #tableControllers td, #container #tableControllers th, #container #tableControllers{
+#container #tableControllers td, #container #tableControllers th,#container #tableControllers{
   border: 1px solid white;
   border-collapse: collapse;
 }
 #container #conference #remote-container video {
-  height: 300px;
 }
 #container #select-device {
   display: none;

@@ -1,7 +1,7 @@
 $(function() {
     'use strict';
 
-    apiRTC.setLogLevel(0);
+    apiRTC.setLogLevel(10);
 
     var ua = null,
         localStream = null,
@@ -12,8 +12,6 @@ $(function() {
         selectMic = document.getElementById("select-mic"),
         selectedAudioInputId = null,
         selectedVideoInputId = null,
-        defaultSettings = null,
-        initialSettings = true,
         settings,
         capabilities,
         controllersDiv;
@@ -21,12 +19,10 @@ $(function() {
     selectCamera.onchange = function (e) {
         console.error("selectCamera onchange :", e);
         createStream();
-//        localStorage.setItem("videoSourceId_" + connectedSession.getId(), selectCamera.value);
     };
     selectMic.onchange = function (e) {
         console.error("selectMic onchange :", e);
         createStream();
-//        localStorage.setItem("audioSourceId_" + connectedSession.getId(), selectMic.value);
     };
 
     function showSelectDevicesArea() {
@@ -54,8 +50,6 @@ $(function() {
             }
         });
 
-//        selectedVideoInputId = localStorage.getItem("videoSourceId_" + connectedSession.getId());
-
         for (i = 0; i < Object.values(res.videoinput).length; i++) {
             v = Object.values(res.videoinput)[i];
             console.log('getCameras', v);
@@ -71,7 +65,6 @@ $(function() {
             }
         }
 
-//       selectedAudioInputId = localStorage.getItem("audioSourceId_" + connectedSession.getId());
         for (i = 0; i < Object.values(res.audioinput).length; i++) {
             v = Object.values(res.audioinput)[i];
             console.log('getMicrophones', v);
@@ -87,9 +80,6 @@ $(function() {
             }
         }
         console.log('getDevices', cameras, microphones);
-
-//        localStorage.setItem("videoSourceId_" + connectedSession.getId(), selectCamera.value);
-//        localStorage.setItem("audioSourceId_" + connectedSession.getId(), selectMic.value);
     }
 
     function manageMediaDevices() {
@@ -110,12 +100,15 @@ $(function() {
         if (localStream !== null) {
             call = connectedConversation.getConversationCall(localStream);
             console.error('call :', call);
+            tableRemove ('local-container', localStream);
             localStream.release();
         }
 
         var createStreamOptions = {};
         createStreamOptions.audioInputId = selectMic.value;
         createStreamOptions.videoInputId = selectCamera.value;
+
+
 /*
         console.debug(apiRTC.osName);
 
@@ -134,6 +127,8 @@ $(function() {
                     // Save local stream
                     localStream = stream;
                     stream.removeFromDiv('local-container', 'local-media');
+                    tableCreate('local-container', stream);
+                    initControllers(stream);
                     stream.addInDiv('local-container', 'local-media', {}, true);
                     return resolve(stream);
                 })
@@ -150,17 +145,65 @@ $(function() {
             //Switch the camera if call is ongoing
             return call.replacePublishedStream(null, callbacks)
                 .then(function (stream) {
-                    console.error('replacePublishedStream OK');
-                    initialSettings = true;
-                    initControllers();
+                    console.log('replacePublishedStream OK');
                 })
                 .catch(function (err) {
-                    console.error('replacePublishedStream NOK');
+                    console.log('replacePublishedStream NOK');
                 });
         } else {
             return callbacks.getStream();
         }
     };
+
+    /*
+        Add table with stream capacities and settings
+    */
+    function tableCreate(parentDivName, stream) {
+
+        console.log("tableCreate");
+
+        const parentDiv = document.getElementById(parentDivName),
+              tbl = document.createElement('table');
+
+        tbl.setAttribute("id", "tbl-" + stream.streamId);
+        tbl.style.border = '1px solid white';
+        tbl.style.color = 'white';
+        tbl.style.textAlign = 'center';
+
+        var header = tbl.createTHead();
+
+        const tr = header.insertRow();
+        const td = tr.insertCell();
+
+        let streamLocalOrRemote = '';
+        if (stream.isRemote){
+            streamLocalOrRemote = 'remote';
+        } else {
+            streamLocalOrRemote = 'local';
+        }
+        td.appendChild(document.createTextNode('Settings for ' + streamLocalOrRemote + ' stream :' + stream.streamId));
+        td.setAttribute('colspan', '3');
+
+        const tr2 = header.insertRow();
+        const td1 = tr2.insertCell();
+        td1.appendChild(document.createTextNode(`Capability name`));
+        const td2 = tr2.insertCell();
+        td2.appendChild(document.createTextNode(`Actual value`));
+        const td3 = tr2.insertCell();
+        td3.appendChild(document.createTextNode(`Change value`));
+
+        let tblbody = tbl.createTBody();
+        tblbody.setAttribute("id", "tblbody-" + stream.streamId);
+
+        parentDiv.appendChild(tbl);
+    }
+
+    /*
+        Remove table with stream capacities and settings
+    */
+    function tableRemove (parentDivName, stream) {
+        document.getElementById(parentDivName).removeChild(document.getElementById('tbl-'+ stream.streamId));
+    }
 
     function joinConference(name) {
         var cloudUrl = 'https://cloud.apizee.com';
@@ -231,9 +274,12 @@ $(function() {
             connectedConversation
                 .on('streamAdded', function(stream) {
                     console.log('connectedConversation streamAdded');
+                    tableCreate('remote-container', stream);
+                    initControllers(stream);
                     stream.addInDiv('remote-container', 'remote-media-' + stream.streamId, {}, false);
                 }).on('streamRemoved', function(stream) {
                     console.log('connectedConversation streamRemoved');
+                    tableRemove ('remote-container', stream);
                     stream.removeFromDiv('remote-container', 'remote-media-' + stream.streamId);
                 });
 
@@ -257,8 +303,6 @@ $(function() {
                         //options.qos.videoMinQuality = 'medium';
 
                         connectedConversation.publish(stream, options);
-                        initialSettings = true;
-                        initControllers();
                     });
 
                 }).catch(function (err) {
@@ -267,41 +311,21 @@ $(function() {
         });
     }
 
-    function initControllers(){
-        localStream.getCapabilities()
+    function initControllers(stream){
+        stream.getCapabilities()
             .then(function (capa) {
                 console.error("capabilities : ", capa);
+                capabilities = capa;
 
-
-//TODO voir pour audio
-                capabilities = capa.video;
-
-
-
-                //console.log("capabilities : ", capabilities);
-                localStream.getSettings()
+                stream.getSettings()
                     .then(function (set) {
                         console.error("settings : ", set);
 
-
-                        //console.log("settings : ", settings);
                         controllersDiv = document.getElementById('controllers');
+                        settings = set;
 
-//TODO voir pour audio
-                        settings = set.video;
-                        
-                        if(initialSettings){
-                            defaultSettings = set;
-                            initialSettings = false;
-                        }
-                        
                         document.getElementById('controllers').style.display = "block";
-        
-                        while (document.getElementById('tableBody').firstChild) {
-                            document.getElementById('tableBody').removeChild(document.getElementById('tableBody').lastChild);
-                        }
-        
-                        showCapabilitiesControllers();
+                        showCapabilitiesControllers(stream);
 
                     }).catch(function (err) {
                         console.error('getSettings error', err);
@@ -312,124 +336,182 @@ $(function() {
             });
     }
 
-    function showCapabilitiesControllers(){
+    function showCapabilitiesControllers(stream){
 
-        console.error('showCapabilitiesControllers capabilities =', capabilities);
-        console.error('showCapabilitiesControllers capabilities =', capabilities);
+        console.log('showCapabilitiesControllers');
+        let streamId = stream.getId();
 
-        if(capabilities !== undefined && capabilities !== null && typeof capabilities === "object"){
-            Object.keys(capabilities).forEach(function(capability){
-
-                console.error('capability =', capability);
+        if(capabilities !== undefined && capabilities !== null && typeof capabilities.video === "object"){
+            Object.keys(capabilities.video).forEach(function(capability){
 
                 if (capability === "frameRate"){
-                    addTableRow("frameRate", capabilities[capability], settings[capability], setFrameRate);
+                    addTableRow("frameRate", capabilities.video[capability], settings.video[capability], setFrameRate, stream);
                 } else if (capability === "height"){
-                    addTableRow("height", capabilities[capability], settings[capability], setHeight);
+                    addTableRow("height", capabilities.video[capability], settings.video[capability], setHeight, stream);
                 } else if (capability === "width"){
-                    addTableRow("width", capabilities[capability], settings[capability], setWidth);
+                    addTableRow("width", capabilities.video[capability], settings.video[capability], setWidth, stream);
                 } else if (capability === "resizeMode"){
-                    addTableRow("resizeMode", capabilities[capability], settings[capability], setResizeMode);
+                    addTableRow("resizeMode", capabilities.video[capability], settings.video[capability], setResizeMode, stream);
                 } else if (capability === "aspectRatio"){
-                    addTableRow("aspectRatio", capabilities[capability], settings[capability], setAspectRatio);
+                    addTableRow("aspectRatio", capabilities.video[capability], settings.video[capability], setAspectRatio, stream);
                 } else if (capability === "zoom"){
-                    addTableRow("zoom", capabilities[capability], settings[capability], setZoom);
+                    addTableRow("zoom", capabilities.video[capability], settings.video[capability], setZoom, stream);
                 } else if (capability === "iso"){
-                    addTableRow("iso", capabilities[capability], settings[capability], setIso);
+                    addTableRow("iso", capabilities.video[capability], settings.video[capability], setIso, stream);
                 } else if (capability === "focusDistance"){
-                    addTableRow("focusDistance", capabilities[capability], settings[capability], setFocusDistance);
+                    addTableRow("focusDistance", capabilities.video[capability], settings.video[capability], setFocusDistance, stream);
                 } else if (capability === "exposureTime"){
-                    addTableRow("exposureTime", capabilities[capability], settings[capability], setExposureTime);
+                    addTableRow("exposureTime", capabilities.video[capability], settings.video[capability], setExposureTime, stream);
                 } else if (capability === "exposureCompensation"){
-                    addTableRow("exposureCompensation", capabilities[capability], settings[capability], setExposureCompensation);
+                    addTableRow("exposureCompensation", capabilities.video[capability], settings.video[capability], setExposureCompensation, stream);
                 } else if (capability === "whiteBalanceMode"){
-                    addTableRow("whiteBalanceMode", capabilities[capability], settings[capability], setWhiteBalanceMode);
+                    addTableRow("whiteBalanceMode", capabilities.video[capability], settings.video[capability], setWhiteBalanceMode, stream);
                 } else if (capability === "focusMode"){
-                    addTableRow("focusMode", capabilities[capability], settings[capability], setFocusMode);
+                    addTableRow("focusMode", capabilities.video[capability], settings.video[capability], setFocusMode, stream);
                 } else if (capability === "facingMode"){
-                    addTableRow("facingMode", capabilities[capability], settings[capability], setFacingMode);
+                    addTableRow("facingMode", capabilities.video[capability], settings.video[capability], setFacingMode, stream);
                 } else if (capability === "exposureMode"){
-                    addTableRow("exposureMode", capabilities[capability], settings[capability], setExposureMode);
+                    addTableRow("exposureMode", capabilities.video[capability], settings.video[capability], setExposureMode, stream);
                 } else if (capability === "colorTemperature"){
-                    addTableRow("colorTemperature", capabilities[capability], settings[capability], setColorTemperature);
+                    addTableRow("colorTemperature", capabilities.video[capability], settings.video[capability], setColorTemperature, stream);
+                } else if (capability === "torch"){
+                    addTableRow("torch", capabilities.video[capability], settings.video[capability], setTorch, stream);
                 } else if (capability === "deviceId"){
-                    console.error( "deviceId TODO");
+                    addTableRow("deviceId", capabilities.video[capability], settings.video[capability], setDeviceId, stream);
                 } else if (capability === "groupId"){
-                    console.error( "groupId TODO");
+                    addTableRow("groupId", capabilities.video[capability], settings.video[capability], setGroupId, stream);
                 } else {
-                    console.error( "Your device is able to use the capability : " + capability + ", but there is no helper for this capability. No helper does not mean no compatibility, you can use the setCapability or setCapabilities function to use this capability.")
+                    console.error( "Your device is able to use the capability : " + capability + ", but this not managed by this tutorial ");
                 }
             });
     
-            Object.keys(settings).forEach(function(set){
-                if(set === "torch"){
-                    addTableRow("torch", settings[set], settings[set], settings[set], setTorch);
+            Object.keys(capabilities.audio).forEach(function(capability){
+
+                console.error( "capabilities audio TODO :", capability);
+
+                if (capability === "autoGainControl"){
+                    addTableRow(capability, capabilities.audio[capability], settings.audio[capability], setAutoGainControl, stream);
+                } else if (capability === "channelCount"){
+                    addTableRow(capability, capabilities.audio[capability], settings.audio[capability], setChannelCount, stream);
+                } else if (capability === "echoCancellation"){
+                    addTableRow(capability, capabilities.audio[capability], settings.audio[capability], setEchoCancellation, stream);
+                } else if (capability === "noiseSuppression"){
+                    addTableRow(capability, capabilities.audio[capability], settings.audio[capability], setNoiseSuppression, stream);
+                } else if (capability === "latency"){
+                    addTableRow(capability, capabilities.audio[capability], settings.audio[capability], setLatency, stream);
+                } else if (capability === "deviceId"){
+                    addTableRow("deviceId", capabilities.video[capability], settings.video[capability], setDeviceId, stream);
+                } else if (capability === "groupId"){
+                    addTableRow("groupId", capabilities.video[capability], settings.video[capability], setGroupId, stream);
+                } else if (capability === "sampleRate"){
+                    addTableRow(capability, capabilities.audio[capability], settings.audio[capability], setSampleRate, stream);
+                } else if (capability === "sampleSize"){
+                    addTableRow(capability, capabilities.audio[capability], settings.audio[capability], setSampleSize, stream);
+                } else {
+                    console.error( "Your device is able to use the capability : " + capability + ", but this not managed by this tutorial ");
                 }
             });
         }
     }
 
-    function addTableRow(name, rules, actualValue, func){
-        let tr = document.createElement("tr")
-        let tdName = document.createElement("td")
-        let tdActualValue = document.createElement("td")
-        let tdFunc = document.createElement("td")
+    function addTableRow(name, rules, actualValue, func, stream){
 
-        tdName.innerHTML = name
-        tdActualValue.id = name + "Value";
-        tdActualValue.innerHTML = actualValue
+        console.log('addTableRow name =', name);
+        console.log('addTableRow rules =', rules);
+        console.log('addTableRow actualValue =', actualValue);
 
-        if(typeof(actualValue) === "number"){
-            let inputRange = document.createElement("input")
-            inputRange.type = "range"
-            inputRange.id = name
-            inputRange.min = rules.min
-            inputRange.max = rules.max
-            inputRange.step = rules.step ? rules.step : 1;
-            inputRange.value = actualValue;
-            if(name==="aspectRatio"){
-                inputRange.max = 10;
-                inputRange.step = 0.01;
+        let tr = document.createElement("tr");
+        let tdName = document.createElement("td");
+        let tdActualValue = document.createElement("td");
+        let tdFunc = document.createElement("td");
+
+        tdName.innerHTML = name;
+        tdActualValue.id = name + "Value" + '-' + stream.streamId;
+
+        if (actualValue === undefined) {
+            tdActualValue.innerHTML = "'N/A'";
+        } else {
+            tdActualValue.innerHTML = actualValue;
+        }
+
+        if (typeof(actualValue) === undefined) {
+
+            console.error("capacity :" + name + "can't be used");
+            tdFunc.innerHTML = 'N/A';
+
+        } else if (typeof(actualValue) === "number") {
+
+            if (rules.min === rules.max) {
+                //In case there is only one possible value
+                tdFunc.innerHTML = rules.min;
+            } else {
+
+                let inputRange = document.createElement("input");
+                inputRange.type = "range";
+                inputRange.id = name + '-' + stream.streamId;
+                inputRange.min = rules.min;
+                inputRange.max = rules.max;
+                inputRange.step = rules.step ? rules.step : 1;
+                inputRange.value = actualValue;
+
+                if (name==="aspectRatio") {
+                    inputRange.max = 10;
+                    inputRange.step = 0.01;
+                }
+                if (name==="latency") {
+                    inputRange.step = 0.01;
+                }
+                inputRange.addEventListener("change", function(e){
+                    func(e.target.value, true, name, stream);
+                })
+                tdFunc.appendChild(inputRange)
             }
-            inputRange.addEventListener("change", function(e){
-                func(e.target.value, true, name)
-            })
-            tdFunc.appendChild(inputRange)
-        }else if(typeof(actualValue) === "string"){
-            let select = document.createElement("select")
-            select.id = name
-            rules.forEach(function(rule){
-                let opt = document.createElement("option");
-                opt.text = rule;
-                opt.value = rule;
-                select.appendChild(opt);
-            })
-            select.value = actualValue;
-            select.addEventListener("change", function(e){
-                func(e.target.value, true, name)
-            })
-            tdFunc.appendChild(select)
-        }else if(name === "torch"){
+
+        } else if ( (typeof(actualValue) === "string") || ((typeof(actualValue) === "boolean") && (name !== "torch")) ) {
+
+            let select = document.createElement("select");
+            select.id = name + '-' + stream.streamId;
+
+            if (typeof(rules) === 'string') {
+                console.log("rules :", rules);
+                tdFunc.innerHTML = 'N/A';
+            } else {
+                rules.forEach(function(rule){
+                    let opt = document.createElement("option");
+                    opt.text = rule;
+                    opt.value = rule;
+                    select.appendChild(opt);
+                });
+                select.value = actualValue;
+                select.addEventListener("change", function(e){
+                    func(e.target.value, true, name, stream);
+                })
+                tdFunc.appendChild(select);
+            }
+
+        } else if (name === "torch") {
+
             let checkbox = document.createElement("input");
-            checkbox.id = name;
+            checkbox.id = name + '-' + stream.streamId;
             checkbox.type = "checkbox";
             checkbox.checked = actualValue;
             checkbox.addEventListener("change", function(e){
-                let checked = document.getElementById(name).checked;
-                func(checked, true, name)
+                let checked = document.getElementById(name + '-' + stream.streamId).checked;
+                func(checked, true, name, stream);
             })
-            tdFunc.appendChild(checkbox)
-        }else{
-            console.log(name, typeof(actualValue))
+            tdFunc.appendChild(checkbox);
+
+        } else {
+            console.error(name, typeof(actualValue));
         }
         
-        tr.appendChild(tdName)
-        tr.appendChild(tdActualValue)
-        tr.appendChild(tdFunc)
-        document.getElementById('tableBody').appendChild(tr);
+        tr.appendChild(tdName);
+        tr.appendChild(tdActualValue);
+        tr.appendChild(tdFunc);
+        document.getElementById('tblbody-' + stream.streamId).appendChild(tr);
     }
 
-    function setWidth(value, update){
+    function setWidth(value, update, name, stream){
 
         let constraintToApply = {
             audio: {},
@@ -437,41 +519,32 @@ $(function() {
                 width : value
             },
         }
-
-        localStream.applyConstraints(constraintToApply).then(function(){
-
-//TODO
-
+        stream.applyConstraints(constraintToApply).then(function() {
             if(update){
-                updateSettings()
+                updateSettings(stream);
             }
         }).catch(function(error){
             console.log("Error : ", error);
         })
     }
 
-    function setHeight(value, update){
-
+    function setHeight(value, update, name, stream){
         let constraintToApply = {
             audio: {},
             video: {
                 height : value
             },
         }
-
-        localStream.applyConstraints(constraintToApply).then(function(){
-
-//TODO
-
+        stream.applyConstraints(constraintToApply).then(function(){
             if(update){
-                updateSettings()
+                updateSettings(stream);
             }
         }).catch(function(error){
             console.log("Error : ", error);
         })
     }
 
-    function setAspectRatio(value, update){
+    function setAspectRatio(value, update, name, stream){
 
         let constraintToApply = {
             audio: {},
@@ -479,24 +552,16 @@ $(function() {
                 aspectRatio : value
             },
         }
-
-        localStream.applyConstraints(constraintToApply).then(function(){
-
-//TODO
-
+        stream.applyConstraints(constraintToApply).then(function(){
             if(update){
-                updateSettings()
+                updateSettings(stream);
             }
         }).catch(function(error){
             console.log("Error : ", error);
         })
     }
 
-    function setFrameRate(value, update, name){
-
-console.error("value :", value);
-console.error("update :", update);
-console.error("name :", name);
+    function setFrameRate(value, update, name, stream){
 
         let constraintToApply = {
             audio: {},
@@ -504,261 +569,336 @@ console.error("name :", name);
                 frameRate : value
             },
         }
-
-        localStream.applyConstraints(constraintToApply).then(function(){
-
-            console.error("then applyConstraints frameRate :", value);
-
-//TODO voir pour maj valeur settée sur interface
-
-
+        stream.applyConstraints(constraintToApply).then(function(){
             if(update){
-                updateSettings()
-            }
-        }).catch(function(error){
-            console.log("Error : ", error);
-        })
-        /*
-        localStream.applyConstraints(value).then(function(){
-            if(update){
-                updateSettings()
-            }
-        }).catch(function(error){
-            console.log("Error : ", error);
-        })
-        */
-    }
-
-    function setFacingMode(value, update){
-
-//TODO
-
-
-        localStream.setFacingMode(value).then(function(){
-            if(update){
-                updateSettings()
+                updateSettings(stream);
             }
         }).catch(function(error){
             console.log("Error : ", error);
         })
     }
 
-    function setResizeMode(value, update){
+    function setFacingMode(value, update, name, stream){
+        console.error("Need to be changed with a new Stream creation not with applyConstraint");
+    }
 
-//TODO
+    function setResizeMode(value, update, name, stream){
 
-
-        localStream.setResizeMode(value).then(function(){
+        let constraintToApply = {
+            audio: {},
+            video: {
+                resizeMode : value
+            },
+        }
+        stream.applyConstraints(constraintToApply).then(function(){
             if(update){
-                updateSettings()
+                updateSettings(stream);
             }
         }).catch(function(error){
             console.log("Error : ", error);
         })
     }
 
-    function setZoom(value, update){
+    function setZoom(value, update, name, stream){
 
-//TODO
+        let constraintToApply = {
+            audio: {},
+            video:{advanced: [ {zoom: value} ]}
+        }
 
-
-        localStream.setZoom(value).then(function(){
+        stream.applyConstraints(constraintToApply).then(function(){    
             if(update){
-                updateSettings()
+                updateSettings(stream);
             }
         }).catch(function(error){
             console.log("Error : ", error);
         })
     }
 
-    function setIso(value, update){
+    function setIso(value, update, name, stream){
 
-//TODO
+        let constraintToApply = {
+            audio: {},
+            video:{advanced: [ {iso: value} ]}
+        }
 
-
-        localStream.setIso(value).then(function(){
+        stream.applyConstraints(constraintToApply).then(function(){    
             if(update){
-                updateSettings()
+                updateSettings(stream);
             }
         }).catch(function(error){
             console.log("Error : ", error);
         })
     }
 
-    function setFocusDistance(value, update){
-        localStream.setFocusDistance(value).then(function(){
+    function setFocusDistance(value, update, name, stream){
+        let constraintToApply = {
+            audio: {},
+            video:{advanced: [ {focusDistance: value} ]}
+        }
+
+        stream.applyConstraints(constraintToApply).then(function(){    
             if(update){
-                updateSettings()
+                updateSettings(stream);
             }
         }).catch(function(error){
             console.log("Error : ", error);
         })
     }
 
-    function setExposureTime(value, update){
-        localStream.setExposureTime(value).then(function(){
+    function setExposureTime(value, update, name, stream){
+        let constraintToApply = {
+            audio: {},
+            video:{advanced: [ {exposureTime: value} ]}
+        }
+
+        stream.applyConstraints(constraintToApply).then(function(){    
             if(update){
-                updateSettings()
+                updateSettings(stream);
             }
         }).catch(function(error){
             console.log("Error : ", error);
         })
     }
 
-    function setExposureCompensation(value, update){
-        localStream.setExposureCompensation(value).then(function(){
+    function setExposureCompensation(value, update, name, stream){
+        let constraintToApply = {
+            audio: {},
+            video:{advanced: [ {exposureCompensation: value} ]}
+        }
+
+        stream.applyConstraints(constraintToApply).then(function(){    
             if(update){
-                updateSettings()
+                updateSettings(stream);
             }
         }).catch(function(error){
             console.log("Error : ", error);
         })
     }
 
-    function setWhiteBalanceMode(value, update){
-        localStream.setWhiteBalanceMode(value).then(function(){
+    function setWhiteBalanceMode(value, update, name, stream){
+
+        let constraintToApply = {
+            audio: {},
+            video:{advanced: [ {whiteBalanceMode: value} ]}
+        }
+
+        stream.applyConstraints(constraintToApply).then(function(){    
             if(update){
-                updateSettings()
+                updateSettings(stream);
             }
         }).catch(function(error){
             console.log("Error : ", error);
         })
     }
 
-    function setFocusMode(value, update){
-        localStream.setFocusMode(value).then(function(){
+    function setFocusMode(value, update, name, stream){
+
+        let constraintToApply = {
+            audio: {},
+            video:{advanced: [ {focusMode: value} ]}
+        }
+
+        stream.applyConstraints(constraintToApply).then(function(){    
             if(update){
-                updateSettings()
+                updateSettings(stream);
             }
         }).catch(function(error){
             console.log("Error : ", error);
         })
     }
 
-    function setExposureMode(value, update){
-        localStream.setExposureMode(value).then(function(){
+    function setExposureMode(value, update, name, stream){
+
+        let constraintToApply = {
+            audio: {},
+            video:{advanced: [ {exposureMode: value} ]}
+        }
+
+        stream.applyConstraints(constraintToApply).then(function(){    
             if(update){
-                updateSettings()
+                updateSettings(stream);
             }
         }).catch(function(error){
             console.log("Error : ", error);
         })
     }
 
-    function setColorTemperature(value, update){
-        localStream.setColorTemperature(value).then(function(){
+    function setColorTemperature(value, update, name, stream){
+
+        let constraintToApply = {
+            audio: {},
+            video:{advanced: [ {colorTemperature: value} ]}
+        }
+
+        stream.applyConstraints(constraintToApply).then(function(){    
             if(update){
-                updateSettings()
+                updateSettings(stream);
             }
         }).catch(function(error){
             console.log("Error : ", error);
         })
     }
 
-    function setTorch(value, update){
-        localStream.setTorch(value).then(function(){
+    function setTorch(value, update, name, stream){
+
+        console.log("setTorch value : ", value);
+
+        let constraintToApply = {
+            audio: {},
+            video:{advanced: [
+                {
+                    torch: value,
+                }
+            ]}
+        }
+        stream.applyConstraints(constraintToApply).then(function(){    
             if(update){
-                updateSettings()
+                updateSettings(stream);
             }
         }).catch(function(error){
             console.log("Error : ", error);
         })
     }
 
-    function updateSettings(){
+    function setDeviceId(value, update, name, stream){
+        console.error("TODO setDeviceId value : ", value);
+    }
 
-        console.error("updateSettings ")
+    function setGroupId(value, update, name, stream){
+        console.error("TODO setGroupId value : ", value);
+    }
 
-        localStream.getSettings()
+    function setAutoGainControl(value, update, name, stream){
 
+        console.error("setAutoGainControl to be managed:", value);
+        //Check https://bugs.chromium.org/p/chromium/issues/detail?id=796964 
+
+/*
+        var isTrueSet = (value === 'true');
+        let constraintToApply = {
+            audio: {
+                autoGainControl : isTrueSet
+            },
+            video: {}
+        }
+        //console.error("constraintToApply :", constraintToApply);
+
+        stream.applyConstraints(constraintToApply).then(function(){
+            if(update){
+                updateSettings(stream);
+            }
+        }).catch(function(error){
+            console.log("Error : ", error);
+        })
+*/
+    }
+    
+    function setChannelCount(value, update, name, stream){
+        console.error("setChannelCount to be managed:", value);
+        //Check https://bugs.chromium.org/p/chromium/issues/detail?id=796964
+    }
+    
+    function setEchoCancellation(value, update, name, stream){
+
+        console.error("setEchoCancellation to be managed:", value);
+        //Check https://bugs.chromium.org/p/chromium/issues/detail?id=796964
+/*
+        var isTrueSet = (value === 'true');
+        let constraintToApply = {
+            audio: {
+                advanced: [{ echoCancellation: isTrueSet}],
+            },
+            video: {
+            }
+        }
+        //console.error("constraintToApply :", constraintToApply);
+
+        stream.applyConstraints(constraintToApply).then(function(){
+            if(update){
+                updateSettings(stream);
+            }
+        }).catch(function(error){
+            console.log("Error : ", error);
+        })
+*/
+    }
+    
+    function setNoiseSuppression(value, update, name, stream){
+
+        console.error("setNoiseSuppression to be managed:", value);
+        //Check https://bugs.chromium.org/p/chromium/issues/detail?id=796964
+/*
+        var isTrueSet = (value === 'true');
+        let constraintToApply = {
+            audio: {
+                noiseSuppression : isTrueSet
+                //advanced: [{ noiseSuppression: isTrueSet}],
+                //advanced: [{ width: 1920, height: 1280 }, { aspectRatio: 1.333 }],
+            },
+            video: {
+            }
+        }
+        //console.error("constraintToApply :", constraintToApply);
+
+        stream.applyConstraints(constraintToApply).then(function(){
+            if(update){
+                updateSettings(stream);
+            }
+        }).catch(function(error){
+            console.log("Error : ", error);
+        })
+*/
+    }
+    
+    function setLatency(value, update, name, stream){
+        console.error("setLatency to be managed:", value);
+        //Check https://bugs.chromium.org/p/chromium/issues/detail?id=796964
+    }
+    
+    function setSampleRate(value, update, name, stream){
+        console.error("setSampleRate to be managed:", value);
+        //Check https://bugs.chromium.org/p/chromium/issues/detail?id=796964
+    }
+    
+    function setSampleSize(value, update, name, stream){
+        console.error("setSampleSize to be managed:", value);
+        //Check https://bugs.chromium.org/p/chromium/issues/detail?id=796964
+    }
+
+    function updateSettings(stream){
+
+        console.log("updateSettings ")
+
+        stream.getSettings()
         .then(function(result){
 
-            //TODO
-            console.error("settings :", result);
-
-//TODO voir pour audio
-            settings = result.video;
+            settings = result;
         
-            Object.keys(settings).forEach(function(set){
-    
-                console.error("set :", set);
-    
-                if(set === "width"){
-    
-                    console.error("frameRate set ")
-                    document.getElementById("widthValue").innerHTML = settings.width;
-                    document.getElementById("width").value = settings.width;
-    
-                }else if(set === "frameRate"){
-    
-            console.error("frameRate set ")
-    
-                    document.getElementById("frameRateValue").innerHTML = settings.frameRate;
-                    document.getElementById("frameRate").value = settings.frameRate;
-                }else if(set === "height"){
-                    document.getElementById("heightValue").innerHTML = settings.height;
-                    document.getElementById("height").value = settings.height;
-                }else if(set === "resizeMode"){
-                    document.getElementById("resizeModeValue").innerHTML = settings.resizeMode;
-                    document.getElementById("resizeMode").value = settings.resizeMode;
-                }else if(set === "aspectRatio"){
-                    document.getElementById("aspectRatioValue").innerHTML = settings.aspectRatio;
-                    document.getElementById("aspectRatio").value = settings.aspectRatio;
-                }else if(set === "zoom"){
-                    document.getElementById("zoomValue").innerHTML = settings.zoom;
-                    document.getElementById("zoom").value = settings.zoom;
-                }else if(set === "iso"){
-                    document.getElementById("isoValue").innerHTML = settings.iso;
-                    document.getElementById("iso").value = settings.iso;
-                }else if(set === "focusDistance"){
-                    document.getElementById("focusDistanceValue").innerHTML = settings.focusDistance;
-                    document.getElementById("focusDistance").value = settings.focusDistance;
-                }else if(set === "exposureTime"){
-                    document.getElementById("exposureTimeValue").innerHTML = settings.exposureTime;
-                    document.getElementById("exposureTime").value = settings.exposureTime;
-                }else if(set === "exposureCompensation"){
-                    document.getElementById("exposureCompensationValue").innerHTML = settings.exposureCompensation;
-                    document.getElementById("exposureCompensation").value = settings.exposureCompensation;
-                }else if(set === "whiteBalanceMode"){
-                    document.getElementById("whiteBalanceModeValue").innerHTML = settings.whiteBalanceMode;
-                    document.getElementById("whiteBalanceMode").value = settings.whiteBalanceMode;
-                }else if(set === "focusMode"){
-                    document.getElementById("focusModeValue").innerHTML = settings.focusMode;
-                    document.getElementById("focusMode").value = settings.focusMode;
-                }else if(set === "facingMode"){
-                    document.getElementById("facingModeValue").innerHTML = settings.facingMode;
-                    document.getElementById("facingMode").value = settings.facingMode;
-                }else if(set === "exposureMode"){
-                    document.getElementById("exposureModeValue").innerHTML = settings.exposureMode;
-                    document.getElementById("exposureMode").value = settings.exposureMode;
-                }else if(set === "torch"){
-                    document.getElementById("torchValue").innerHTML = settings.torch;
-                    document.getElementById("torch").checked = settings.torch;
-                }else if(set === "colorTemperature"){
-                    document.getElementById("colorTemperatureValue").innerHTML = settings.colorTemperature;
-                    document.getElementById("colorTemperature").value = settings.colorTemperature;
+            Object.keys(settings.audio).forEach(function(set){
+                
+                try {
+                    document.getElementById(set + "Value"+ '-' + stream.streamId).innerHTML = settings.audio[set];
+                    document.getElementById(set + '-' + stream.streamId).value = settings.audio[set];
+                } catch (error) {
+                    console.error("updateSettings : Error in catch :" + error);
+                    console.error("updateSettings : settings.video[set] :" + settings.audio[set]);
+                    console.error("updateSettings : settings:", settings);
+                }
+            });
+
+            Object.keys(settings.video).forEach(function(set){
+        
+                try {
+                    document.getElementById(set + "Value"+ '-' + stream.streamId).innerHTML = settings.video[set];
+                    document.getElementById(set + '-' + stream.streamId).value = settings.video[set];
+                } catch (error) {
+                    console.error("updateSettings : Error in catch :" + error);
+                    console.error("updateSettings : settings.video[set] :" + settings.video[set]);
+                    console.error("updateSettings : settings:", settings);
                 }
             })    
 
-        }).catch(function(error){
-            console.log("Error : ", error);
-        })
-
-
-
-    }
-
-    function resetSettings(){
-        console.log("resetSettings");
-
-        let constraints = localStream.getConstraints();
-        let settingsToReset = {};
-        Object.keys(constraints.advanced[0]).forEach(function(constraint){
-            settingsToReset[constraint] = defaultSettings[constraint];
-        })
-        console.log("Constraints to reset with values : ", settingsToReset);
-        localStream.setCapabilities(settingsToReset).then(function(){
-            updateSettings();
         }).catch(function(error){
             console.log("Error : ", error);
         })
@@ -777,15 +917,10 @@ console.error("name :", name);
         document.getElementById('conference').style.display = 'inline-block';
         document.getElementById('title').innerHTML = 'You are in conference: ' + conferenceName;
 
-        document.getElementById('resetButton').addEventListener('click', function(e){
-            resetSettings();
-        })
-
         document.getElementById('takePhoto').addEventListener('click', function(e){
             localStream.takePhoto().then(function(blob){
                 document.getElementById('photos').appendChild(blob)
             });
-
         })
 
         // Join conference

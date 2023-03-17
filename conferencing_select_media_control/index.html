@@ -49,22 +49,10 @@
             <br/>
             
             <div id="controllers">
-                <input type="button" id="resetButton" value="Reset to default values"/>
                 <input type="button" id="takePhoto" value="takePhoto"/>
                 <div id="text" class='row'>
                     Capabilities shown on the following table are those supported by your actual camera device, these capabilities could be available or not depending on your device, your os or due to a browser restriction.
                 </div>
-                <table id="tableControllers">
-                    <thead>
-                        <tr>
-                            <th>Capability name</th>
-                            <th>Actual value</th>
-                            <th>Change value</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                    </tbody>
-                </table>
             </div>
             <div id="conference">
                 <div id="remote-container"></div>
@@ -82,7 +70,10 @@
 
         <!-- Scripts -->
         <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<!--
         <script type="text/javascript" src="https://cloud.apizee.com/apiRTC/apiRTC-latest.min.js"></script>
+-->
+        <script type="text/javascript" src="../../lib-apirtc2/build/js/apiRTC-dev.min.js"></script>
         <script type="text/javascript" src="js/conference-selectmediacontrol.js"></script>
     </body>
 </html>
