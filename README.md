@@ -81,6 +81,9 @@ Create an audio, video call with a remote party.
 - **Chat** -
 [Live demo](https://apirtc.github.io/ApiRTC-examples/peertopeer_chat/index.html)<br/>
 Exchange chat messages between two users.
+- **Data** -
+[Live demo](https://apirtc.github.io/ApiRTC-examples/peertopeer_sendData/index.html)<br/>
+Exchange data messages between two users.
 - **File Transfer** -
 [Live demo](https://apirtc.github.io/ApiRTC-examples/sendFile/index.html)<br/>
 Learn how to do a file transfer between two users.
