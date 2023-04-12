@@ -13,11 +13,17 @@ $(function() {
     //Wrapper to send a message to everyone in the conversation and display sent message in UI
     function sendMessageToActiveConversation(message) {
         if (message !== '') {
-            $('#typing-area').val('');
-            $('#message-list').append('<li><b>Me</b> : ' + message + '</li>');
-
             //Actually send message to active contact
-            activeConversation.sendMessage(message);
+            activeConversation.sendMessage(message)
+                .then(function() {
+                    //Message successfully sent!
+                    //console.error("message send");
+                    $('#typing-area').val('');
+                    $('#message-list').append('<li><b>Me</b> : ' + apiRTC.sanitizeString(message).cleanedString + '</li>');
+                })
+                .catch(function(err) {
+                    console.error("sendMessage error :", err);
+                });
         }
     }
 

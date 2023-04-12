@@ -13,19 +13,19 @@ $(function() {
     //Wrapper to send a message to a contact and display sent message in UI
     function sendMessageToActiveContact(message) {
         if (message !== '') {
-            $('#typing-area').val('');
-            var messageLine = '<li><b>Me</b> : ' + message + '</li>';
-            $('#message-list').append(messageLine);
-            activeChats[activeContact.getId()].push(messageLine); //save message
-
             //Actually send message to active contact
             activeContact.sendMessage(message)
                 .then(function() {
                     //Message successfully sent!
+                    //console.error("message send");
+                    $('#typing-area').val('');
+                    var messageLine = '<li><b>Me</b> : ' + apiRTC.sanitizeString(message).cleanedString + '</li>';
+                    $('#message-list').append(messageLine);
+                    activeChats[activeContact.getId()].push(messageLine); //save message
                 })
                 .catch(function(err) {
                     //An error occured...
-                    $('#message-list').append('<li><i>* Could not send message to contact : "' + message + '", ' + err.error.message +  ' *</i></li>');
+                    $('#message-list').append('<li><i>* Could not send message to contact :' + err.error.message +  ' *</i></li>');
                 });
         }
     }
