@@ -19,7 +19,7 @@ $(function() {
                     //Message successfully sent!
                     //console.error("message send");
                     $('#typing-area').val('');
-                    var messageLine = '<li><b>Me</b> : ' + apiRTC.sanitizeString(message).cleanedString + '</li>';
+                    var messageLine = '<li><b>Me</b> : ' + message + '</li>';
                     $('#message-list').append(messageLine);
                     activeChats[activeContact.getId()].push(messageLine); //save message
                 })
