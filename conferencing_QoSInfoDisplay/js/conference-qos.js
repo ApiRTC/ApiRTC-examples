@@ -4,7 +4,23 @@ $(function() {
     apiRTC.setLogLevel(10);
     var qosStats = {};
     var localStream = null;
-
+ 
+    function createQosStatsElt(callId) {
+        if (!qosStats[callId]) {
+            qosStats[callId] = {
+                'mosRV': "NoStream", // Received video quality
+                'mosRS': "NoStream", // Received audio quality
+                'videoRBR': 0, // Received video bit rate
+                'audioRBR': 0, // Received audio bit rate
+                'videoRFR': 0, // Received video frame rate
+                'videoRPL': 0, // Received video packet loss rate
+                'audioRPL': 0, // Received audio packet loss rate
+                'videoRHeight': 0, // Received video height
+                'videoRWidth': 0, // Received video width
+                'transportType': 'ND', // Transport type
+            };
+        }
+    }
 
     function joinConference(name) {
         var cloudUrl = 'https://cloud.apizee.com';
@@ -91,20 +107,7 @@ $(function() {
                     addActiveSpeakerMessage(rcontainer.id, stream.streamId);
 
                     // Create statistics vector for each added stream
-                    if (!qosStats[stream.callId]) {
-                        qosStats[stream.callId] = {
-                            'mosRV': "NoStream", // Received video quality
-                            'mosRS': "NoStream", // Received audio quality
-                            'videoRBR': 0, // Received video bit rate
-                            'audioRBR': 0, // Received audio bit rate
-                            'videoRFR': 0, // Received video frame rate
-                            'videoRPL': 0, // Received video packet loss rate
-                            'audioRPL': 0, // Received audio packet loss rate
-                            'videoRHeight': 0, // Received video height
-                            'videoRWidth': 0, // Received video width
-                            'transportType': 'ND', // Transport type
-                        };
-                    }
+                    createQosStatsElt(stream.callId);
 
                 }).on('streamRemoved', function(stream) {
                     console.log('connectedConversation streamRemoved');
@@ -126,6 +129,8 @@ $(function() {
                 console.debug('callStats :', callStats);
 
                 //reception QoS statistics
+                // Create statistics vector for each added stream
+                createQosStatsElt(callStats.callId);
 
                 if (callStats.stats.videoReceived || callStats.stats.audioReceived) {
                     if (callStats.stats.videoReceived) {
