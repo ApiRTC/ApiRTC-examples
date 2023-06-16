@@ -44,11 +44,8 @@ $(function() {
             // Save session
             connectedSession = session;
 
-            //Call Stats monitoring is supported on Chrome and Firefox and will be added soon on Safari
-            if ((apiCC.browser === 'Chrome') || (apiCC.browser === 'Firefox')) {
-                ua.enableCallStatsMonitoring(true, { interval: 1000 });
-                ua.enableActiveSpeakerDetecting(true, { threshold: 50 });
-            }
+            ua.enableCallStatsMonitoring(true, { interval: 1000 });
+            ua.enableActiveSpeakerDetecting(true, { threshold: 0.4 });
 
             connectedSession
                 .on("contactListUpdate", function(updatedContacts) { //display a list of connected users
@@ -171,6 +168,9 @@ $(function() {
             // ADD EVENT LISTENER : WHEN AUDIO STREAM AMPLITUDE CHANGED INDICATING SPEAKING EVENTS
             //======================================================================================
             connectedConversation.on('audioAmplitude', function(amplitudeInfo) {
+
+                console.debug("amplitudeInfo :", amplitudeInfo);
+
                 if (amplitudeInfo.callId !== null) {
                     var speakerMsgDiv = document.getElementById('activeSpeaker-' + amplitudeInfo.callId);
                 } else {
