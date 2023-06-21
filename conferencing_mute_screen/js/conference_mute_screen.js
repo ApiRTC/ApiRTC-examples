@@ -19,7 +19,6 @@ $(function() {
 
         var registerInformation = {};
         registerInformation.cloudUrl = cloudUrl;
-        //registerInformation.ccs = '127.0.0.1:8001'
 
         //==============================
         // 2/ REGISTER
@@ -178,22 +177,22 @@ $(function() {
     //muteAudio from call
     $('#muteAudio').on('click', function() {
         console.log('MAIN - Click muteAudio');
-        localStream.muteAudio();
+        localStream.disableAudio();
     });
     //unMuteAudio from call
     $('#unMuteAudio').on('click', function() {
         console.log('MAIN - Click unMuteAudio');
-        localStream.unmuteAudio();
+        localStream.enableAudio();
     });
     //muteVideo from call
     $('#muteVideo').on('click', function() {
         console.log('MAIN - Click muteVideo');
-        localStream.muteVideo();
+        localStream.disableVideo();
     });
     //unMuteVideo from call
     $('#unMuteVideo').on('click', function() {
         console.log('MAIN - Click unMuteVideo');
-        localStream.unmuteVideo();
+        localStream.enableVideo();
     });
 
     //==============================
