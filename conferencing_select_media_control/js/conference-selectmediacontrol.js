@@ -130,6 +130,13 @@ $(function() {
                     tableCreate('local-container', stream);
                     initControllers(stream);
                     stream.addInDiv('local-container', 'local-media', {}, true);
+
+                    stream
+                        .on("constraintsChanged", function (constraints) {
+                            console.error("local Stream : constraintsChanged event :", constraints);
+                            updateSettings(stream);
+                        })
+
                     return resolve(stream);
                 })
                 .catch(function (err) {
@@ -222,6 +229,9 @@ $(function() {
         });
 //SELECT_MEDIA
 
+
+        ua.enableMeshRoomMode(true); //Activate Mesh room mode
+
         manageMediaDevices();
         showSelectDevicesArea();
 
@@ -277,6 +287,14 @@ $(function() {
                     tableCreate('remote-container', stream);
                     initControllers(stream);
                     stream.addInDiv('remote-container', 'remote-media-' + stream.streamId, {}, false);
+
+                    //Add event to be informed of constraints change on remote stream
+                    stream
+                        .on("constraintsChanged", function (constraints) {
+                            console.error("remote Stream : constraintsChanged event :", constraints);
+                            updateSettings(stream);
+                        })
+
                 }).on('streamRemoved', function(stream) {
                     console.log('connectedConversation streamRemoved');
                     tableRemove ('remote-container', stream);
@@ -892,6 +910,11 @@ $(function() {
                 try {
                     document.getElementById(set + "Value"+ '-' + stream.streamId).innerHTML = settings.video[set];
                     document.getElementById(set + '-' + stream.streamId).value = settings.video[set];
+
+                    if(set === 'torch') {
+                        document.getElementById(set + '-' + stream.streamId).checked = settings.video[set];
+                    }
+
                 } catch (error) {
                     console.error("updateSettings : Error in catch :" + error);
                     console.error("updateSettings : settings.video[set] :" + settings.video[set]);
