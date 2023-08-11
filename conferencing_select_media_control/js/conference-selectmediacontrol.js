@@ -294,11 +294,17 @@ $(function() {
                             console.error("remote Stream : constraintsChanged event :", constraints);
                             updateSettings(stream);
                         })
-
                 }).on('streamRemoved', function(stream) {
                     console.log('connectedConversation streamRemoved');
                     tableRemove ('remote-container', stream);
                     stream.removeFromDiv('remote-container', 'remote-media-' + stream.streamId);
+                }).on('remoteStreamIdUpdated', function(e) {
+                    console.error('connectedConversation remoteStreamIdUpdated :', e);
+                    var stream = ua.apiRTCStreamsList.get(Number(e.callId));
+                    console.error('stream :', stream);
+                    tableRemove ('remote-container', stream);
+                    tableCreate('remote-container', stream);
+                    initControllers(stream);
                 });
 
             //==============================
