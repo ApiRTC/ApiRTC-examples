@@ -19,7 +19,7 @@ $(function() {
                     //Message successfully sent!
                     //console.error("message send");
                     $('#typing-area').val('');
-                    $('#message-list').append('<li><b>Me</b> : ' + apiRTC.sanitizeString(message).cleanedString + '</li>');
+                    $('#message-list').append('<li><b>Me</b> : ' + message + '</li>');
                 })
                 .catch(function(err) {
                     console.error("sendMessage error :", err);
