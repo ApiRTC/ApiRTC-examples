@@ -208,7 +208,7 @@ $(() => {
         let file = $('#file').prop('files')[0];
 
         if (file === undefined || file === null) {
-            console.error('File attachament error');
+            console.error('File attachment error');
             return;
         }
 
