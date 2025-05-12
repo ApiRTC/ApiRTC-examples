@@ -36,8 +36,8 @@ Exposes the video conference with the chat and file transfer options.
 [Live demo](https://apirtc.github.io/ApiRTC-examples/conferencing_join-leave/index.html)<br/>
 Focus on the possibility to join and leave a conference.
 - **Conferencing_moderation** -
-[Live demo](https://apirtc.github.io/ApiRTC-examples/conferencing_moderation/index.html)<br/>
-Learn how to moderate private conference: accept / decline users. (ADVANCED FEATURE)
+[Live demo](https://apirtc.github.io/ApiRTC-examples/conferencing_mute_screen_moderation/index.html)<br/>
+Learn how to moderate users on conversation: accept / decline or eject users.
 - **Conferencing_mute-screen** -
 [Live demo](https://apirtc.github.io/ApiRTC-examples/conferencing_mute_screen/index.html)<br/>
 Learn how to mute stream on confrence and publish a screensharing.
@@ -127,3 +127,8 @@ User Agent registration with external users management.
 - **User creation and registration - user defined on Apizee Cloud** -
 [Live demo](https://apirtc.github.io/ApiRTC-examples/ua_reg_apizee/index.html)<br/>
 User Agent registration with Apizee users management.
+
+### Others
+- **Conferencing_moderation - with users declared on ApiRTC Cloud** -
+[Live demo](https://apirtc.github.io/ApiRTC-examples/conferencing_moderation/index.html)<br/>
+Learn how to moderate private conference: accept / decline users. (ADVANCED FEATURE)
