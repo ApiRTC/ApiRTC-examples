@@ -35,7 +35,7 @@ Exposes the video conference with the chat and file transfer options.
 - **Conferencing_join-leave** -
 [Live demo](https://apirtc.github.io/ApiRTC-examples/conferencing_join-leave/index.html)<br/>
 Focus on the possibility to join and leave a conference.
-- **Conferencing_moderation** -
+- **Conferencing_mute_screen_moderation** -
 [Live demo](https://apirtc.github.io/ApiRTC-examples/conferencing_mute_screen_moderation/index.html)<br/>
 Learn how to moderate users on conversation: accept / decline or eject users.
 - **Conferencing_mute-screen** -
