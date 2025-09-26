@@ -26,7 +26,6 @@ $(function() {
         var cloudUrl = 'https://cloud.apizee.com';
         var connectedSession = null;
         var connectedConversation = null;
-        //var localStream = null;
 
         //==============================
         // CREATE USER AGENT
@@ -44,6 +43,7 @@ $(function() {
             // Save session
             connectedSession = session;
 
+            //Activate call stats monitoring on UserAgent
             ua.enableCallStatsMonitoring(true, { interval: 1000 });
             ua.enableActiveSpeakerDetecting(true, { threshold: 0.4 });
 
@@ -125,6 +125,9 @@ $(function() {
 
                 console.debug('callStats :', callStats);
 
+                let videoPacketsReceived = 0,
+                    audioPacketsReceived = 0;
+
                 //reception QoS statistics
                 // Create statistics vector for each added stream
                 createQosStatsElt(callStats.callId);
@@ -136,14 +139,21 @@ $(function() {
                         qosStats[callStats.callId].videoRPL = callStats.stats.videoReceived.packetsLostRatio;
                         qosStats[callStats.callId].videoRHeight = callStats.stats.videoReceived.height;
                         qosStats[callStats.callId].videoRWidth = callStats.stats.videoReceived.width;
+                        videoPacketsReceived = callStats.stats.videoReceived.packetsReceived;
                     }
                     if (callStats.stats.audioReceived) {
                         qosStats[callStats.callId].audioRBR = Math.round(callStats.stats.audioReceived.bitsReceivedPerSecond / 1000); //Kbps
                         qosStats[callStats.callId].audioRPL = callStats.stats.audioReceived.packetsLostRatio;
+                        audioPacketsReceived = callStats.stats.audioReceived.packetsReceived;
                     }
                     qosStats[callStats.callId].mosRV = callStats.stats.quality.mosV;
                     qosStats[callStats.callId].mosRS = callStats.stats.quality.mosS;
-                    displayRemoteQosStats(callStats.callId);
+
+                    if (videoPacketsReceived > 0 || audioPacketsReceived > 0) {
+                        displayRemoteQosStats(callStats.callId);
+                    } else {
+                        console.debug("No packets received for callId: ", callStats.callId);
+                    }
                 }
                 //send QoS statistics
                 if (callStats.stats.videoSent || callStats.stats.audioSent) {
@@ -169,19 +179,16 @@ $(function() {
             //======================================================================================
             connectedConversation.on('audioAmplitude', function(amplitudeInfo) {
 
-                console.debug("amplitudeInfo :", amplitudeInfo);
-
-                if (amplitudeInfo.callId !== null) {
-                    var speakerMsgDiv = document.getElementById('activeSpeaker-' + amplitudeInfo.callId);
-                } else {
-                    var speakerMsgDiv = document.getElementById('activeSpeaker-0');
-                }
+                console.debug("Conversation#amplitudeInfo :", amplitudeInfo);
+                var speakerMsgDiv = document.getElementById('activeSpeaker-' + amplitudeInfo.streamId);
                 if (speakerMsgDiv) {
                     if (amplitudeInfo.descriptor.isSpeaking) {
                         speakerMsgDiv.innerHTML = "Speaking";
                     } else {
                         speakerMsgDiv.innerHTML = "Stopped Speaking";
                     }
+                } else {
+                    console.error("speakerMsgDiv is null for streamId :", amplitudeInfo.streamId);
                 }
             });
 
@@ -211,7 +218,7 @@ $(function() {
                     var container = document.getElementById('local-container');
                     // Add Qos stats elements to local container
                     addMonitoringElements('local-container', 'local-qosInfo-container', 0, 0, 'local');
-                    addActiveSpeakerMessage('local-container', 0);
+                    addActiveSpeakerMessage('local-container', stream.streamId);
 
                     // Create statistics vector for the local stream
                     if (!qosStats[0]) {
@@ -228,6 +235,23 @@ $(function() {
                             'transportType': 'ND', // Transport type
                         };
                     }
+
+                    stream.enableAudioAnalysis();
+                    //Enable Stream Analysis to have amplitudeInfo event when the stream is not published in Conversation
+                    stream.on('audioAmplitudeInfo', function(amplitudeInfo) {
+                        console.debug("STREAM EVENT : amplitudeInfo on local stream :", amplitudeInfo);
+                        var speakerMsgDiv = document.getElementById('activeSpeaker-' + stream.streamId);
+                        if (speakerMsgDiv) {
+                            if (amplitudeInfo.isSpeaking) {
+                                speakerMsgDiv.innerHTML = "Speaking";
+                            } else {
+                                speakerMsgDiv.innerHTML = "Stopped Speaking";
+                            }
+                        } else {
+                            console.error("speakerMsgDiv is null for streamId :", stream.streamId);
+                        }
+                    });
+
                     //==============================
                     // JOIN CONVERSATION
                     //==============================
@@ -236,6 +260,9 @@ $(function() {
                             //==============================
                             // PUBLISH OWN STREAM
                             //==============================
+
+                            stream.disableAudioAnalysis();
+                            //Disable Stream Analysis as amplitude event will be fired on Conversation
 
                             connectedConversation.publish(localStream)
                                 .then(function() {
