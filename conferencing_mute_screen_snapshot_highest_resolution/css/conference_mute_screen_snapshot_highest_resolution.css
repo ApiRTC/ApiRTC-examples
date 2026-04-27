@@ -103,7 +103,6 @@
   background: rgba(23, 151, 222, 0.85);
 }
 #container #conference #remote-container .remote-stream-wrapper .snapshot-btn--highres {
-  bottom: 62px;
   width: auto;
   border-radius: 20px;
   padding: 0 10px 0 8px;
