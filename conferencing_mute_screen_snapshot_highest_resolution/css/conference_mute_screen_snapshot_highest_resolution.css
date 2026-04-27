@@ -1,0 +1,168 @@
+#container {
+  width: 100%;
+  min-height: calc(100% - 44px);
+  margin-bottom: -28px;
+  text-align: center;
+}
+#container h2 {
+  margin: 60px 0;
+  color: white;
+  font-family: Roboto;
+  font-weight: 300;
+  font-size: 40px;
+}
+#container #create {
+  display: inline-block;
+}
+#container #create [type="text"] {
+  border: none;
+  height: 30px;
+  width: 220px;
+  padding: 4px 40px 4px 20px;
+  font-size: 14px;
+  font-family: Roboto;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  outline: none;
+}
+#container #create button {
+  background: #1797DE;
+  border: 3px solid #1e1e1e;
+  height: 38px;
+  padding: 4px 30px;
+  margin-left: -30px;
+  color: #ffffff;
+  font-size: 14px;
+  font-family: Roboto;
+  text-transform: uppercase;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  -webkit-transition: background 0.10s linear;
+  -moz-transition: background 0.10s linear;
+  transition: background 0.10s linear;
+  cursor: pointer;
+  outline: none;
+}
+#container #create button:hover {
+  background: #1581C8;
+}
+#container #conference {
+  display: none;
+  margin-bottom: 100px;
+}
+#container #conference #local-container {
+  text-align: right;
+}
+#container #conference #local-container video {
+  height: 150px;
+}
+#container #conference #remote-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+#container #conference #remote-container .remote-stream-wrapper {
+  position: relative;
+  display: inline-block;
+}
+#container #conference #remote-container .remote-stream-wrapper video {
+  height: 300px;
+  display: block;
+}
+#container #conference #remote-container .remote-stream-wrapper .snapshot-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.55);
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  -webkit-transition: background 0.15s linear;
+  -moz-transition: background 0.15s linear;
+  transition: background 0.15s linear;
+  outline: none;
+  padding: 0;
+}
+#container #conference #remote-container .remote-stream-wrapper .snapshot-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+#container #conference #remote-container .remote-stream-wrapper .snapshot-btn:hover {
+  background: rgba(23, 151, 222, 0.85);
+}
+#container #conference #remote-container .remote-stream-wrapper .snapshot-btn--lowres {
+  bottom: 62px;
+  width: auto;
+  border-radius: 20px;
+  padding: 0 10px 0 8px;
+  gap: 4px;
+}
+#container #conference #remote-container .remote-stream-wrapper .snapshot-btn--lowres span {
+  font-size: 11px;
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  color: #ffffff;
+  white-space: nowrap;
+}
+#container #conference #snapshots-timeline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px 0;
+}
+#container #conference #snapshots-timeline .snapshot-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#container #conference #snapshots-timeline .snapshot-item img {
+  max-height: 200px;
+  border: 2px solid #1797DE;
+  border-radius: 4px;
+}
+#container #conference #snapshots-timeline .snapshot-item p {
+  color: #ffffff;
+  font-size: 12px;
+  font-family: Roboto;
+  margin: 4px 0 0 0;
+}
+#container #conference #snapshots-timeline .snapshot-item .snapshot-resolution {
+  color: #1797DE;
+  font-size: 11px;
+  font-family: Roboto;
+  font-weight: 500;
+  margin: 2px 0 0 0;
+  letter-spacing: 0.5px;
+}
+#container #callActions button {
+  background: #1797DE;
+  border: 3px solid #1e1e1e;
+  height: 38px;
+  padding: 4px 30px;
+  margin-left: -30px;
+  color: #ffffff;
+  font-size: 14px;
+  font-family: Roboto;
+  text-transform: uppercase;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  -webkit-transition: background 0.10s linear;
+  -moz-transition: background 0.10s linear;
+  transition: 0.10s linear;
+  cursor: pointer;
+  outline: none;
+}
