@@ -122,7 +122,7 @@ $(function() {
                 // Full resolution snapshot button (camera icon only)
                 var snapshotBtn = document.createElement('button');
                 snapshotBtn.id = 'snapshot-btn-' + stream.streamId;
-                snapshotBtn.className = 'snapshot-btn @snapshot-btn--highres';
+                snapshotBtn.className = 'snapshot-btn snapshot-btn--highres';
                 snapshotBtn.title = 'Take snapshot at highest resolution';
                 snapshotBtn.innerHTML = cameraIconSvg + '<span>High Res</span>';
 
