@@ -102,6 +102,20 @@
 #container #conference #remote-container .remote-stream-wrapper .snapshot-btn:hover {
   background: rgba(23, 151, 222, 0.85);
 }
+#container #conference #remote-container .remote-stream-wrapper .snapshot-btn--highres {
+  bottom: 62px;
+  width: auto;
+  border-radius: 20px;
+  padding: 0 10px 0 8px;
+  gap: 4px;
+}
+#container #conference #remote-container .remote-stream-wrapper .snapshot-btn--highres span {
+  font-size: 11px;
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  color: #ffffff;
+  white-space: nowrap;
+}
 #container #conference #remote-container .remote-stream-wrapper .snapshot-btn--lowres {
   bottom: 62px;
   width: auto;
