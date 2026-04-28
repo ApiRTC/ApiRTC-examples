@@ -68,7 +68,13 @@
   -moz-transition: background 0.10s linear;
   transition: background 0.10s linear;
   cursor: pointer;
-  outline: none; }
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px; }
+#container #fct button svg {
+  flex: 0 0 auto; }
 #container #record-fct button:hover {
   background: #1581C8; }
 #container #select-device {
@@ -137,6 +143,19 @@
   height:200px;display: inline-block; }
 #timeline a{
   display: inline-block;}
+#timeline .snapshot-item {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 8px;
+}
+#timeline .snapshot-resolution {
+  margin: 4px 0 0;
+  color: #ffffff;
+  font-family: Roboto;
+  font-size: 11px;
+  line-height: 1.2;
+}
 
 .slidecontainer {
   color: white;

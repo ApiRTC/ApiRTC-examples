@@ -9,6 +9,61 @@ $(function () {
     var selectedAudioInputId = null;
     var selectedVideoInputId = null;
 
+    var cameraIconSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>';
+
+    function decorateSnapshotButtons() {
+        var snapshotButton = document.getElementById('snapshot');
+        var snapshotFullResButton = document.getElementById('snapshotFullReso');
+
+        if (snapshotButton) {
+            snapshotButton.innerHTML = cameraIconSvg + '<span> Snapshot</span>';
+        }
+        if (snapshotFullResButton) {
+            snapshotFullResButton.innerHTML = cameraIconSvg + '<span> Snapshot Full Resolution</span>';
+        }
+    }
+
+    function appendSnapshotToTimeline(snapshotSrc) {
+        var timeline = document.getElementById('timeline');
+        var snapshotItem = document.createElement('div');
+        var anchor = document.createElement('a');
+        var img = document.createElement('img');
+        var resolution = document.createElement('p');
+
+        snapshotItem.className = 'snapshot-item';
+        resolution.className = 'snapshot-resolution';
+        resolution.textContent = 'Loading resolution...';
+
+        // Keep text readable even if external CSS is cached or overridden.
+        snapshotItem.style.display = 'inline-block';
+        snapshotItem.style.verticalAlign = 'top';
+        snapshotItem.style.textAlign = 'center';
+        snapshotItem.style.marginRight = '8px';
+        anchor.style.display = 'block';
+        resolution.style.display = 'block';
+        resolution.style.margin = '4px 0 0';
+        resolution.style.color = '#ffffff';
+        resolution.style.fontFamily = 'Roboto, sans-serif';
+        resolution.style.fontSize = '11px';
+        resolution.style.lineHeight = '1.2';
+        resolution.style.whiteSpace = 'normal';
+
+        img.onload = function() {
+            resolution.textContent = img.naturalWidth + ' x ' + img.naturalHeight + ' px';
+        };
+        img.onerror = function() {
+            resolution.textContent = 'Resolution unavailable';
+        };
+        img.src = snapshotSrc;
+
+        anchor.appendChild(img);
+        snapshotItem.appendChild(anchor);
+        snapshotItem.appendChild(resolution);
+        timeline.appendChild(snapshotItem);
+    }
+
+    decorateSnapshotButtons();
+
     selectCamera.onchange = function (e) {
         selectedVideoInputId = selectCamera.value;
         createStream();
@@ -193,7 +248,26 @@ $(function () {
         localStream.takeSnapshot(snapshotOptions)
             .then(function (snapshot) {
                 console.log("takeSnapshot OK :", snapshot);
-                $('#timeline').append('<a><img src="' + snapshot + '" /></a>');
+                appendSnapshotToTimeline(snapshot);
+            }).catch(function (error) {
+                // error
+                console.error('takeSnapshot error :', error);
+            });
+    });
+
+    $('#snapshotFullReso').on('click', function () {
+        console.log("snapshotFullReso");
+
+        var snapshotOptions = {
+            fullResolution: true,
+        };
+
+        console.log("snapshotOptions :", snapshotOptions);
+
+        localStream.takeSnapshot(snapshotOptions)
+            .then(function (snapshot) {
+                console.log("takeSnapshot OK :", snapshot);
+                appendSnapshotToTimeline(snapshot);
             }).catch(function (error) {
                 // error
                 console.error('takeSnapshot error :', error);
