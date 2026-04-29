@@ -40,7 +40,7 @@ Focus on the possibility to join and leave a conference.
 Learn how to moderate users on conversation: accept / decline or eject users.
 - **Conferencing_mute-screen** -
 [Live demo](https://apirtc.github.io/ApiRTC-examples/conferencing_mute_screen/index.html)<br/>
-Learn how to mute stream on confrence and publish a screensharing.
+Learn how to mute stream on conference and publish a screensharing.
 - **Conferencing_mute_screen_advanced-PUB-SUB** -
 [Live demo](https://apirtc.github.io/ApiRTC-examples/conferencing_mute_screen_advanced-PUB-SUB/index.html)<br/>
 ADVANCED - This demo exposes a video conference sample with the possibility to select streams you want to publish or subscribe.
@@ -73,6 +73,9 @@ Create a conversation to establish multi-party Whiteboard. Share drawings, annot
 - **Conferencing_whiteboard_invitation** -
 [Live demo](https://apirtc.github.io/ApiRTC-examples/conferencing_whiteboard_invitation/index.html)<br/>
 Invite user to a conversation and then create a Whiteboard. Share drawings, annotation with users.
+- **Conferencing_whiteboard_invitation** -
+[Live demo](https://apirtc.github.io/ApiRTC-examples/conferencing_mute_screen_snapshot_highest_resolution/index.html)<br/>
+Create a conversation and take snapshots on a remote stream. You have the possibility to have snapshots with the highest possible resolution.
 
 ### Peer to peer
 - **Call** -
