@@ -73,7 +73,7 @@ Create a conversation to establish multi-party Whiteboard. Share drawings, annot
 - **Conferencing_whiteboard_invitation** -
 [Live demo](https://apirtc.github.io/ApiRTC-examples/conferencing_whiteboard_invitation/index.html)<br/>
 Invite user to a conversation and then create a Whiteboard. Share drawings, annotation with users.
-- **Conferencing_whiteboard_invitation** -
+- **Conferencing_mute_screen_snapshot_highest_resolution** -
 [Live demo](https://apirtc.github.io/ApiRTC-examples/conferencing_mute_screen_snapshot_highest_resolution/index.html)<br/>
 Create a conversation and take snapshots on a remote stream. You have the possibility to have snapshots with the highest possible resolution.
 
