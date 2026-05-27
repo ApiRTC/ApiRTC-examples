@@ -1,5 +1,5 @@
 
-<a href="https://www.apirtc.com"><img src="https://apirtc.com/wp-content/uploads/2018/09/ApiRTC_relook_branding_v01.png" width="260"></a>
+<a href="https://www.apirtc.com"><img src="https://apirtc.com/images/apiRTC-dark-e1540196351855.webp" width="260"></a>
 
 
 
